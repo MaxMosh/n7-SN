@@ -1,14 +1,16 @@
 À ajouter (ajouter rapport en plus des codes) :
-- dernier code projet PIM
+- codes mini projets PIM
+- dernier code projet PIM (Samy)
 
-- derniers codes Probas/Stats (sur machines de l'école)
+- derniers codes Probas (sur machines de l'école)
+- TPs complets stats
 
-- dernier code Automatique
+- dernier code Automatique (Samy)
 
-- dernier code projet CS
-- dernier code projet AD
+- dernier code projet CS (Samy)
+- dernier code projet AD (Samy)
 
-- derniers codes projets Telecom
+- derniers codes projets Telecom (TP1 et TP2 Samy)
 
 - dernier code projet SEC
 

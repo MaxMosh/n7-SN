@@ -1,0 +1,67 @@
+% Compte-rendu minimal du mini-projet SDA : LCA et TH
+% Auteur : MOSHFEGHI Maxime
+% Groupe de TP : J
+
+
+**Consigne :** Vous devez écrire vos réponse à la place des ... en laissant
+une ligne vide avant et deux après votre réponse.
+
+**Remarque :** Ce document utilise le langage Markdown. On peut en engendrer
+une version PDF en faisant par exemple :
+
+~~~
+pandoc --toc -N -o LISEZ-MOI.pdf LISEZ-MOI.txt
+~~~
+
+
+# Exercice 1
+
+## Question 1.4
+
+**Indiquer les inconvénients/avantages d'une implantation par listes chaînées
+d'une SDA.**
+
+L'avantage d'utiliser des LCA est qu'il n'y a a priori pas de limite d'espace comme dans un tableau.
+L'inconvénient d'utiliser des LCA est que l'on est obligé d'itérer sur tous les éléments antérieur à la cellule dont on veut lire ou modifier les données.
+
+
+
+# Évaluation expérimentale.
+
+## Performance comparée de LCA et TH
+
+Pour un tirage très important, les TH s'avère être plus efficace que les LCA.
+
+
+## Qualité du générateur aléatoire
+
+Un faible delta entre les valeurs d'apparition minimales et maximales indiquent un faible écart-type, donc une bonne
+qualité de générateur.
+
+
+
+# Principales difficultés rencontrées
+
+J'ai principalement eu des difficultés à comprendre la partie TH. J'ai pu avec des camarades élucider mes erreurs
+de compréhension (notamment le fait que les TH était composées obligatoirement de LCA).
+
+
+
+# Informations complémentaires
+
+Indiquer ici les informations qui pourraient aider à la compréhension du
+travail réalisé.
+
+Cette partie peut être vide.
+
+...
+
+
+
+# Bilan personnel
+
+Quel bilan personnel tirez vous de ce mini-projet ?
+
+Il est intéressant d'apprendre à utiliser les structures de données associatives car elles peuvent à l'avenir s'avérer utiles
+pour la résolution de certains problèmes dont la génération de nombres aléatoires est une premère application.
+
