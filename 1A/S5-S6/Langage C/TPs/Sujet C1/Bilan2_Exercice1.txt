@@ -1,0 +1,39 @@
+NOM : MOSHFEGHI
+Prénom : Maxime
+Groupe : J
+Binôme :
+
+
+__[B1.1]__ Quelle est la portée de chaque variable déclarée ? Pour chaque variable, on donnera le numéro de ligne où commence et se termine sa portée.
+
+La variable n déclarée à la ligne 8 a une portée de la ligne 8 à la ligne 37.
+La variable *p décalrée à la ligne 9 a une portée de la ligne 9 à la ligne 37.
+La variable a déclarée à la ligne 13 a une portée de la ligne 13 à la ligne 18.
+La variable n déclarée à la ligne 22 a une portée de la ligne 22 à la ligne 25.
+La variable r déclarée à la ligne 30 a une portée de la ligne 30 à la ligne 33.
+
+
+__[B1.2]__ Y a-t-il un exemple de masquage de variable dans ce programme ?
+
+La variable n déclarée à la ligne 8 est masquée de la ligne 21 à la ligne 25.
+
+
+__[B1.3]__ Peut-on savoir ce que devrait afficher l’exécution de ce programme ?
+
+Non car on ne peut pas anticiper quelle adresse mémoire va être chosie par le programme.
+
+
+__[B1.4]__ Même s’il compile sans erreur, ce programme est faux. Pourquoi ?
+
+Le programme est faux car le pointeur est envoyé sur l'adresse d'une variable dont on a plus accès en dehors de sa portée.
+
+
+__[B1.5]__ La valeur de `p` change-t-elle après l’initialisation de la ligne 14 ?
+
+Non, elle ne change pas.
+
+
+__[B1.6]__ Que se passerait-il si on modifiait `*p` après la ligne 19 ?
+
+Cela change la valeur stockée à une adresse mémoire dont on a plus l'accès. Cela peut faire une erreur de type "Segmentation Fault".
+
