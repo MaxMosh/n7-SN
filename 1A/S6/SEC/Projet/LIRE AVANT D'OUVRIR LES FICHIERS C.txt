@@ -1,0 +1,6 @@
+ATTENTION : cette version du minishell n'est pas aboutie ! 
+Il manque :
+- trois commandes de la question 6 (seul lj a été traitée)
+- les questions 7, 8, 10 et 11
+
+La terminaison d'un processus en arrière plan (sleep 2 & par exemple) provoque un segmentation fault jamais élucidé.
