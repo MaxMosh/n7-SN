@@ -1,0 +1,59 @@
+#!/bin/bash
+#!echo 1 > /proc/sys/net/ipv4/ip_forward
+
+ip link set dev eth0 up
+ip link set dev eth1 up
+
+ip addr add 123.47.254.2/28 dev eth0
+ip addr add 192.168.166.129/25 dev eth1
+
+ip route add default via 123.47.254.14
+
+service isc-dhcp-server start
+
+
+
+
+#!par défaut, on bloque tous les fluxs
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+
+
+#!Configuration SNAT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+
+#!Configuration DNAT
+iptables -t nat -A PREROUTING --dst 123.47.254.2 -p tcp --dport 80 -j DNAT --to-destination 192.168.166.130
+
+
+#!pour le ping
+iptables -t filter -A INPUT -p icmp -j ACCEPT
+iptables -t filter -A OUTPUT -p icmp -j ACCEPT
+iptables -t filter -A FORWARD -p icmp -j ACCEPT
+
+
+#!pour le DNS
+iptables -t filter -A FORWARD -d 123.47.254.49 -p udp --dport 53 -j ACCEPT
+iptables -t filter -A FORWARD -s 123.47.254.49 -p udp --sport 53 -j ACCEPT
+
+
+#!pour le HTTP
+#!serveur WEB du FAI Services
+iptables -t filter -A FORWARD -s 123.47.254.50 -p tcp --sport 80 -j ACCEPT
+iptables -t filter -A FORWARD -d 123.47.254.50 -p tcp --dport 80 -j ACCEPT
+iptables -t filter -A INPUT -s 123.47.254.50 -p tcp --sport 80 -j ACCEPT
+iptables -t filter -A INPUT -d 123.47.254.50 -p tcp --dport 80 -j ACCEPT
+
+#!serveur WEB au sein du réseau
+iptables -t filter -A FORWARD -s 192.168.166.130 -p tcp --sport 80 -j ACCEPT
+iptables -t filter -A FORWARD -d 192.168.166.130 -p tcp --dport 80 -j ACCEPT
+iptables -t filter -A INPUT -s 192.168.166.130 -p tcp --sport 80 -j ACCEPT
+iptables -t filter -A INPUT -d 192.168.166.130 -p tcp --dport 80 -j ACCEPT
+iptables -t filter -A OUTPUT -s 192.168.166.130 -p tcp --sport 80 -j ACCEPT
+iptables -t filter -A OUTPUT -d 192.168.166.130 -p tcp --dport 80 -j ACCEPT
+
+
+#!pour le DHCP
+iptables -A INPUT -i eth0 -p udp --dport 67:68 --sport 67:68 -j ACCEPT

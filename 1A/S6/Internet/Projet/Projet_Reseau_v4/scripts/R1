@@ -1,0 +1,11 @@
+#!/bin/bash
+ip link set dev eth0 up
+ip link set dev eth1 up
+
+ip addr add 123.47.254.17/28 dev eth0
+ip addr add 123.47.254.33/28 dev eth1
+#!ip route add 123.47.254.48/28 via 123.47.254.46
+#!ip route add 123.47.254.0/28 via 123.47.254.30
+
+#!SERVICE DEJA EN COURS NORMALEMENT
+#!service quagga start

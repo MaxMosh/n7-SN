@@ -1,0 +1,80 @@
+network:
+  name: Projet_Reseau_v4
+  version: 0.1
+  hosts:
+    - Serveur_DNS
+      mode : docker
+      image : dns_n7:latest
+      files : ./files/Serveur_DNS/etc:/
+ 
+ 
+ 
+ 
+ 
+ 
+    - Serveur_Web
+      mode : docker
+      image : apache_n7:latest
+      files : ./files/Serveur_Web/var:/
+ 
+    - FAI_Services
+      mode : docker
+      image : quagga_n7:latest
+      files : ./files/FAI_Services/etc:/
+ 
+    - R1
+      mode : docker
+      image : quagga_n7:latest
+      files : ./files/R1/etc:/
+ 
+    - R2
+      mode : docker
+      image : quagga_n7:latest
+      files : ./files/R2/etc:/
+ 
+    - FAI_Acces
+      mode : docker
+      image : quagga_n7:latest
+      files : ./files/FAI_Acces/etc:/
+ 
+ 
+    - BOX_1
+      mode : docker
+      image : dhcp_n7:latest
+      files : ./files/BOX_1/etc:/
+ 
+    - BOX_2
+      mode : docker
+      image : dhcp_n7:latest
+      files : ./files/BOX_2/etc:/
+ 
+    - Serveur_Web_Utilisateur
+      mode : docker
+      image : apache_n7:latest
+      files : ./files/Serveur_Web_Utilisateur/var:/
+ 
+    - Equipement_utilisateur_2
+      mode : netns
+      init : ./scripts/Equipement_utilisateur_2
+ 
+    - Equipement_utilisateur_1
+      mode : netns
+      init : ./scripts/Equipement_utilisateur_1
+ 
+ 
+  bridges:
+    - Switch0
+      interfaces: Equipement_utilisateur_1:eth0!BOX_1:eth1!
+    - Switch1
+      interfaces: BOX_2:eth1!Serveur_Web_Utilisateur:eth0!Equipement_utilisateur_2:eth0!
+    - Switch2
+      interfaces: R1:eth0!R2:eth0!FAI_Acces:eth0!
+    - Switch3
+      interfaces: R1:eth1!FAI_Services:eth1!R2:eth1!
+    - Switch4
+      interfaces: Serveur_DNS:eth0!Serveur_Web:eth0!FAI_Services:eth0!
+    - Switch5
+      interfaces: FAI_Acces:eth1!BOX_1:eth0!BOX_2:eth0!
+ 
+  consoles :
+    - all

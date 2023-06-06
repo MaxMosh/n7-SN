@@ -1,0 +1,50 @@
+#!/bin/bash
+ip link set dev eth0 up
+ip link set dev eth1 up
+
+ip addr add 123.47.254.62/28 dev eth0
+ip addr add 123.47.254.46/28 dev eth1
+
+#!ip route add default via 123.47.254.33
+
+#!SERVICE DEJA EN COURS NORMALEMENT
+#!service quagga start
+
+#!On bloque tous les fluxs par défauts, puis on ouvre les ports un part un
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+
+
+#!pour le ping
+iptables -t filter -A INPUT -p icmp -j ACCEPT
+iptables -t filter -A OUTPUT -p icmp -j ACCEPT
+iptables -t filter -A FORWARD -p icmp -j ACCEPT
+
+#!On autorise TCP sur le port de HTTP
+
+iptables -t filter -A FORWARD -i eth1 -p tcp --dport 80 -j ACCEPT
+#!AJOUT
+iptables -t filter -A FORWARD -i eth1 -p tcp --sport 80 -j ACCEPT
+
+iptables -t filter -A FORWARD -i eth0 -p tcp --sport 80 -j ACCEPT
+#!AJOUT
+iptables -t filter -A FORWARD -i eth0 -p tcp --dport 80 -j ACCEPT
+
+#!iptables -t filter -A FORWARD -s 123.47.254.48/28 -j ACCEPT
+
+#!On autorise UDP sur le port de RIPD pour que la communication des réseaux se fasse bien
+iptables -t filter -A INPUT -p udp --dport route -j ACCEPT
+#!AJOUT
+iptables -t filter -A INPUT -p udp --sport route -j ACCEPT
+
+iptables -t filter -A OUTPUT -p udp --sport route -j ACCEPT
+#!AJOUT
+iptables -t filter -A OUTPUT -p udp --dport route -j ACCEPT
+
+
+#!On autorise UDP sur le port de DNS pour que les noms de serveurs soient bien attribués aux bonnes IP
+iptables -t filter -A FORWARD -p udp --dport 53 -j ACCEPT
+#!AJOUT
+iptables -t filter -A FORWARD -p udp --sport 53 -j ACCEPT
+

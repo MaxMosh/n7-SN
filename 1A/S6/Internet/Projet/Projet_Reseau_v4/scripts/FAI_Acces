@@ -1,0 +1,6 @@
+#!/bin/bash
+ip link set dev eth0 up
+ip link set dev eth1 up
+
+ip addr add 123.47.254.14/28 dev eth1
+ip addr add 123.47.254.30/28 dev eth0

@@ -1,0 +1,7 @@
+ATTENTION : il est possible qu'une partie des scripts ne soit pas rigoureux. Il reste peut-être encore beaucoup de commentaires inutiles, mais normalement j'ai viré tout ce qu'il fallait viré.
+
+NE PAS SE FIER COMPLETEMENT AU FILTRAGE (iptables hors POSTROUTING et PREROUTING) : elles sont fonctionnelles mais certaines sont en doubles, d'autres précisent des ports alors que c'est inutiles, etc etc...
+
+ATTENTION AUSSI : dans le sujet 2022-2023, il manquait un switch à un endroit. Aussi, il est préférables pour les BOX de mettre des DHCP (si ce n'est indispensable).
+
+Pour bien lire le code inscrit dans chacun des scripts, il est préférable d'avoir sous les yeux le plan d'adressage présent sur ce même répertoire.
