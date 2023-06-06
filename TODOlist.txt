@@ -12,9 +12,7 @@
 - dernier code projet CS (Samy)
 - dernier code projet AD (Samy)
 
-- derniers codes projets Telecom (TP1 et TP2 Samy)
-
-- dernier code projet SEC
+- derniers codes TPs Telecom (TP1 et TP2 Samy)
 
 
 En dehors :
