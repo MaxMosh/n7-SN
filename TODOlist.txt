@@ -2,6 +2,9 @@
 - codes mini projet PIM 1 (sur machines de l'école)
 - dernier code projet PIM (Samy)
 
+- codes modélisation (?)
+- codes architectures des ordinateurs (ce qu'il y a de fait correctement, notamment minicraps)
+
 - derniers codes Probas (sur machines de l'école)
 - TPs complets stats
 
@@ -14,6 +17,3 @@
 
 - derniers codes TPs Telecom (TP1 et TP2 Samy)
 
-
-En dehors :
-- projet long TOB
