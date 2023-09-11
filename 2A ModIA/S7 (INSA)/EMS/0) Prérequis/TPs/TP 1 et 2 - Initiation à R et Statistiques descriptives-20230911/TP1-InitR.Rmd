@@ -1,0 +1,1070 @@
+---
+title: "TP 1  : Initiation au langage et objets de R "
+date : "ModIA - 4ème année - 2023-2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+```
+
+Ce script s'appuie sur le tutoriel 2 ["Initiation au langage et objets de R "](https://cmaugis.github.io/TutorielsR/Part2-InitR.html). 
+Il vous donne un guide de lecture du tutoriel et il y est reporté des parties de code. 
+
+#	Structure des objets 
+Sous R, les éléments de base sont des objets : des données (vecteurs,
+matrices, ...), des fonctions, des graphiques, ...
+Ces objets se différencient par leur mode décrivant leur contenu, et leur classe décrivant leur structure.
+Les objets atomiques sont de mode homogène et les objets récursifs sont de mode hétérogène.
+Les différents modes sont **null (objet vide), logical, numeric, complex, character**.
+
+Les classes d'objets les plus courantes sont : **vector, matrix, array, factor, data.frame, list.**
+On peut avoir des vecteurs, matrices, tableaux, ... de mode null (objet vide), logical (TRUE, FALSE, NA), numeric, complex, character. Par contre
+les listes et les tableaux peuvent être composés d'éléments hétérogènes. On utilise la commande `class()` pour connaître la classe d'un objet et `str()`pour connaitre la nature des éléments composant l'objet.  
+
+La principale difficulté en R réside dans l'identification des types d'objets manipulés. Nous allons dans ce tutoriel présenter ces différents objets, les opérations et manipulations basiques que l'on peut faire, ...
+
+On peut stocker un objet dans une variable (ex *a*) à l'aide de `a<- ...` ou `a= ...`. Pour lister les variables actuellement disponibles dans la session de travail, on utilise la fonction `ls()`. Pour effacer une ou plusieurs variables, on utilise la fonction `rm()`. La commande `rm(list=ls())` permet d'effacer toutes les variables en mémoire. 
+
+
+##	Opération sur les scalaires {.tabset}
+
+### Opérations 
+Les opérations élémentaires sur les scalaires sont `*`,`-`, `+`, `/`, `^`.\
+
+Executez les commandes suivantes. Vous chercherez en particulier à bien identifier les différents types de données :
+```{r, echo=T,eval=F}
+2+2
+exp(10)
+a = log(2)
+a
+b =cos(10)
+b
+a - b
+a*b
+d <- 2 < 3
+d
+dd <- FALSE
+dd - d
+dd + d
+e<- "toto"
+class(e)
+str(e)
+```
+
+```{r,echo=F}
+rm(a,b,d,dd,e)
+```
+
+### `is.xxx()/as.xxx()`
+Pour tester si un objet *obj* est de type *xxx*, on utilise la commande 
+`is.xxx(obj)`. On peut aussi contraindre si possible l'objet *obj* au type *xxx* avec la commande `as.xxx(obj)`.
+
+```{r}
+a = 4.3
+is.numeric(a)
+is.complex(a)
+is.character(a)
+as.character(a)
+b<- "toto"
+is.numeric(b)
+as.list(b)
+```
+
+```{r,echo=F}
+rm(a,b)
+```
+
+### Arrondir
+Pour obtenir des valeurs arrondies sur des valeurs numériques, vous pouvez utiliser l'une des commandes suivantes `round()`, `ceiling()`, `floor()`, `trunc()` ou `signif()` (voir l'aide `?round`). 
+Comparez les codes suivantes:
+
+```{r}
+a=1.3579
+floor(a)
+ceiling(a)
+round(a,digits=2)
+signif(a,digits=2)
+is.integer(floor(a))
+is.numeric(floor(a))
+```
+
+
+##	Booléens et opérations logiques {.tabset}
+
+En R, un booléen est représenté par *TRUE* ou *FALSE*. Les opérations logiques, `<`, `>`, `<=`, `>=`, `!=` (différent), `==` (égal) retournent *TRUE* ou *FALSE*. On peut définir plusieurs conditions à remplir avec les opérateurs `&` (ET) et `|` (OU).
+
+Attention, R considère qu'un booléen a *FALSE* vaut $0$ et qu'un booléen a *TRUE* vaut $1$. Il est donc capable d'évaluer ` TRUE + 5` bien qu'en toute logique, cela n'a aucun sens!
+
+Voici quelques exemples de manipulation des booléens :
+
+```{r}
+a = 3
+b = 6
+a<=b
+a!=b
+(b-3==a) & (b>=a)
+(b==a) | (b>=a)
+```
+
+```{r,echo=F}
+rm(a,b)
+```
+
+
+
+## Les caractères {.tabset}
+On donne ici quelques fonctions de base sur la manipulation des chaînes de caractères. Dans le tutoriel 4 de R avancé, on présentera le package **stringr** qui est très utilisé pour gérer et manipuler des chaînes de caractères. 
+
+### `paste()`
+
+Pour concaténer, juxtaposer des chaînes de caractères on utilise la fonction `paste()`
+```{r}
+Ex = paste("Bonjour", "à","toutes","et","tous","!")
+paste("Bonjour", "à","toutes","et","tous","!",sep="_")
+x = c("Bonjour", "à", "vous")
+paste(x)
+paste(x,collapse="++")
+```
+
+### `nchar()`
+On accède à la longueur d'une chaîne avec la fonction `nchar()`
+```{r}
+nchar(Ex)
+```
+
+### `substr()` / `substring()`
+
+La fonction `substr()` permet d’extraire une partie d'une chaîne à partir des attributs « start » et « stop ». On peut aussi remplacer des segments d'une chaine. 
+```{r}
+substr(Ex,start=3,stop=9)
+substr(Ex, start = 3, stop = 9) <- "@@@"
+Ex
+```
+
+On peut aussi utiliser la fonction `substring()` 
+```{r}
+Ex = paste("Bonjour", "à","toutes","et","tous","!")
+substring(Ex, first = 3)
+substring(Ex, first = 3, last = 9) <- "@@@--<"
+Ex
+```
+
+### `strsplit()`
+
+La fonction `strsplit()` permet de scinder une chaîne de caractères :
+```{r}
+Ex = paste("Bonjour", "à","toutes","et","tous","!")
+strsplit(Ex,split= " ")
+strsplit(Ex,split=c("o"," "))
+```
+La sortie de la fonction `strsplit()` est une liste (voir section sur [`list`](#secList))
+
+### `grep()`
+La fonction `grep()` permet de rechercher les éléments d’une liste.
+```{r}
+Ex1 = c("tomate","concombre","mais","courgette","poivron","carotte","betterave")
+Ex1
+grep(pattern="o",Ex1,value=FALSE) # donne les indices des éléments contenant un "o" dans Ex
+grep(pattern="o",Ex1, value = TRUE) # Donne les éléments de Ex1 qui contiennent la lettre "o"
+```
+
+On peut utiliser la fonction `grep()` avec les expressions régulières disponible sous R, il faut penser à mettre l'option `fixed=FALSE`. Pour plus de détail, voir `?regex`. 
+
+### `gsub()`
+Enfin pour remplacer un pattern dans une chaine de caractère, on peut utiliser la fonction 
+`gsub()` 
+```{r}
+gsub(pattern = "o" , replacement = "@" , Ex1, fixed = TRUE)
+```
+
+```{r,echo=F}
+rm(Ex,Ex1,x)
+```
+
+##	Vecteurs *(vector)*
+
+Un vecteur est un ensemble ordonné d'éléments de même nature (numérique, logique ou alphanumérique). La création d'un vecteur peut se faire par la commande `c(e1,e2,...)`. On peut également générer une séquence avec la commande `seq(a,b,t)` où $a$ est le premier terme, le dernier terme est $\leq b$ et le pas est $t$. Pour créer un vecteur constitué de l'élément $x$ répété $n$ fois, on utilise la commande `rep(x,n)`. 
+
+### Exemples {.tabset}
+On donne ici quelques exemples à tester sous R pour vous familiariser avec les vecteurs. En particulier, vous pouvez découvrir des fonctions utiles avec les vecteurs comme `length()`, `sum()`, `sort()`, ... , les opérations usuelles, l'extraction d'éléments d'un vecteur, ...  
+
+#### Commande `c(...)`
+```{r}
+d <- c(2,3,5,8,4,6)
+d
+is.vector(d)
+c(2,5,"toto")
+1:10
+```
+
+#### Commande `seq(...)`
+```{r}
+seq(1,10)
+seq(from=1,to=20,by=2) 
+seq(1,20,by=5)
+seq(1,20,length=5)
+```
+
+#### Commande `rep(...)`
+```{r}
+rep(5,times=10)
+rep(c(1,2),3)
+rep(c(1,2),each=3)
+```
+
+#### Extraire des éléments
+```{r}
+d
+d[2]
+d[2:3]
+d[c(1,3,6)]
+d[-3]
+d[-(1:2)]
+```
+
+#### Opérations
+
+Additionner ou soustraire un scalaire d'un vecteur
+```{r}
+d+4
+d-4
+```
+Multiplier ou diviser un vecteur par un scalaire
+```{r}
+2*d
+d/3
+```
+Multiplier/ diviser deux vecteurs terme à terme
+```{r}
+e<- rep(2,6)
+d*e
+d/e
+```
+
+#### Fonctions usuelles
+```{r}
+d = c(2,3,5,8,4,6)
+d
+```
+
+Longueur d'un vecteur  
+```{r} 
+length(d)
+```
+Somme des termes d'un vecteur numérique
+```{r} 
+sum(d)
+```
+Somme des termes cumulés d'un vecteur numérique
+```{r}
+cumsum(d)
+```
+Différence des termes successifs d'un vecteur numérique
+```{r}
+diff(d)
+```
+Vérifier si *d* est un vecteur 
+```{r} 
+is.vector(d)
+```
+Transposition d'un vecteur
+```{r}
+t(d)
+```
+
+Produit scalaire
+```{r}
+t(d)%*%e
+```
+
+NA (Not Available) signale une donnée manquante
+```{r}
+d[3] <- NA
+d
+is.na(d)
+any(is.na(d))
+all(is.na(d))
+```
+
+Autres fonctions interrsantes avec les vecteurs : `abs()`, `sort()`, `order()`, `which()`, ... 
+```{r}
+a<-c(3,-1,5,2,-7,3,9)
+abs(a)
+sort(a)
+order(a)
+```
+
+```{r}
+b = a==3
+b
+sort(b)
+```
+
+```{r}
+text<-c("petit","moyen","grand")
+is.vector(text)
+```
+
+```{r}
+f = c(a=12,b=26,c=32,d=41)
+f
+names(f)
+f["a"]
+names(f)<-c("a1","a2","a3","a4")
+f
+```
+
+Notez la différence entre les commandes suivantes :
+
+```{r}
+f>30
+f[f>30]
+which(f>30)
+```
+
+
+```{r}
+f[2] <- 22
+f+100
+```
+
+Etonnant ces commandes suivantes, non ? 
+```{r}
+f
+d
+f+d
+```
+
+On peut appliquer une fonction à tous les éléments d'un vecteur facilement. 
+
+```{r}
+cos(f)
+```
+
+```{r,echo=F}
+rm(d,e,f,b,a)
+```
+
+### Exercice {.tabset}
+
+#### Enoncé
+Question 1 : Créer les vecteurs suivants :
+
+  + le vecteur $a$ constitué des entiers pairs jusqu'à 30
+  + le vecteur $b$ contenant $v=5$, deux fois la valeur de $v$, puis un tiers de la valeur de $v$, puis trois fois $v^2$, puis $\sqrt{v}$, puis le quatrième élément de $a$.
+  + le vecteur $c$ contenant 6 chiffres compris entre 4 et 30 avec un intervalle constant.
+  + le vecteur $d$ contenant la somme des éléments de $c$, puis la longueur de $b$, puis 5 fois le chiffre 3.
+  
+Question 2 :  Extraire du vecteur $a$ : 
+
+  + le quatrième élément
+  + tous les éléments sauf le quatrième
+  + tous les éléments supérieurs à 10
+  
+Question 3 :  À quoi sert la fonction `unique` ? Illustrer son fonctionnement sur un exemple.
+
+#### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+
+##	Matrices (*matrix*)
+
+Comme les vecteurs, les matrices sont de mode quelconque mais ne contiennent que des éléments de même nature. Pour créer une matrice, on utilise la commande `matrix(vec,nrow=n,ncol=p)` où *vec* est le vecteur contenant les éléments de la matrice de taille $n$ par $p$, qui seront rangés en colonne sauf si l'option *byrow=T* est utilisée.
+
+### Exemples {.tabset}
+On donne ici quelques exemples à tester sous R pour vous familiariser avec les matrices. En particulier, vous pouvez découvrir des fonctions utiles avec les matrices comme `dim()`, `t()`, `cbind()`, `rbind()`... , les opérations usuelles dont la différence entre `A*B` et `A%*%B`, l'extraction d'éléments d'une matrice, ...  
+
+#### `matrix()`
+```{r}
+A = matrix(1:15,ncol=5)
+A
+
+class(A)
+B = matrix(1:15,nc=5,byrow=T)
+B2 = B
+B2[1,1]="toto"
+B2
+```
+
+```{r}
+rownames(A)=c(paste("ligne",1:3,sep=""))
+A
+```
+
+#### Extraire
+```{r}
+A
+A[1,3]
+A[,2]
+A[2,]
+A[1:3,c(2,5)]
+A[1:3,-c(2,5)]
+```
+
+#### `cbind() / rbind()`
+Pour concaténer deux matrices, on peut utiliser les fonctions `rbind()` ou `cbind()`. 
+
+```{r}
+A
+B
+cbind(A,B)
+rbind(A,B)
+```
+
+#### Fonctions utiles
+
+Dimension d'une matrice
+```{r}
+dim(A)
+```
+Nombre de lignes et de colonnes
+```{r}
+nrow(A)
+ncol(A)
+```
+Transposée et déterminant d'une matrice
+```{r}
+t(A)
+det(A[,3:5])
+```
+
+Inversion d'une matrice
+```{r}
+solve(A[1:2,2:3])
+```
+
+Matrice diagonale et diagonale d'une matrice
+```{r}
+diag(A)
+diag(1:5)
+```
+Matrice de booléens
+```{r}
+A>5
+A[A<5]<-0
+A
+```
+Quelques autres fonctions sur les matrices
+```{r}
+colSums(A)
+apply(A,2,sum)
+rowSums(A)
+apply(A,1,sum)
+rowMeans(A)
+apply(A,1,mean)
+apply(A,1,max)
+```
+
+Remarque : on reverra dans la section [Programmation](#secProg) la fonction `apply()` qui permet en particulier d'éviter les boucles *for*.\
+
+#### Opérations
+
+Attention à la multiplication matricielle `%*%` et la multiplication terme à terme `*`!
+
+Operations terme à terme de 2 matrices
+```{r}
+A+B
+A*B
+```
+Multiplication de matrices
+```{r}
+t(B) %*%A
+```
+Multiplication par un scalaire
+```{r}
+5*A
+```
+
+### Exercice {.tabset}
+
+#### Enoncé
+1. Créer la matrice $A=\left(\begin{array}{c c c } 3 & 3 & 3\\ 4 & 4 & 4\\ 5 & 5 & 5\end{array}\right).$
+
+2. Ajouter 2 à tous les éléments de $A$.
+
+3. Créer la matrice $B$ en ajoutant la ligne $(1,2,3)$ à $A$, puis la colonne $(1,1,1,1)'$. Déterminer la dimension de $B$.
+
+4. Extraire de $B$ la sous-matrice $C$ composée des deux premières colonnes et des deux dernières lignes. Calculer sa transposée et son déterminant. Inverser cette sous-matrice $C$. 
+
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+##	Les tableaux (array) {.tabset}  
+<!-- Ne passez pas trop de temps sur cette section-->
+
+Les tableaux sont des matrices de dimensions supérieures à 2. On peut les générer à partir de la commande `array(vec,c(n,p,q,...))` où *vec* est le vecteur contenant les éléments du tableau et l'argument *c(n,p,q,...)* désigne les dimensions du tableau: $n$ lignes, $p$ colonnes, $q$ matrices, ...
+
+### `array()`
+```{r}
+E=array(c(1:8,rep(1,8),seq(0,1,len=8)),dim = c(2,4,3))
+E
+E[, , 1]
+```
+
+### Fonctions usuelles
+```{r}
+dim(E)
+length(E)
+nrow(E)
+ncol(E)
+aperm(E)
+E+10
+```
+
+### `apply()`
+```{r}
+H = array(1:12,c(2,3,2))
+H
+```
+
+```{r}
+apply(H,1,sum)
+sum(c(1,3,5,7,9,11))
+```
+
+```{r}
+apply(H,2,sum)
+sum(c(1,2,7,8))
+```
+
+```{r}
+apply(H,3,sum)
+sum(1:6)
+```
+
+##	Listes *(list)* {#secList}
+
+Une liste est une collection ordonnée d'objets qui peuvent être de nature différente. Les listes sont
+en particulier utilisées par certaines fonctions (cf section [Programmation](#secProg)) pour renvoyer des résultats complexes sous
+forme d'un seul objet.
+On utilise la fonction `list(nom1=el1,nom2=el2,...)` (l'utilisation
+des noms étant facultative) pour générer une liste. On peut accéder à chaque élément de la liste à l'aide
+de son index entre double crochets `  [[...]]`, ou par son nom précédé du signe `$`.
+
+### Exemples {.tabset}
+
+#### `list(...)`
+```{r}
+x = list("toto",1:8)
+x
+class(x)
+```
+Création d'une liste avec des noms aux éléments
+```{r}
+y = list(matrice=matrix(1:15,ncol=5),
+         vecteur=seq(1,20,by=5),
+         texte="toto",scalaire=8)
+y
+```
+
+#### Extraction
+Extraction d'un élément par son numéro 
+```{r}
+x[[1]]
+```
+Attention, cette commande n'est pas possible: 
+```{r, eval=F}
+x[[1]]+1
+```
+par contre celle-ci est possible
+```{r}
+x[[2]]+10
+```
+
+```{r}
+y[[1]]
+y$matrice
+y$vec
+y[c("texte","scalaire")]
+```
+
+#### Fonctions utiles
+
+```{r}
+names(y)
+length(y)
+length(y$vecteur)
+cos(y$scal)+y[[2]][1]
+summary(y)
+```
+
+
+### Exercice {.tabset}
+
+#### Enoncé
+
+1. Créer une liste contenant le nom de trois matières, les notes de 5 élèves pour chacune de ces matières, l'âge des 5 élèves et la filière (PO) d'appartenance de ces 5 élèves.
+
+2. Récupérer les notes du 4ème élève
+
+3. Créer une matrice contenant les notes et l'âge des 5 élèves.
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+##	Data frames
+Sous R, un data.frame est analogue à une matrice mais le contenu des colonnes
+peut être ici hétérogène. Un tableau de données est un ensemble de vecteurs rangés colonne par colonne, chaque colonne correspondant à une variable, chaque ligne à un individu. En particulier, lors d'études statistiques, les données à étudier sont souvent représentées par un data.frame sous R. Pour créer un tableau de données, on peut regrouper des variables de même longueur à
+l'aide de la commande `data.frame(nom1=var1,nom2=var2,...)`. On peut par exemple transformer une matrice en un tableau de données en utilisant la commande `as.data.frame(mat)`.
+
+### Exemple {.tabset}
+On donne ici quelques exemples à tester sous R pour vous familiariser avec les data.frames. En particulier, vous pouvez découvrir des fonctions utiles dont `summary()`, `attach()`, ... 
+
+#### `data.frame()`
+```{r}
+# Création du data.frame H
+taille = runif(12,150,180)
+masse = runif(12,50,90)
+sexe = rep(c("M","F","F","M"),3)
+H = data.frame(taille,masse,sexe)
+H
+class(H)
+```
+
+#### `summary()/head()`
+La fonction `summary()` permet de résumer le contenu des différentes colonnes d'un data.frame.
+```{r}
+summary(H)
+```
+La fonction `head()` permet de visualiser les premières lignes d'un data.frame
+```{r}
+head(H)
+```
+
+#### data.frame / list/matrix
+Au travers de ces quelques commandes, vous pouvez voir les analogies entre data.frame, list et matrix mais restez prudent sur la nature de l'objet que vous manipulez!
+```{r}
+H[1,]
+H$taille
+H$sexe
+is.data.frame(H)
+is.matrix(H)
+MH = as.matrix(H)
+MH
+summary(MH)
+as.list(H)
+```
+
+#### `attach()/detach()`
+
+La fonction `attach()` permet d'accéder aux variables d'un data.frame sans appeler le data.frame.
+
+La fonction `detach()` peut être utilisée pour supprimer la variable d'un data.frame, qui était précédemment attachée avec `attach()`.
+
+```{r}
+rm(taille)
+H$taille
+attach(H)
+taille
+detach(H) # taille est alors introuvable
+```
+
+
+### Exercice {.tabset}
+
+#### Enoncé
+On reprend le data.frame $H$ contruit dans la sous-section Exemple. 
+
+1. Extraire la masse des individus dont la taille est supérieure à 160.
+2. Extraire la masse et le sexe de ces mêmes individus.
+3. Extraire la taille des individus de sexe masculin dont la masse est inférieure à 80 (c'est possible en une seule ligne avec `&`).
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+# Premiers graphiques
+
+Lire les explications données dans le tutoriel. 
+
+## Exemples {.tabset}
+
+### Exemple 1
+```{r}
+x=seq(-10,10,l=50)
+# 2 graphiques
+par(mfrow=c(1,2))
+# premier graphique
+plot(x,sin(x),type="l",col=1,main="sinus")
+abline(v=0,col="blue",lwd=5,lty=3)
+abline(h=sin(0.7),col=3)
+text(-5,-0.5,"texte",font=3)
+# deuxieme graphique
+plot(x,cos(x),type="b",col=3,xlab="Abscisses")
+points(x,cos(x),type="l")
+points(0,1,pch="o",cex=3,col="blue")
+lines(c(-5,5),c(0,0),lty=2,col=2)
+```
+
+### Exemple 2
+```{r}
+data(iris)
+par(mfrow=c(2,2))
+plot(iris[,1],iris[,2],xlab="Sepal Length",
+ylab="Sepal Width",main="Iris data",
+col="red",type="p")
+points(iris[iris$Species=="setosa",1],iris[iris$Species=="setosa",2],col="green",pch=20)
+hist(iris[,1],xlab="Sepal Length",
+main="Histogramme de la variable Sepal Length")
+boxplot(iris[,1:4],las=2)
+```
+
+```{r}
+pairs(iris[,1:4])
+```
+
+```{r}
+par(mfrow=c(2,2))
+pie(table(iris[,5]))
+pie(table(iris[,5]),clockwise=T)
+barplot(table(iris[,5]))
+stripchart(iris,las=1)
+```
+
+### Exemple 3
+```{r}
+M=matrix(1:100,ncol=10)
+image(M)
+```
+
+```{r}
+x = seq(-10, 10, length= 30);y=x
+f = function(x,y){r=sqrt(x^2+y^2); 10 * sin(r)/r}
+z = outer(x, y, f)
+z[is.na(z)] = 1
+persp(x,y,z)
+
+persp(x, y, z, theta=30, phi=30,expand = 0.5,
+   col="lightblue")
+
+image(x,y,z)
+
+contour(x,y,z)
+filled.contour(x,y,z)
+
+image(x,y,z)
+contour(x,y,z,add=T)
+```
+
+
+
+## Exercice {.tabset}
+
+<!-- Pendant le TP, ne traitez que l'exercice 1. Les exercices 2 et 3 sont des défis à relever chez vous!-->
+
+### Enoncé 1
+1. Tracer la fonction arctangente entre $-10$ et $10$
+2. Ajouter les deux asymptotes en $-\infty$ et $+\infty$ en bleu
+3. Ajouter les points sur la courbe pour $x=-\pi$, $0$ et $\pi$ en vert
+4. Ajouter la tangente en zéro en pointillés rouge
+
+<!--
+### Enoncé 2
+1. Charger les données "airquality" disponible sous R à l'aide de `data()`
+2. Utiliser la commande `pairs()` pour visualiser variable contre variable
+3. Créer une fenêtre graphique contenant les boxplots des 4 premières variables, l'histogramme de la variable Ozone, le graphique en camembert de la variable Month, et le graphique représentant la variable Wind contre la variable Ozone avec une couleur par mois et une légende.
+
+### Enoncé 3
+Saurez-vous tracer la "tête à Toto" ? 
+Voir l'image à recréer sur le tutoriel.
+-->
+
+### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE 1. 
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+## Exportation de graphiques
+
+Lire les explications données dans le tutoriel.
+
+# Programmation {#secProg}
+
+Cette partie est consacrée à la création des fonctions, les instructions de contrôle, la syntaxe des itérations et la fonction **apply** (et ses dérivées).
+
+##	Créer une fonction
+Il est possible sous R de construire ses propres fonctions. Il est conseillé d'écrire sa fonction dans un fichier `nomfonction.R`, puis dans la console, de charger la fonction grâce à la commande `>source("nomfonction.R")` et de l'utiliser. On peut également écrire directement la fonction dans la console. De manière générale, la définition d'une nouvelle fonction passe par l'expression suivante :
+
+```{r,eval=F}
+nomfonction=function(arg1[=exp1],arg2[=exp2],...){
+    bloc d instructions
+    sortie = ...
+    return(sortie)
+}
+```
+
+Les accolades signalent le début et la fin du code source de la fonction, les crochets indiquent le caractère facultatif des valeurs par défaut des arguments.
+L'objet *sortie* contient le ou les résultats retournés par la fonction, on peut en particulier utiliser une liste pour retourner plusieurs résultats.
+
+
+### Exemples {.tabset}
+#### Exemple 1
+
+```{r}
+MaFonction=function(x){x+2}
+MaFonction
+MaFonction(3)
+x = MaFonction(4)
+x
+```
+
+```{r}
+Fonction2=function(a,b=7){a+b}
+Fonction2(2,b=3)
+Fonction2(5)
+```
+
+
+#### Exemple 2
+Fonction retournant le périmètre et la surface d'un cercle à partir de son rayon :
+```{r}
+CalculsCercle=function(r){
+    p=2*pi*r
+    s=pi*r*r
+    resultats = list(perimetre=p,surface=s)
+    return(resultats)
+}
+res=CalculsCercle(3)
+res
+res$surf
+```
+
+### Exercice : {.tabset}
+
+#### Enoncé
+1. Construire une fonction qui prend en argument deux réels x et y et qui retourne l'arrondi à 3 chiffres après la virgule de  $x^2 + y$. (Vous pouvez vous aider de la fonction `round()`).
+2. Construire une fonction qui permet de calculer la densité de probabilité d'une loi normale de moyenne $m$ et d'écart-type $s$ au point $x$.
+
+
+#### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+##	Structures de contrôle et itérations
+
+### Instructions conditionnelles
+La syntaxe `if(condition){instructions}` permet de calculer les instructions uniquement si la condition est vraie.
+Le code `if(condition){ A }else { B }` calcule les instructions A si la condition est vraie et les instructions B sinon. On peut également utiliser `ifelse`.
+
+Dans l'exemple suivant, les deux commandes sont équivalentes :
+```{r,eval=F}
+if(x>0){y=x*log(x)}else{ y=0}
+y=ifelse(x>0,x*log(x),0)
+```
+
+
+#### Exercice {.tabset}
+##### Enoncé
+Soit $X$ une variable aléatoire de loi de Poisson de paramètre 2. Écrire une fonction qui prend en argument un réel $x$ et qui retourne la probabilité que $X$ soit égal à $x$.
+
+##### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+### Itérations
+On utilise les boucles pour exécuter plusieurs fois une instruction ou un bloc d'instructions. Les trois types de boucle sont :
+
+- la boucle **for** :
+    `for(var in seq){ commandes }`
+- la boucle **while** :
+    `while(cond){ commandes }`
+- la boucle **repeat** :
+    `repeat { commandes ; if (cond) break }`
+
+Dans une boucle **for**, le nombre d'itérations est fixe alors qu'il peut être infini pour les boucles **while** et **repeat**!
+
+#### Exemples {.tabset}
+Pour illustrer les trois types de boucles, on a codé de trois façons différentes la somme des éléments d'un vecteur `x` ce qui correspond à la fonction `sum()` de R. 
+
+##### Exemple `for()`
+```{r}
+somme1=function(x){
+t = 0
+for (i in 1:length(x))
+  t = t+x[i]
+return(t)
+}
+
+x = seq(1:10)
+somme1(x)
+sum(x)
+```
+
+##### Exemple `while()`
+```{r}
+somme2=function(x){
+t = 0
+i = 1
+while (i<=length(x)){
+t = t+x[i]
+i = i+1
+}
+return(t)
+}
+x = seq(1:10)
+somme2(x)
+sum(x)
+```
+
+##### Exemple `repeat()`
+```{r}
+somme3=function(x){
+t = 0
+i = 1
+repeat{
+t = t+x[i]
+i = i+1
+if (i> length(x)) break
+}
+return(t)
+}
+
+x = seq(1:10)
+somme3(x)
+sum(x)
+```
+
+#### Exercice {.tabset}
+##### Enoncé
+1. Écrire une fonction *ma.variance* qui calcule la variance empirique corrigée pour un vecteur $x = (x_1, . . . , x_n)$.
+Comparer avec la fonction prédéfinie `var()`.
+2. Écrire une fonction qui calcule les $n$ premiers termes de la suite de Fibonacci ($u_1=0, u_2=1, \forall n>2, u_n=u_{n-1}+u_{n-2}$)
+3. Ecrire une fonction qui prend en entrée un entier $x$ et retourne sa factorielle $x!$ avec une boucle *for()* puis avec une boucle *while()*.
+
+##### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+
+##	`apply()` et  ses variantes 
+
+Il est recommandé d'éviter les boucles très chronophages. On peut utiliser pour cela la fonction `apply()` et ses variantes `sapply()`, `lapply()`, `tapply()` sur des vecteurs ou matrices.
+
+La fonction `apply()` permet d'appliquer la même fonction *FUN* sur toutes
+les lignes *(MARGIN=1)* ou les colonnes *(MARGIN=2)* d'une matrice *MAT* : `apply(MAT , MARGIN, FUN)`.
+
+Les fonctions `lapply()` et `sapply()` calculent la même fonction sur tous les éléments d'un vecteur ou d'une liste.
+La commande `lapply(X,FUN, ARG.COMMUN)` permet d'appliquer la fonction *FUN* à tous les éléments du vecteur ou de la liste *X*. Les valeurs de *X* sont affectées au premier argument de la fonction *FUN*. Si la fonction *FUN* a plusieurs paramètres d'entrée, ils sont spécifiés dans *ARG.COMMUN*. Cette fonction retourne le résultat sous la forme de listes. `sapply()` est une fonction similaire à `lapply()` mais le résultat est retourné sous forme de vecteurs, si possible.
+
+La fonction `tapply()` applique une fonction *FUN* sur les sous-groupes d'un
+vecteur *X* définis par une variable de type factor *GRP* : `tapply(X,GRP,FUN,...)`.
+
+### Exemples
+```{r}
+data(iris)
+head(iris)
+apply(iris[,1:4],2,sum)
+apply(iris[,1:4],1,sum)
+lapply(iris[,1:4],sum)
+sapply(iris[,1:4],sum)
+tapply(iris[,1],iris[,5],sum)
+```
+
+### Exercices {.tabset}
+#### Enoncé 1
+Soit la fonction suivante :
+```{r,eval=F}
+Exo1=function(M){
+  res=rep(0,5)
+  for (i in 1:5){
+    tmp=0
+    for (j in 1:4) {tmp = tmp + M[i,j]}
+    res[i]=tmp
+  }
+return(res)
+}
+
+M=matrix(1:20,nrow=5,ncol=4)
+Exo1(M)
+```
+
+Proposer une fonction équivalente sans aucune boucle. 
+
+#### Enoncé 2
+1. Réaliser une liste de $100$ réalisations d'une loi normale $\mathcal{N}(m,1)$ pour $m=-2$, $0$ et $2$ respectivement en utilisant `lapply()` et `rnorm()`.
+2. Créer un vecteur contenant la moyenne de chaque échantillon de la question 1. 
+
+
+#### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+#	Entrée / Sortie
+
+## Importation d'un jeu de données
+
+Lire les explications données dans le tutoriel. 
+
+### Exercice {.tabset}
+
+#### Enoncé
+Executez les commandes suivantes pour préparer l'exercice. 
+
+```{r}
+data(iris)
+dir.create("DataAux")
+write.table(iris,file="DataAux/iris1.txt",sep=";",row.names=F,col.names=T)
+rownames(iris)=paste("indiv",1:nrow(iris),sep="-")
+write.table(iris,file="DataAux/iris2.csv",row.names=T,col.names=F)
+write.table(iris,file="DataAux/iris3.txt",quote=FALSE, dec=",",sep="*")
+```
+
+Chargez à l'aide de la fonction `read.table()` les données *iris1.txt*, *iris2.csv* et *iris3.txt* disponibles dans le dossier *DataAux*. 
+
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+
+##	Exportation 
+
+Lire les explications données dans le tutoriel. 
+
+

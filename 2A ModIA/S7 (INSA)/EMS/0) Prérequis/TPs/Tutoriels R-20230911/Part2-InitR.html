@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Cathy Maugis-Rabusseau" />
+    
+        <meta name="date" content="2022-07-15" />
+    
+    <title>Initiation au langage et objets de R</title>
+
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+    <script src="site_libs/navigation-1.1/tabsets.js"></script>
+    <script src="site_libs/navigation-1.1/codefolding.js"></script>
+    <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+    <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+    <link href="site_libs/readthedown-0.1/readthedown.css" rel="stylesheet" />
+    <link href="site_libs/readthedown-0.1/readthedown_fonts_embed.css" rel="stylesheet" />
+    <script src="site_libs/readthedown-0.1/readthedown.js"></script>
+    <script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+    
+    
+        <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode { white-space: pre; position: relative; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      code.sourceCode { white-space: pre-wrap; }
+      code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          background-color: #ffffff;
+          color: #a0a0a0;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+      div.sourceCode
+        { color: #1f1c1b; background-color: #ffffff; }
+      @media screen {
+      code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span. { color: #1f1c1b; } /* Normal */
+      code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+      code span.an { color: #ca60ca; } /* Annotation */
+      code span.at { color: #0057ae; } /* Attribute */
+      code span.bn { color: #b08000; } /* BaseN */
+      code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+      code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #924c9d; } /* Char */
+      code span.cn { color: #aa5500; } /* Constant */
+      code span.co { color: #898887; } /* Comment */
+      code span.cv { color: #0095ff; } /* CommentVar */
+      code span.do { color: #607880; } /* Documentation */
+      code span.dt { color: #0057ae; } /* DataType */
+      code span.dv { color: #b08000; } /* DecVal */
+      code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+      code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+      code span.fl { color: #b08000; } /* Float */
+      code span.fu { color: #644a9b; } /* Function */
+      code span.im { color: #ff5500; } /* Import */
+      code span.in { color: #b08000; } /* Information */
+      code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+      code span.op { color: #1f1c1b; } /* Operator */
+      code span.ot { color: #006e28; } /* Other */
+      code span.pp { color: #006e28; } /* Preprocessor */
+      code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+      code span.sc { color: #3daee9; } /* SpecialChar */
+      code span.ss { color: #ff5500; } /* SpecialString */
+      code span.st { color: #bf0303; } /* String */
+      code span.va { color: #0057ae; } /* Variable */
+      code span.vs { color: #bf0303; } /* VerbatimString */
+      code span.wa { color: #bf0303; } /* Warning */
+    </style>
+    
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+        <script>
+      $(document).ready(function () {
+	  	  	  window.initializeCodeFolding("show" === "show");
+	        });
+    </script>
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+            <!-- readthedown start -->   
+   <div id="content" data-toggle="wy-nav-shift">
+     <nav id="nav-top" role="navigation" aria-label="top navigation">
+       <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+     </nav>
+         
+      <div class="btn-group pull-right">
+     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+     <ul class="dropdown-menu" style="min-width: 50px;">
+	    	    <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+	    <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+	    	    	         </ul>
+   </div>
+   
+      
+   <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="index.html">Tutoriels R</a>
+       </div>
+       <div id="navbar" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav">
+           <li>
+     <a href="Part1-Intro.html">Partie 1 - Introduction</a>
+   </li>
+   <li>
+     <a href="Part2-InitR.html">Partie 2 - Bases de R</a>
+   </li>
+   <li>
+     <a href="Part3-StatR.html">Partie 3 - Stat. avec R</a>
+   </li>
+   <li>
+     <a href="Part4-Ravance.html">Partie 4 - Pour aller plus loin</a>
+   </li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           
+         </ul>
+       </div><!--/.nav-collapse -->
+     </div><!--/.container -->
+   </div><!--/.navbar -->
+        
+      <h1 class="title">Initiation au langage et objets de R</h1>
+      
+         <!-- readthedown authors -->
+   <div id="sidebar">
+    <h2><a href="#content">Initiation au langage et objets de R</a></h2>
+    <div id="toc">
+      <ul>
+      <li><a href="#structure-des-objets">Structure des objets</a><ul>
+      <li><a href="#opération-sur-les-scalaires">Opération sur les scalaires</a><ul>
+      <li><a href="#opérations">Opérations</a></li>
+      <li><a href="#is.xxxas.xxx"><code>is.xxx()/as.xxx()</code></a></li>
+      <li><a href="#arrondir">Arrondir</a></li>
+      </ul></li>
+      <li><a href="#booléens-et-opérations-logiques">Booléens et opérations logiques</a></li>
+      <li><a href="#les-caractères">Les caractères</a><ul>
+      <li><a href="#paste"><code>paste()</code></a></li>
+      <li><a href="#nchar"><code>nchar()</code></a></li>
+      <li><a href="#substr-substring"><code>substr()</code> / <code>substring()</code></a></li>
+      <li><a href="#strsplit"><code>strsplit()</code></a></li>
+      <li><a href="#grep"><code>grep()</code></a></li>
+      <li><a href="#gsub"><code>gsub()</code></a></li>
+      </ul></li>
+      <li><a href="#vecteurs-vector">Vecteurs <em>(vector)</em></a><ul>
+      <li><a href="#exemples">Exemples</a><ul>
+      <li><a href="#commande-c...">Commande <code>c(...)</code></a></li>
+      <li><a href="#commande-seq...">Commande <code>seq(...)</code></a></li>
+      <li><a href="#commande-rep...">Commande <code>rep(...)</code></a></li>
+      <li><a href="#extraire-des-éléments">Extraire des éléments</a></li>
+      <li><a href="#opérations-1">Opérations</a></li>
+      <li><a href="#fonctions-usuelles">Fonctions usuelles</a></li>
+      </ul></li>
+      <li><a href="#exercice">Exercice</a><ul>
+      <li><a href="#enoncé">Enoncé</a></li>
+      <li><a href="#correction">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#matrices-matrix">Matrices (<em>matrix</em>)</a><ul>
+      <li><a href="#exemples-1">Exemples</a><ul>
+      <li><a href="#matrix"><code>matrix()</code></a></li>
+      <li><a href="#extraire">Extraire</a></li>
+      <li><a href="#cbind-rbind"><code>cbind() / rbind()</code></a></li>
+      <li><a href="#fonctions-utiles">Fonctions utiles</a></li>
+      <li><a href="#opérations-2">Opérations</a></li>
+      </ul></li>
+      <li><a href="#exercice-1">Exercice</a><ul>
+      <li><a href="#enoncé-1">Enoncé</a></li>
+      <li><a href="#correction-1">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#les-tableaux-array">Les tableaux (array)</a><ul>
+      <li><a href="#array"><code>array()</code></a></li>
+      <li><a href="#fonctions-usuelles-1">Fonctions usuelles</a></li>
+      <li><a href="#apply"><code>apply()</code></a></li>
+      </ul></li>
+      <li><a href="#secList">Listes <em>(list)</em></a><ul>
+      <li><a href="#exemples-2">Exemples</a><ul>
+      <li><a href="#list..."><code>list(...)</code></a></li>
+      <li><a href="#extraction">Extraction</a></li>
+      <li><a href="#fonctions-utiles-1">Fonctions utiles</a></li>
+      </ul></li>
+      <li><a href="#exercice-2">Exercice</a><ul>
+      <li><a href="#enoncé-2">Enoncé</a></li>
+      <li><a href="#correction-2">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#data-frames">Data frames</a><ul>
+      <li><a href="#exemple">Exemple</a><ul>
+      <li><a href="#data.frame"><code>data.frame()</code></a></li>
+      <li><a href="#summaryhead"><code>summary()/head()</code></a></li>
+      <li><a href="#data.frame-listmatrix">data.frame / list/matrix</a></li>
+      <li><a href="#attachdetach"><code>attach()/detach()</code></a></li>
+      </ul></li>
+      <li><a href="#exercice-3">Exercice</a><ul>
+      <li><a href="#enoncé-3">Enoncé</a></li>
+      <li><a href="#correction-3">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#premiers-graphiques">Premiers graphiques</a><ul>
+      <li><a href="#gestion-des-fenêtres-graphiques">Gestion des fenêtres graphiques</a></li>
+      <li><a href="#fonctions-graphiques">Fonctions graphiques</a><ul>
+      <li><a href="#fonctions-graphiques-principales">Fonctions graphiques principales</a></li>
+      <li><a href="#fonctions-graphiques-secondaires">Fonctions graphiques secondaires</a></li>
+      </ul></li>
+      <li><a href="#exemples-3">Exemples</a><ul>
+      <li><a href="#exemple-1">Exemple 1</a></li>
+      <li><a href="#exemple-2">Exemple 2</a></li>
+      <li><a href="#exemple-3">Exemple 3</a></li>
+      </ul></li>
+      <li><a href="#exercices">Exercices</a><ul>
+      <li><a href="#enoncé-1-1">Enoncé 1</a></li>
+      <li><a href="#enoncé-2-1">Enoncé 2</a></li>
+      <li><a href="#enoncé-3-1">Enoncé 3</a></li>
+      <li><a href="#correction-4">Correction</a></li>
+      </ul></li>
+      <li><a href="#exportation-de-graphiques">Exportation de graphiques</a></li>
+      </ul></li>
+      <li><a href="#secProg">Programmation</a><ul>
+      <li><a href="#créer-une-fonction">Créer une fonction</a><ul>
+      <li><a href="#exemples-4">Exemples</a><ul>
+      <li><a href="#exemple-1-1">Exemple 1</a></li>
+      <li><a href="#exemple-2-1">Exemple 2</a></li>
+      </ul></li>
+      <li><a href="#exercice-4">Exercice :</a><ul>
+      <li><a href="#enoncé-4">Enoncé</a></li>
+      <li><a href="#correction-5">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#structures-de-contrôle-et-itérations">Structures de contrôle et itérations</a><ul>
+      <li><a href="#instructions-conditionnelles">Instructions conditionnelles</a><ul>
+      <li><a href="#exercice-5">Exercice</a><ul>
+      <li><a href="#enoncé-5">Enoncé</a></li>
+      <li><a href="#correction-6">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#itérations">Itérations</a><ul>
+      <li><a href="#exemples-5">Exemples</a><ul>
+      <li><a href="#exemple-for">Exemple <code>for()</code></a></li>
+      <li><a href="#exemple-while">Exemple <code>while()</code></a></li>
+      <li><a href="#exemple-repeat">Exemple <code>repeat()</code></a></li>
+      </ul></li>
+      <li><a href="#exercice-6">Exercice</a><ul>
+      <li><a href="#enoncé-6">Enoncé</a></li>
+      <li><a href="#correction-7">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#apply-et-ses-variantes"><code>apply()</code> et ses variantes</a><ul>
+      <li><a href="#exemples-6">Exemples</a></li>
+      <li><a href="#exercices-1">Exercices</a><ul>
+      <li><a href="#enoncé-1-2">Enoncé 1</a></li>
+      <li><a href="#enoncé-2-2">Enoncé 2</a></li>
+      <li><a href="#correction-8">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#entrée-sortie">Entrée / Sortie</a><ul>
+      <li><a href="#importation-dun-jeu-de-données">Importation d’un jeu de données</a><ul>
+      <li><a href="#exercice-7">Exercice</a><ul>
+      <li><a href="#enoncé-7">Enoncé</a></li>
+      <li><a href="#correction-9">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#exportation">Exportation</a><ul>
+      <li><a href="#exportation-en-fichier-texte">Exportation en fichier texte</a></li>
+      <li><a href="#sauvegarde-.rdata">Sauvegarde <code>.RData</code></a></li>
+      </ul></li>
+      </ul></li>
+      </ul>
+    </div>
+    <div id="postamble" data-toggle="wy-nav-shift" class="status">
+                  <p class="author"><span class="glyphicon glyphicon-user"></span> Cathy Maugis-Rabusseau</p>
+                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2022-07-15</p>
+          </div>
+   </div>
+   
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div id="main">
+<style type="text/css">
+.badCode {
+background-color: #FEF4F5;
+</style>
+<div id="structure-des-objets" class="section level1">
+<h1>Structure des objets</h1>
+<p>Sous R, les éléments de base sont des objets : des données (vecteurs, matrices, …), des fonctions, des graphiques, … Ces objets se différencient par leur mode décrivant leur contenu, et leur classe décrivant leur structure. Les objets atomiques sont de mode homogène et les objets récursifs sont de mode hétérogène. Les différents modes sont <strong>null (objet vide), logical, numeric, complex, character</strong>.</p>
+<p>Les classes d’objets les plus courantes sont : <strong>vector, matrix, array, factor, data.frame, list.</strong> On peut avoir des vecteurs, matrices, tableaux, … de mode null (objet vide), logical (TRUE, FALSE, NA), numeric, complex, character. Par contre les listes et les tableaux peuvent être composés d’éléments hétérogènes. On utilise la commande <code>class()</code> pour connaître la classe d’un objet et <code>str()</code>pour connaitre la nature des éléments composant l’objet.</p>
+<p>La principale difficulté en R réside dans l’identification des types d’objets manipulés. Nous allons dans ce tutoriel présenter ces différents objets, les opérations et manipulations basiques que l’on peut faire, …</p>
+<p>On peut stocker un objet dans une variable (ex <em>a</em>) à l’aide de <code>a&lt;- ...</code> ou <code>a= ...</code>. Pour lister les variables actuellement disponibles dans la session de travail, on utilise la fonction <code>ls()</code>. Pour effacer une ou plusieurs variables, on utilise la fonction <code>rm()</code>. La commande <code>rm(list=ls())</code> permet d’effacer toutes les variables en mémoire.</p>
+<div id="opération-sur-les-scalaires" class="section level2 tabset">
+<h2>Opération sur les scalaires</h2>
+<div id="opérations" class="section level3">
+<h3>Opérations</h3>
+<p>Les opérations élémentaires sur les scalaires sont <code>*</code>,<code>-</code>, <code>+</code>, <code>/</code>, <code>^</code>.<br />
+</p>
+<p>Sous R, tapez les commandes suivantes. Vous chercherez en particulier à bien identifier les différents types de données :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">exp</span>(<span class="dv">10</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>a =<span class="st"> </span><span class="kw">log</span>(<span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>a</span>
+<span id="cb1-5"><a href="#cb1-5"></a>b =<span class="st"> </span><span class="kw">cos</span>(<span class="dv">10</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>b</span>
+<span id="cb1-7"><a href="#cb1-7"></a>a <span class="op">-</span><span class="st"> </span>b</span>
+<span id="cb1-8"><a href="#cb1-8"></a>a <span class="op">*</span><span class="st"> </span>b</span>
+<span id="cb1-9"><a href="#cb1-9"></a>d &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>d</span>
+<span id="cb1-11"><a href="#cb1-11"></a>dd &lt;-<span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>dd <span class="op">-</span><span class="st"> </span>d</span>
+<span id="cb1-13"><a href="#cb1-13"></a>dd <span class="op">+</span><span class="st"> </span>d</span>
+<span id="cb1-14"><a href="#cb1-14"></a>e &lt;-<span class="st"> &quot;toto&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">class</span>(e)</span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">str</span>(e)</span></code></pre></div>
+</div>
+<div id="is.xxxas.xxx" class="section level3">
+<h3><code>is.xxx()/as.xxx()</code></h3>
+<p>Pour tester si un objet <em>obj</em> est de type <em>xxx</em>, on utilise la commande <code>is.xxx(obj)</code>. On peut aussi contraindre si possible l’objet <em>obj</em> au type <em>xxx</em> avec la commande <code>as.xxx(obj)</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>a =<span class="st"> </span><span class="fl">4.3</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">is.numeric</span>(a)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">is.complex</span>(a)</span></code></pre></div>
+<pre><code>[1] FALSE</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">is.character</span>(a)</span></code></pre></div>
+<pre><code>[1] FALSE</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">as.character</span>(a)</span></code></pre></div>
+<pre><code>[1] &quot;4.3&quot;</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>b &lt;-<span class="st"> &quot;toto&quot;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">is.numeric</span>(b)</span></code></pre></div>
+<pre><code>[1] FALSE</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">as.list</span>(b)</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;toto&quot;</code></pre>
+</div>
+<div id="arrondir" class="section level3">
+<h3>Arrondir</h3>
+<p>Pour obtenir des valeurs arrondies sur des valeurs numériques, vous pouvez utiliser l’une des commandes suivantes <code>round()</code>, <code>ceiling()</code>, <code>floor()</code>, <code>trunc()</code> ou <code>signif()</code> (voir l’aide <code>?round</code>). Comparez les codes suivantes:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>a =<span class="st"> </span><span class="fl">1.3579</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">floor</span>(a)</span></code></pre></div>
+<pre><code>[1] 1</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">ceiling</span>(a)</span></code></pre></div>
+<pre><code>[1] 2</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">round</span>(a, <span class="dt">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>[1] 1.36</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">signif</span>(a, <span class="dt">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>[1] 1.4</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">is.integer</span>(<span class="kw">floor</span>(a))</span></code></pre></div>
+<pre><code>[1] FALSE</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">is.numeric</span>(<span class="kw">floor</span>(a))</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<div id="booléens-et-opérations-logiques" class="section level2 tabset">
+<h2>Booléens et opérations logiques</h2>
+<p>En R, un booléen est représenté par <em>TRUE</em> ou <em>FALSE</em>. Les opérations logiques, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>!=</code> (différent), <code>==</code> (égal) retournent <em>TRUE</em> ou <em>FALSE</em>. On peut définir plusieurs conditions à remplir avec les opérateurs <code>&amp;</code> (ET) et <code>|</code> (OU).</p>
+<p>Attention, R considère qu’un booléen a <em>FALSE</em> vaut <span class="math inline">\(0\)</span> et qu’un booléen a <em>TRUE</em> vaut <span class="math inline">\(1\)</span>. Il est donc capable d’évaluer <code>TRUE + 5</code> bien qu’en toute logique, cela n’a aucun sens!</p>
+<!--### Exemple-->
+<p>Voici quelques exemples de manipulation des booléens :</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>a =<span class="st"> </span><span class="dv">3</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>b =<span class="st"> </span><span class="dv">6</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>a <span class="op">&lt;=</span><span class="st"> </span>b</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>a <span class="op">!=</span><span class="st"> </span>b</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>(b <span class="op">-</span><span class="st"> </span><span class="dv">3</span> <span class="op">==</span><span class="st"> </span>a) <span class="op">&amp;</span><span class="st"> </span>(b <span class="op">&gt;=</span><span class="st"> </span>a)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>(b <span class="op">==</span><span class="st"> </span>a) <span class="op">|</span><span class="st"> </span>(b <span class="op">&gt;=</span><span class="st"> </span>a)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div id="les-caractères" class="section level2 tabset">
+<h2>Les caractères</h2>
+<p>On donne ici quelques fonctions de base sur la manipulation des chaînes de caractères. Dans le tutoriel 4 de R avancé, on présentera le package <strong>stringr</strong> qui est très utilisé pour gérer et manipuler des chaînes de caractères.</p>
+<div id="paste" class="section level3">
+<h3><code>paste()</code></h3>
+<p>Pour concaténer, juxtaposer des chaînes de caractères on utilise la fonction <code>paste()</code></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>Ex =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;Bonjour&quot;</span>, <span class="st">&quot;à&quot;</span>, <span class="st">&quot;toutes&quot;</span>, <span class="st">&quot;et&quot;</span>, <span class="st">&quot;tous&quot;</span>, <span class="st">&quot;!&quot;</span>)</span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="kw">paste</span>(<span class="st">&quot;Bonjour&quot;</span>, <span class="st">&quot;à&quot;</span>, <span class="st">&quot;toutes&quot;</span>, <span class="st">&quot;et&quot;</span>, <span class="st">&quot;tous&quot;</span>, <span class="st">&quot;!&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;Bonjour_à_toutes_et_tous_!&quot;</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Bonjour&quot;</span>, <span class="st">&quot;à&quot;</span>, <span class="st">&quot;vous&quot;</span>)</span>
+<span id="cb36-2"><a href="#cb36-2"></a><span class="kw">paste</span>(x)</span></code></pre></div>
+<pre><code>[1] &quot;Bonjour&quot; &quot;à&quot;       &quot;vous&quot;   </code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="kw">paste</span>(x, <span class="dt">collapse =</span> <span class="st">&quot;++&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;Bonjour++à++vous&quot;</code></pre>
+</div>
+<div id="nchar" class="section level3">
+<h3><code>nchar()</code></h3>
+<p>On accède à la longueur d’une chaîne avec la fonction <code>nchar()</code></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">nchar</span>(Ex)</span></code></pre></div>
+<pre><code>[1] 26</code></pre>
+</div>
+<div id="substr-substring" class="section level3">
+<h3><code>substr()</code> / <code>substring()</code></h3>
+<p>La fonction <code>substr()</code> permet d’extraire une partie d’une chaîne à partir des attributs « start » et « stop ». On peut aussi remplacer des segments d’une chaine.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="kw">substr</span>(Ex, <span class="dt">start =</span> <span class="dv">3</span>, <span class="dt">stop =</span> <span class="dv">9</span>)</span></code></pre></div>
+<pre><code>[1] &quot;njour à&quot;</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="kw">substr</span>(Ex, <span class="dt">start =</span> <span class="dv">3</span>, <span class="dt">stop =</span> <span class="dv">9</span>) &lt;-<span class="st"> &quot;@@@&quot;</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a>Ex</span></code></pre></div>
+<pre><code>[1] &quot;Bo@@@ur à toutes et tous !&quot;</code></pre>
+<p>On peut aussi utiliser la fonction <code>substring()</code></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>Ex =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;Bonjour&quot;</span>, <span class="st">&quot;à&quot;</span>, <span class="st">&quot;toutes&quot;</span>, <span class="st">&quot;et&quot;</span>, <span class="st">&quot;tous&quot;</span>, <span class="st">&quot;!&quot;</span>)</span>
+<span id="cb46-2"><a href="#cb46-2"></a><span class="kw">substring</span>(Ex, <span class="dt">first =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] &quot;njour à toutes et tous !&quot;</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="kw">substring</span>(Ex, <span class="dt">first =</span> <span class="dv">3</span>, <span class="dt">last =</span> <span class="dv">9</span>) &lt;-<span class="st"> &quot;@@@--&lt;&quot;</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a>Ex</span></code></pre></div>
+<pre><code>[1] &quot;Bo@@@--&lt;à toutes et tous !&quot;</code></pre>
+</div>
+<div id="strsplit" class="section level3">
+<h3><code>strsplit()</code></h3>
+<p>La fonction <code>strsplit()</code> permet de scinder une chaîne de caractères :</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>Ex =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;Bonjour&quot;</span>, <span class="st">&quot;à&quot;</span>, <span class="st">&quot;toutes&quot;</span>, <span class="st">&quot;et&quot;</span>, <span class="st">&quot;tous&quot;</span>, <span class="st">&quot;!&quot;</span>)</span>
+<span id="cb50-2"><a href="#cb50-2"></a><span class="kw">strsplit</span>(Ex, <span class="dt">split =</span> <span class="st">&quot; &quot;</span>)</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;Bonjour&quot; &quot;à&quot;       &quot;toutes&quot;  &quot;et&quot;      &quot;tous&quot;    &quot;!&quot;      </code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="kw">strsplit</span>(Ex, <span class="dt">split =</span> <span class="kw">c</span>(<span class="st">&quot;o&quot;</span>, <span class="st">&quot; &quot;</span>))</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;B&quot;         &quot;nj&quot;        &quot;ur à t&quot;    &quot;utes et t&quot; &quot;us !&quot;     </code></pre>
+<p>La sortie de la fonction <code>strsplit()</code> est une liste (voir section sur <a href="#secList"><code>list</code></a>)</p>
+</div>
+<div id="grep" class="section level3">
+<h3><code>grep()</code></h3>
+<p>La fonction <code>grep()</code> permet de rechercher les éléments d’une liste.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a>Ex1 =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;tomate&quot;</span>, <span class="st">&quot;concombre&quot;</span>, <span class="st">&quot;mais&quot;</span>, <span class="st">&quot;courgette&quot;</span>, <span class="st">&quot;poivron&quot;</span>, <span class="st">&quot;carotte&quot;</span>, <span class="st">&quot;betterave&quot;</span>)</span>
+<span id="cb54-2"><a href="#cb54-2"></a>Ex1</span></code></pre></div>
+<pre><code>[1] &quot;tomate&quot;    &quot;concombre&quot; &quot;mais&quot;      &quot;courgette&quot; &quot;poivron&quot;   &quot;carotte&quot;  
+[7] &quot;betterave&quot;</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a><span class="kw">grep</span>(<span class="dt">pattern =</span> <span class="st">&quot;o&quot;</span>, Ex1, <span class="dt">value =</span> <span class="ot">FALSE</span>)  <span class="co"># donne les indices des éléments contenant un &#39;o&#39; dans Ex</span></span></code></pre></div>
+<pre><code>[1] 1 2 4 5 6</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="kw">grep</span>(<span class="dt">pattern =</span> <span class="st">&quot;o&quot;</span>, Ex1, <span class="dt">value =</span> <span class="ot">TRUE</span>)  <span class="co"># Donne les éléments de Ex1 qui contiennent la lettre &#39;o&#39;</span></span></code></pre></div>
+<pre><code>[1] &quot;tomate&quot;    &quot;concombre&quot; &quot;courgette&quot; &quot;poivron&quot;   &quot;carotte&quot;  </code></pre>
+<p>On peut utiliser la fonction <code>grep()</code> avec les expressions régulières disponible sous R, il faut penser à mettre l’option <code>fixed=FALSE</code>. Pour plus de détail, voir <code>?regex</code>.</p>
+</div>
+<div id="gsub" class="section level3">
+<h3><code>gsub()</code></h3>
+<p>Enfin pour remplacer un pattern dans une chaine de caractère, on peut utiliser la fonction <code>gsub()</code></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="kw">gsub</span>(<span class="dt">pattern =</span> <span class="st">&quot;o&quot;</span>, <span class="dt">replacement =</span> <span class="st">&quot;@&quot;</span>, Ex1, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>[1] &quot;t@mate&quot;    &quot;c@nc@mbre&quot; &quot;mais&quot;      &quot;c@urgette&quot; &quot;p@ivr@n&quot;   &quot;car@tte&quot;  
+[7] &quot;betterave&quot;</code></pre>
+<!--
+### Exercices {.tabset}
+
+#### Exercice 1
+
+
+#### Correction
+-->
+</div>
+</div>
+<div id="vecteurs-vector" class="section level2">
+<h2>Vecteurs <em>(vector)</em></h2>
+<p>Un vecteur est un ensemble ordonné d’éléments de même nature (numérique, logique ou alphanumérique). La création d’un vecteur peut se faire par la commande <code>c(e1,e2,...)</code>. On peut également générer une séquence avec la commande <code>seq(a,b,t)</code> où <span class="math inline">\(a\)</span> est le premier terme, le dernier terme est <span class="math inline">\(\leq b\)</span> et le pas est <span class="math inline">\(t\)</span>. Pour créer un vecteur constitué de l’élément <span class="math inline">\(x\)</span> répété <span class="math inline">\(n\)</span> fois, on utilise la commande <code>rep(x,n)</code>.</p>
+<div id="exemples" class="section level3 tabset">
+<h3>Exemples</h3>
+<p>On donne ici quelques exemples à tester sous R pour vous familiariser avec les vecteurs. En particulier, vous pouvez découvrir des fonctions utiles avec les vecteurs comme <code>length()</code>, <code>sum()</code>, <code>sort()</code>, … , les opérations usuelles, l’extraction d’éléments d’un vecteur, …</p>
+<div id="commande-c..." class="section level4">
+<h4>Commande <code>c(...)</code></h4>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>d &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">6</span>)</span>
+<span id="cb62-2"><a href="#cb62-2"></a>d</span></code></pre></div>
+<pre><code>[1] 2 3 5 8 4 6</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="kw">is.vector</span>(d)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;toto&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;2&quot;    &quot;5&quot;    &quot;toto&quot;</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="dv">1</span><span class="op">:</span><span class="dv">10</span></span></code></pre></div>
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+<div id="commande-seq..." class="section level4">
+<h4>Commande <code>seq(...)</code></h4>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>)</span></code></pre></div>
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> <span class="dv">20</span>, <span class="dt">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code> [1]  1  3  5  7  9 11 13 15 17 19</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dt">by =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>[1]  1  6 11 16</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dt">length =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>[1]  1.00  5.75 10.50 15.25 20.00</code></pre>
+</div>
+<div id="commande-rep..." class="section level4">
+<h4>Commande <code>rep(...)</code></h4>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a><span class="kw">rep</span>(<span class="dv">5</span>, <span class="dt">times =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code> [1] 5 5 5 5 5 5 5 5 5 5</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] 1 2 1 2 1 2</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">each =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] 1 1 1 2 2 2</code></pre>
+</div>
+<div id="extraire-des-éléments" class="section level4">
+<h4>Extraire des éléments</h4>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>d</span></code></pre></div>
+<pre><code>[1] 2 3 5 8 4 6</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>d[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>[1] 3</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>d[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</span></code></pre></div>
+<pre><code>[1] 3 5</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a>d[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>)]</span></code></pre></div>
+<pre><code>[1] 2 5 6</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a>d[<span class="op">-</span><span class="dv">3</span>]</span></code></pre></div>
+<pre><code>[1] 2 3 8 4 6</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a>d[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]</span></code></pre></div>
+<pre><code>[1] 5 8 4 6</code></pre>
+</div>
+<div id="opérations-1" class="section level4">
+<h4>Opérations</h4>
+<p>Additionner ou soustraire un scalaire d’un vecteur</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a>d <span class="op">+</span><span class="st"> </span><span class="dv">4</span></span></code></pre></div>
+<pre><code>[1]  6  7  9 12  8 10</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a>d <span class="op">-</span><span class="st"> </span><span class="dv">4</span></span></code></pre></div>
+<pre><code>[1] -2 -1  1  4  0  2</code></pre>
+<p>Multiplier ou diviser un vecteur par un scalaire</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>d</span></code></pre></div>
+<pre><code>[1]  4  6 10 16  8 12</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>d<span class="op">/</span><span class="dv">3</span></span></code></pre></div>
+<pre><code>[1] 0.6666667 1.0000000 1.6666667 2.6666667 1.3333333 2.0000000</code></pre>
+<p>Multiplier/ diviser deux vecteurs terme à terme</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1"></a>e &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">6</span>)</span>
+<span id="cb104-2"><a href="#cb104-2"></a>d <span class="op">*</span><span class="st"> </span>e</span></code></pre></div>
+<pre><code>[1]  4  6 10 16  8 12</code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a>d<span class="op">/</span>e</span></code></pre></div>
+<pre><code>[1] 1.0 1.5 2.5 4.0 2.0 3.0</code></pre>
+</div>
+<div id="fonctions-usuelles" class="section level4">
+<h4>Fonctions usuelles</h4>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a>d =<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">6</span>)</span>
+<span id="cb108-2"><a href="#cb108-2"></a>d</span></code></pre></div>
+<pre><code>[1] 2 3 5 8 4 6</code></pre>
+<p>Longueur d’un vecteur</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a><span class="kw">length</span>(d)</span></code></pre></div>
+<pre><code>[1] 6</code></pre>
+<p>Somme des termes d’un vecteur numérique</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a><span class="kw">sum</span>(d)</span></code></pre></div>
+<pre><code>[1] 28</code></pre>
+<p>Somme des termes cumulés d’un vecteur numérique</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a><span class="kw">cumsum</span>(d)</span></code></pre></div>
+<pre><code>[1]  2  5 10 18 22 28</code></pre>
+<p>Différence des termes successifs d’un vecteur numérique</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a><span class="kw">diff</span>(d)</span></code></pre></div>
+<pre><code>[1]  1  2  3 -4  2</code></pre>
+<p>Vérifier si <em>d</em> est un vecteur</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a><span class="kw">is.vector</span>(d)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<p>Transposition d’un vecteur</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1"></a><span class="kw">t</span>(d)</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6]
+[1,]    2    3    5    8    4    6</code></pre>
+<p>Produit scalaire</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a><span class="kw">t</span>(d) <span class="op">%*%</span><span class="st"> </span>e</span></code></pre></div>
+<pre><code>     [,1]
+[1,]   56</code></pre>
+<p>NA (Not Available) signale une donnée manquante</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a>d[<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb124-2"><a href="#cb124-2"></a>d</span></code></pre></div>
+<pre><code>[1]  2  3 NA  8  4  6</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1"></a><span class="kw">is.na</span>(d)</span></code></pre></div>
+<pre><code>[1] FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1"></a><span class="kw">any</span>(<span class="kw">is.na</span>(d))</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1"></a><span class="kw">all</span>(<span class="kw">is.na</span>(d))</span></code></pre></div>
+<pre><code>[1] FALSE</code></pre>
+<p>Autres fonctions intéressantes avec les vecteurs : <code>abs()</code>, <code>sort()</code>, <code>order()</code>, <code>which()</code>, …</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1"></a>a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">-1</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">-7</span>, <span class="dv">3</span>, <span class="dv">9</span>)</span>
+<span id="cb132-2"><a href="#cb132-2"></a><span class="kw">abs</span>(a)</span></code></pre></div>
+<pre><code>[1] 3 1 5 2 7 3 9</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1"></a><span class="kw">sort</span>(a)</span></code></pre></div>
+<pre><code>[1] -7 -1  2  3  3  5  9</code></pre>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1"></a><span class="kw">order</span>(a)</span></code></pre></div>
+<pre><code>[1] 5 2 4 1 6 3 7</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a>b =<span class="st"> </span>a <span class="op">==</span><span class="st"> </span><span class="dv">3</span></span>
+<span id="cb138-2"><a href="#cb138-2"></a>b</span></code></pre></div>
+<pre><code>[1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a><span class="kw">sort</span>(b)</span></code></pre></div>
+<pre><code>[1] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a>text &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;petit&quot;</span>, <span class="st">&quot;moyen&quot;</span>, <span class="st">&quot;grand&quot;</span>)</span>
+<span id="cb142-2"><a href="#cb142-2"></a><span class="kw">is.vector</span>(text)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1"></a>f =<span class="st"> </span><span class="kw">c</span>(<span class="dt">a =</span> <span class="dv">12</span>, <span class="dt">b =</span> <span class="dv">26</span>, <span class="dt">c =</span> <span class="dv">32</span>, <span class="dt">d =</span> <span class="dv">41</span>)</span>
+<span id="cb144-2"><a href="#cb144-2"></a>f</span></code></pre></div>
+<pre><code> a  b  c  d 
+12 26 32 41 </code></pre>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1"></a><span class="kw">names</span>(f)</span></code></pre></div>
+<pre><code>[1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1"></a>f[<span class="st">&quot;a&quot;</span>]</span></code></pre></div>
+<pre><code> a 
+12 </code></pre>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1"></a><span class="kw">names</span>(f) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a1&quot;</span>, <span class="st">&quot;a2&quot;</span>, <span class="st">&quot;a3&quot;</span>, <span class="st">&quot;a4&quot;</span>)</span>
+<span id="cb150-2"><a href="#cb150-2"></a>f</span></code></pre></div>
+<pre><code>a1 a2 a3 a4 
+12 26 32 41 </code></pre>
+<p>Notez la différence entre les commandes suivantes :</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1"></a>f <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span></span></code></pre></div>
+<pre><code>   a1    a2    a3    a4 
+FALSE FALSE  TRUE  TRUE </code></pre>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1"></a>f[f <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>]</span></code></pre></div>
+<pre><code>a3 a4 
+32 41 </code></pre>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1"></a><span class="kw">which</span>(f <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>)</span></code></pre></div>
+<pre><code>a3 a4 
+ 3  4 </code></pre>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1"></a>f[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">22</span></span>
+<span id="cb158-2"><a href="#cb158-2"></a>f <span class="op">+</span><span class="st"> </span><span class="dv">100</span></span></code></pre></div>
+<pre><code> a1  a2  a3  a4 
+112 122 132 141 </code></pre>
+<p>Etonnant ces commandes suivantes, non ?</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1"></a>f</span></code></pre></div>
+<pre><code>a1 a2 a3 a4 
+12 22 32 41 </code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1"></a>d</span></code></pre></div>
+<pre><code>[1]  2  3 NA  8  4  6</code></pre>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1"></a>f <span class="op">+</span><span class="st"> </span>d</span></code></pre></div>
+<pre><code>[1] 14 25 NA 49 16 28</code></pre>
+<p>On peut appliquer une fonction à tous les éléments d’un vecteur facilement.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1"></a><span class="kw">cos</span>(f)</span></code></pre></div>
+<pre><code>        a1         a2         a3         a4 
+ 0.8438540 -0.9999608  0.8342234 -0.9873393 </code></pre>
+</div>
+</div>
+<div id="exercice" class="section level3 tabset">
+<h3>Exercice</h3>
+<div id="enoncé" class="section level4">
+<h4>Enoncé</h4>
+<p>Question 1 : Créer les vecteurs suivants :</p>
+<ul>
+<li>le vecteur <span class="math inline">\(a\)</span> constitué des entiers pairs jusqu’à 30</li>
+<li>le vecteur <span class="math inline">\(b\)</span> contenant <span class="math inline">\(v=5\)</span>, deux fois la valeur de <span class="math inline">\(v\)</span>, puis un tiers de la valeur de <span class="math inline">\(v\)</span>, puis trois fois <span class="math inline">\(v^2\)</span>, puis <span class="math inline">\(\sqrt{v}\)</span>, puis le quatrième élément de <span class="math inline">\(a\)</span>.</li>
+<li>le vecteur <span class="math inline">\(c\)</span> contenant 6 chiffres compris entre 4 et 30 avec un intervalle constant.</li>
+<li>le vecteur <span class="math inline">\(d\)</span> contenant la somme des éléments de <span class="math inline">\(c\)</span>, puis la longueur de <span class="math inline">\(b\)</span>, puis 5 fois le chiffre 3.</li>
+</ul>
+<p>Question 2 : Extraire du vecteur <span class="math inline">\(a\)</span> :</p>
+<ul>
+<li>le quatrième élément</li>
+<li>tous les éléments sauf le quatrième</li>
+<li>tous les éléments supérieurs à 10</li>
+</ul>
+<p>Question 3 : À quoi sert la fonction <code>unique</code> ? Illustrer son fonctionnement sur un exemple.</p>
+</div>
+<div id="correction" class="section level4">
+<h4>Correction</h4>
+<p>Question 1 :</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1"></a>a =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)</span>
+<span id="cb168-2"><a href="#cb168-2"></a>a</span></code></pre></div>
+<pre><code> [1]  2  4  6  8 10 12 14 16 18 20 22 24 26 28 30</code></pre>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1"></a>v =<span class="st"> </span><span class="dv">5</span></span>
+<span id="cb170-2"><a href="#cb170-2"></a>b =<span class="st"> </span><span class="kw">c</span>(v, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>v, v<span class="op">/</span><span class="dv">3</span>, <span class="dv">3</span> <span class="op">*</span><span class="st"> </span>(v<span class="op">^</span><span class="dv">2</span>), <span class="kw">sqrt</span>(v), a[<span class="dv">4</span>])</span>
+<span id="cb170-3"><a href="#cb170-3"></a>b</span></code></pre></div>
+<pre><code>[1]  5.000000 10.000000  1.666667 75.000000  2.236068  8.000000</code></pre>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1"></a>c =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">4</span>, <span class="dv">30</span>, <span class="dt">length =</span> <span class="dv">6</span>)</span>
+<span id="cb172-2"><a href="#cb172-2"></a>c</span></code></pre></div>
+<pre><code>[1]  4.0  9.2 14.4 19.6 24.8 30.0</code></pre>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1"></a>d =<span class="st"> </span><span class="kw">c</span>(<span class="kw">sum</span>(c), <span class="kw">length</span>(b), <span class="kw">rep</span>(<span class="dv">3</span>, <span class="dv">5</span>))</span>
+<span id="cb174-2"><a href="#cb174-2"></a>d</span></code></pre></div>
+<pre><code>[1] 102   6   3   3   3   3   3</code></pre>
+<p>Question 2 :</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1"></a>a[<span class="dv">4</span>]</span></code></pre></div>
+<pre><code>[1] 8</code></pre>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1"></a>a[<span class="op">-</span><span class="dv">4</span>]</span></code></pre></div>
+<pre><code> [1]  2  4  6 10 12 14 16 18 20 22 24 26 28 30</code></pre>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1"></a>a[a <span class="op">&gt;</span><span class="st"> </span><span class="dv">10</span>]</span></code></pre></div>
+<pre><code> [1] 12 14 16 18 20 22 24 26 28 30</code></pre>
+<p>Question 3 :</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1"></a><span class="kw">help</span>(unique)</span></code></pre></div>
+<pre><code>Help on topic &#39;unique&#39; was found in the following packages:
+
+  Package               Library
+  base                  /Library/Frameworks/R.framework/Resources/library
+  data.table            /Users/maugis/Library/R/4.0/library
+
+
+Using the first match ...</code></pre>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb184-1"><a href="#cb184-1"></a><span class="kw">unique</span>(d)</span></code></pre></div>
+<pre><code>[1] 102   6   3</code></pre>
+<p>La fonction <code>unique()</code> permet de récupérer les éléments d’un vecteur (et pas que) sans réplication.</p>
+</div>
+</div>
+</div>
+<div id="matrices-matrix" class="section level2">
+<h2>Matrices (<em>matrix</em>)</h2>
+<p>Comme les vecteurs, les matrices sont de mode quelconque mais ne contiennent que des éléments de même nature. Pour créer une matrice, on utilise la commande <code>matrix(vec,nrow=n,ncol=p)</code> où <em>vec</em> est le vecteur contenant les éléments de la matrice de taille <span class="math inline">\(n\)</span> par <span class="math inline">\(p\)</span>, qui seront rangés en colonne sauf si l’option <em>byrow=T</em> est utilisée.</p>
+<div id="exemples-1" class="section level3 tabset">
+<h3>Exemples</h3>
+<p>On donne ici quelques exemples à tester sous R pour vous familiariser avec les matrices. En particulier, vous pouvez découvrir des fonctions utiles avec les matrices comme <code>dim()</code>, <code>t()</code>, <code>cbind()</code>, <code>rbind()</code>… , les opérations usuelles dont la différence entre <code>A*B</code> et <code>A%*%B</code>, l’extraction d’éléments d’une matrice, …</p>
+<div id="matrix" class="section level4">
+<h4><code>matrix()</code></h4>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1"></a>A =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>, <span class="dt">ncol =</span> <span class="dv">5</span>)</span>
+<span id="cb186-2"><a href="#cb186-2"></a>A</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    4    7   10   13
+[2,]    2    5    8   11   14
+[3,]    3    6    9   12   15</code></pre>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb188-1"><a href="#cb188-1"></a><span class="kw">class</span>(A)</span></code></pre></div>
+<pre><code>[1] &quot;matrix&quot; &quot;array&quot; </code></pre>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb190-1"><a href="#cb190-1"></a>B =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>, <span class="dt">nc =</span> <span class="dv">5</span>, <span class="dt">byrow =</span> T)</span>
+<span id="cb190-2"><a href="#cb190-2"></a>B2 =<span class="st"> </span>B</span>
+<span id="cb190-3"><a href="#cb190-3"></a>B2[<span class="dv">1</span>, <span class="dv">1</span>] =<span class="st"> &quot;toto&quot;</span></span>
+<span id="cb190-4"><a href="#cb190-4"></a>B2</span></code></pre></div>
+<pre><code>     [,1]   [,2] [,3] [,4] [,5]
+[1,] &quot;toto&quot; &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot; 
+[2,] &quot;6&quot;    &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot;
+[3,] &quot;11&quot;   &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot;</code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1"></a><span class="kw">rownames</span>(A) =<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;ligne&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))</span>
+<span id="cb192-2"><a href="#cb192-2"></a>A</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    1    4    7   10   13
+ligne2    2    5    8   11   14
+ligne3    3    6    9   12   15</code></pre>
+</div>
+<div id="extraire" class="section level4">
+<h4>Extraire</h4>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb194-1"><a href="#cb194-1"></a>A</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    1    4    7   10   13
+ligne2    2    5    8   11   14
+ligne3    3    6    9   12   15</code></pre>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1"></a>A[<span class="dv">1</span>, <span class="dv">3</span>]</span></code></pre></div>
+<pre><code>ligne1 
+     7 </code></pre>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb198-1"><a href="#cb198-1"></a>A[, <span class="dv">2</span>]</span></code></pre></div>
+<pre><code>ligne1 ligne2 ligne3 
+     4      5      6 </code></pre>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1"></a>A[<span class="dv">2</span>, ]</span></code></pre></div>
+<pre><code>[1]  2  5  8 11 14</code></pre>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb202-1"><a href="#cb202-1"></a>A[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>       [,1] [,2]
+ligne1    4   13
+ligne2    5   14
+ligne3    6   15</code></pre>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb204-1"><a href="#cb204-1"></a>A[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3]
+ligne1    1    7   10
+ligne2    2    8   11
+ligne3    3    9   12</code></pre>
+</div>
+<div id="cbind-rbind" class="section level4">
+<h4><code>cbind() / rbind()</code></h4>
+<p>Pour concaténer deux matrices, on peut utiliser les fonctions <code>rbind()</code> ou <code>cbind()</code>.</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1"></a>A</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    1    4    7   10   13
+ligne2    2    5    8   11   14
+ligne3    3    6    9   12   15</code></pre>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb208-1"><a href="#cb208-1"></a>B</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    2    3    4    5
+[2,]    6    7    8    9   10
+[3,]   11   12   13   14   15</code></pre>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb210-1"><a href="#cb210-1"></a><span class="kw">cbind</span>(A, B)</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ligne1    1    4    7   10   13    1    2    3    4     5
+ligne2    2    5    8   11   14    6    7    8    9    10
+ligne3    3    6    9   12   15   11   12   13   14    15</code></pre>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb212-1"><a href="#cb212-1"></a><span class="kw">rbind</span>(A, B)</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    1    4    7   10   13
+ligne2    2    5    8   11   14
+ligne3    3    6    9   12   15
+          1    2    3    4    5
+          6    7    8    9   10
+         11   12   13   14   15</code></pre>
+</div>
+<div id="fonctions-utiles" class="section level4">
+<h4>Fonctions utiles</h4>
+<p>Dimension d’une matrice</p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1"></a><span class="kw">dim</span>(A)</span></code></pre></div>
+<pre><code>[1] 3 5</code></pre>
+<p>Nombre de lignes et de colonnes</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb216-1"><a href="#cb216-1"></a><span class="kw">nrow</span>(A)</span></code></pre></div>
+<pre><code>[1] 3</code></pre>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1"></a><span class="kw">ncol</span>(A)</span></code></pre></div>
+<pre><code>[1] 5</code></pre>
+<p>Transposée et déterminant d’une matrice</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1"></a><span class="kw">t</span>(A)</span></code></pre></div>
+<pre><code>     ligne1 ligne2 ligne3
+[1,]      1      2      3
+[2,]      4      5      6
+[3,]      7      8      9
+[4,]     10     11     12
+[5,]     13     14     15</code></pre>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb222-1"><a href="#cb222-1"></a><span class="kw">det</span>(A[, <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</span></code></pre></div>
+<pre><code>[1] 0</code></pre>
+<p>Inversion d’une matrice</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb224-1"><a href="#cb224-1"></a><span class="kw">solve</span>(A[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</span></code></pre></div>
+<pre><code>        ligne1    ligne2
+[1,] -2.666667  2.333333
+[2,]  1.666667 -1.333333</code></pre>
+<p>Matrice diagonale et diagonale d’une matrice</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1"></a><span class="kw">diag</span>(A)</span></code></pre></div>
+<pre><code>[1] 1 5 9</code></pre>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb228-1"><a href="#cb228-1"></a><span class="kw">diag</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    0    0    0    0
+[2,]    0    2    0    0    0
+[3,]    0    0    3    0    0
+[4,]    0    0    0    4    0
+[5,]    0    0    0    0    5</code></pre>
+<p>Matrice de booléens</p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb230-1"><a href="#cb230-1"></a>A <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>        [,1]  [,2] [,3] [,4] [,5]
+ligne1 FALSE FALSE TRUE TRUE TRUE
+ligne2 FALSE FALSE TRUE TRUE TRUE
+ligne3 FALSE  TRUE TRUE TRUE TRUE</code></pre>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb232-1"><a href="#cb232-1"></a>A[A <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>] &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb232-2"><a href="#cb232-2"></a>A</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    0    0    7   10   13
+ligne2    0    5    8   11   14
+ligne3    0    6    9   12   15</code></pre>
+<p>Quelques autres fonctions sur les matrices</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb234-1"><a href="#cb234-1"></a><span class="kw">colSums</span>(A)</span></code></pre></div>
+<pre><code>[1]  0 11 24 33 42</code></pre>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb236-1"><a href="#cb236-1"></a><span class="kw">apply</span>(A, <span class="dv">2</span>, sum)</span></code></pre></div>
+<pre><code>[1]  0 11 24 33 42</code></pre>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb238-1"><a href="#cb238-1"></a><span class="kw">rowSums</span>(A)</span></code></pre></div>
+<pre><code>ligne1 ligne2 ligne3 
+    30     38     42 </code></pre>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1"></a><span class="kw">apply</span>(A, <span class="dv">1</span>, sum)</span></code></pre></div>
+<pre><code>ligne1 ligne2 ligne3 
+    30     38     42 </code></pre>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1"></a><span class="kw">rowMeans</span>(A)</span></code></pre></div>
+<pre><code>ligne1 ligne2 ligne3 
+   6.0    7.6    8.4 </code></pre>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1"></a><span class="kw">apply</span>(A, <span class="dv">1</span>, mean)</span></code></pre></div>
+<pre><code>ligne1 ligne2 ligne3 
+   6.0    7.6    8.4 </code></pre>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1"></a><span class="kw">apply</span>(A, <span class="dv">1</span>, max)</span></code></pre></div>
+<pre><code>ligne1 ligne2 ligne3 
+    13     14     15 </code></pre>
+<p>Remarque : on reverra dans la section <a href="#secProg">Programmation</a> la fonction <code>apply()</code> qui permet en particulier d’éviter les boucles <em>for</em>.<br />
+</p>
+</div>
+<div id="opérations-2" class="section level4">
+<h4>Opérations</h4>
+<p>Attention à la multiplication matricielle <code>%*%</code> et la multiplication terme à terme <code>*</code>!</p>
+<p>Opérations terme à terme de 2 matrices</p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb248-1"><a href="#cb248-1"></a>A <span class="op">+</span><span class="st"> </span>B</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    1    2   10   14   18
+ligne2    6   12   16   20   24
+ligne3   11   18   22   26   30</code></pre>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb250-1"><a href="#cb250-1"></a>A <span class="op">*</span><span class="st"> </span>B</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    0    0   21   40   65
+ligne2    0   35   64   99  140
+ligne3    0   72  117  168  225</code></pre>
+<p>Multiplication de matrices</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1"></a><span class="kw">t</span>(B) <span class="op">%*%</span><span class="st"> </span>A</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    0   96  154  208  262
+[2,]    0  107  178  241  304
+[3,]    0  118  202  274  346
+[4,]    0  129  226  307  388
+[5,]    0  140  250  340  430</code></pre>
+<p>Multiplication par un scalaire</p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1"></a><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>A</span></code></pre></div>
+<pre><code>       [,1] [,2] [,3] [,4] [,5]
+ligne1    0    0   35   50   65
+ligne2    0   25   40   55   70
+ligne3    0   30   45   60   75</code></pre>
+</div>
+</div>
+<div id="exercice-1" class="section level3 tabset">
+<h3>Exercice</h3>
+<div id="enoncé-1" class="section level4">
+<h4>Enoncé</h4>
+<ol style="list-style-type: decimal">
+<li><p>Créer la matrice <span class="math inline">\(A=\left(\begin{array}{c c c } 3 &amp; 3 &amp; 3\\ 4 &amp; 4 &amp; 4\\ 5 &amp; 5 &amp; 5\end{array}\right).\)</span></p></li>
+<li><p>Ajouter 2 à tous les éléments de <span class="math inline">\(A\)</span>.</p></li>
+<li><p>Créer la matrice <span class="math inline">\(B\)</span> en ajoutant la ligne <span class="math inline">\((1,2,3)\)</span> à <span class="math inline">\(A\)</span>, puis la colonne <span class="math inline">\((1,1,1,1)&#39;\)</span>. Déterminer la dimension de <span class="math inline">\(B\)</span>.</p></li>
+<li><p>Extraire de <span class="math inline">\(B\)</span> la sous-matrice <span class="math inline">\(C\)</span> composée des deux premières colonnes et des deux dernières lignes. Calculer sa transposée et son déterminant. Inverser cette sous-matrice <span class="math inline">\(C\)</span>.</p></li>
+</ol>
+</div>
+<div id="correction-1" class="section level4">
+<h4>Correction</h4>
+<p>Question 1</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1"></a>A =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>)), <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> T)</span>
+<span id="cb256-2"><a href="#cb256-2"></a>A</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3]
+[1,]    3    3    3
+[2,]    4    4    4
+[3,]    5    5    5</code></pre>
+<p>Question 2</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb258-1"><a href="#cb258-1"></a>A <span class="op">+</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>     [,1] [,2] [,3]
+[1,]    5    5    5
+[2,]    6    6    6
+[3,]    7    7    7</code></pre>
+<p>Question 3</p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1"></a>B =<span class="st"> </span><span class="kw">rbind</span>(A, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
+<span id="cb260-2"><a href="#cb260-2"></a>B =<span class="st"> </span><span class="kw">cbind</span>(B, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">4</span>))</span>
+<span id="cb260-3"><a href="#cb260-3"></a><span class="kw">dim</span>(B)</span></code></pre></div>
+<pre><code>[1] 4 4</code></pre>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb262-1"><a href="#cb262-1"></a>B</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    3    3    3    1
+[2,]    4    4    4    1
+[3,]    5    5    5    1
+[4,]    1    2    3    1</code></pre>
+<p>Question 4</p>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb264-1"><a href="#cb264-1"></a>C =<span class="st"> </span>B[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</span>
+<span id="cb264-2"><a href="#cb264-2"></a>C</span></code></pre></div>
+<pre><code>     [,1] [,2]
+[1,]    5    5
+[2,]    1    2</code></pre>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb266-1"><a href="#cb266-1"></a><span class="kw">t</span>(C)</span></code></pre></div>
+<pre><code>     [,1] [,2]
+[1,]    5    1
+[2,]    5    2</code></pre>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb268-1"><a href="#cb268-1"></a><span class="kw">det</span>(C)</span></code></pre></div>
+<pre><code>[1] 5</code></pre>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb270-1"><a href="#cb270-1"></a><span class="kw">solve</span>(C)</span></code></pre></div>
+<pre><code>     [,1] [,2]
+[1,]  0.4   -1
+[2,] -0.2    1</code></pre>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb272-1"><a href="#cb272-1"></a>C <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(C)</span></code></pre></div>
+<pre><code>     [,1] [,2]
+[1,]    1    0
+[2,]    0    1</code></pre>
+</div>
+</div>
+</div>
+<div id="les-tableaux-array" class="section level2 tabset">
+<h2>Les tableaux (array)</h2>
+<p>Les tableaux sont des matrices de dimensions supérieures à 2. On peut les générer à partir de la commande <code>array(vec,c(n,p,q,...))</code> où <em>vec</em> est le vecteur contenant les éléments du tableau et l’argument <em>c(n,p,q,…)</em> désigne les dimensions du tableau: <span class="math inline">\(n\)</span> lignes, <span class="math inline">\(p\)</span> colonnes, <span class="math inline">\(q\)</span> matrices, …</p>
+<!--### Exemples {.tabset}-->
+<div id="array" class="section level3">
+<h3><code>array()</code></h3>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb274-1"><a href="#cb274-1"></a>E =<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">8</span>), <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">len =</span> <span class="dv">8</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb274-2"><a href="#cb274-2"></a>E</span></code></pre></div>
+<pre><code>, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]    1    3    5    7
+[2,]    2    4    6    8
+
+, , 2
+
+     [,1] [,2] [,3] [,4]
+[1,]    1    1    1    1
+[2,]    1    1    1    1
+
+, , 3
+
+          [,1]      [,2]      [,3]      [,4]
+[1,] 0.0000000 0.2857143 0.5714286 0.8571429
+[2,] 0.1428571 0.4285714 0.7142857 1.0000000</code></pre>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb276-1"><a href="#cb276-1"></a>E[, , <span class="dv">1</span>]</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    3    5    7
+[2,]    2    4    6    8</code></pre>
+</div>
+<div id="fonctions-usuelles-1" class="section level3">
+<h3>Fonctions usuelles</h3>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb278-1"><a href="#cb278-1"></a><span class="kw">dim</span>(E)</span></code></pre></div>
+<pre><code>[1] 2 4 3</code></pre>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb280-1"><a href="#cb280-1"></a><span class="kw">length</span>(E)</span></code></pre></div>
+<pre><code>[1] 24</code></pre>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb282-1"><a href="#cb282-1"></a><span class="kw">nrow</span>(E)</span></code></pre></div>
+<pre><code>[1] 2</code></pre>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb284-1"><a href="#cb284-1"></a><span class="kw">ncol</span>(E)</span></code></pre></div>
+<pre><code>[1] 4</code></pre>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb286-1"><a href="#cb286-1"></a><span class="kw">aperm</span>(E)</span></code></pre></div>
+<pre><code>, , 1
+
+     [,1]      [,2]      [,3]      [,4]
+[1,]    1 3.0000000 5.0000000 7.0000000
+[2,]    1 1.0000000 1.0000000 1.0000000
+[3,]    0 0.2857143 0.5714286 0.8571429
+
+, , 2
+
+          [,1]      [,2]      [,3] [,4]
+[1,] 2.0000000 4.0000000 6.0000000    8
+[2,] 1.0000000 1.0000000 1.0000000    1
+[3,] 0.1428571 0.4285714 0.7142857    1</code></pre>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb288-1"><a href="#cb288-1"></a>E <span class="op">+</span><span class="st"> </span><span class="dv">10</span></span></code></pre></div>
+<pre><code>, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]   11   13   15   17
+[2,]   12   14   16   18
+
+, , 2
+
+     [,1] [,2] [,3] [,4]
+[1,]   11   11   11   11
+[2,]   11   11   11   11
+
+, , 3
+
+         [,1]     [,2]     [,3]     [,4]
+[1,] 10.00000 10.28571 10.57143 10.85714
+[2,] 10.14286 10.42857 10.71429 11.00000</code></pre>
+</div>
+<div id="apply" class="section level3">
+<h3><code>apply()</code></h3>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb290-1"><a href="#cb290-1"></a>H =<span class="st"> </span><span class="kw">array</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>))</span>
+<span id="cb290-2"><a href="#cb290-2"></a>H</span></code></pre></div>
+<pre><code>, , 1
+
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12</code></pre>
+<div class="figure" style="text-align: center">
+<img src="image/array_3D.jpg" alt="Représentation de H" width="30%" />
+<p class="caption">
+Représentation de H
+</p>
+</div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb292-1"><a href="#cb292-1"></a><span class="kw">apply</span>(H, <span class="dv">1</span>, sum)</span></code></pre></div>
+<pre><code>[1] 36 42</code></pre>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb294-1"><a href="#cb294-1"></a><span class="kw">sum</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>))</span></code></pre></div>
+<pre><code>[1] 36</code></pre>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb296-1"><a href="#cb296-1"></a><span class="kw">apply</span>(H, <span class="dv">2</span>, sum)</span></code></pre></div>
+<pre><code>[1] 18 26 34</code></pre>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb298-1"><a href="#cb298-1"></a><span class="kw">sum</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">8</span>))</span></code></pre></div>
+<pre><code>[1] 18</code></pre>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb300-1"><a href="#cb300-1"></a><span class="kw">apply</span>(H, <span class="dv">3</span>, sum)</span></code></pre></div>
+<pre><code>[1] 21 57</code></pre>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1"></a><span class="kw">sum</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)</span></code></pre></div>
+<pre><code>[1] 21</code></pre>
+<!--
+### Exercice {.tabset}
+
+#### Enoncé
+1. Expliquer les résultats des 3 appels à la fonction *apply()* dans l'exemple.
+
+2. Expliquer l'appel à la fonction `aperm` dans l'exemple.
+
+3. Créer un *array* à 4 dimensions et calculer la somme des éléments dans toutes les dimensions.
+
+#### Correction
+
+A FAIRE
+-->
+</div>
+</div>
+<div id="secList" class="section level2">
+<h2>Listes <em>(list)</em></h2>
+<p>Une liste est une collection ordonnée d’objets qui peuvent être de nature différente. Les listes sont en particulier utilisées par certaines fonctions (cf section <a href="#secProg">Programmation</a>) pour renvoyer des résultats complexes sous forme d’un seul objet. On utilise la fonction <code>list(nom1=el1,nom2=el2,...)</code> (l’utilisation des noms étant facultative) pour générer une liste. On peut accéder à chaque élément de la liste à l’aide de son index entre double crochets <code>[[...]]</code>, ou par son nom précédé du signe <code>$</code>.</p>
+<div id="exemples-2" class="section level3 tabset">
+<h3>Exemples</h3>
+<div id="list..." class="section level4">
+<h4><code>list(...)</code></h4>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb304-1"><a href="#cb304-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;toto&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>)</span>
+<span id="cb304-2"><a href="#cb304-2"></a>x</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;toto&quot;
+
+[[2]]
+[1] 1 2 3 4 5 6 7 8</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb306-1"><a href="#cb306-1"></a><span class="kw">class</span>(x)</span></code></pre></div>
+<pre><code>[1] &quot;list&quot;</code></pre>
+<p>Création d’une liste avec des noms aux éléments</p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb308-1"><a href="#cb308-1"></a>y =<span class="st"> </span><span class="kw">list</span>(<span class="dt">matrice =</span> <span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>, <span class="dt">ncol =</span> <span class="dv">5</span>), <span class="dt">vecteur =</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dt">by =</span> <span class="dv">5</span>), <span class="dt">texte =</span> <span class="st">&quot;toto&quot;</span>,</span>
+<span id="cb308-2"><a href="#cb308-2"></a>    <span class="dt">scalaire =</span> <span class="dv">8</span>)</span>
+<span id="cb308-3"><a href="#cb308-3"></a>y</span></code></pre></div>
+<pre><code>$matrice
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    4    7   10   13
+[2,]    2    5    8   11   14
+[3,]    3    6    9   12   15
+
+$vecteur
+[1]  1  6 11 16
+
+$texte
+[1] &quot;toto&quot;
+
+$scalaire
+[1] 8</code></pre>
+</div>
+<div id="extraction" class="section level4">
+<h4>Extraction</h4>
+<p>Extraction d’un élément par son numéro</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb310-1"><a href="#cb310-1"></a>x[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>[1] &quot;toto&quot;</code></pre>
+<p>Attention, cette commande n’est pas possible:</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb312-1"><a href="#cb312-1"></a>x[[<span class="dv">1</span>]] <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+<p>par contre celle-ci est possible</p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb313-1"><a href="#cb313-1"></a>x[[<span class="dv">2</span>]] <span class="op">+</span><span class="st"> </span><span class="dv">10</span></span></code></pre></div>
+<pre><code>[1] 11 12 13 14 15 16 17 18</code></pre>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb315-1"><a href="#cb315-1"></a>y[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    4    7   10   13
+[2,]    2    5    8   11   14
+[3,]    3    6    9   12   15</code></pre>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb317-1"><a href="#cb317-1"></a>y<span class="op">$</span>matrice</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    4    7   10   13
+[2,]    2    5    8   11   14
+[3,]    3    6    9   12   15</code></pre>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb319-1"><a href="#cb319-1"></a>y<span class="op">$</span>vec</span></code></pre></div>
+<pre><code>[1]  1  6 11 16</code></pre>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb321-1"><a href="#cb321-1"></a>y[<span class="kw">c</span>(<span class="st">&quot;texte&quot;</span>, <span class="st">&quot;scalaire&quot;</span>)]</span></code></pre></div>
+<pre><code>$texte
+[1] &quot;toto&quot;
+
+$scalaire
+[1] 8</code></pre>
+</div>
+<div id="fonctions-utiles-1" class="section level4">
+<h4>Fonctions utiles</h4>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb323-1"><a href="#cb323-1"></a><span class="kw">names</span>(y)</span></code></pre></div>
+<pre><code>[1] &quot;matrice&quot;  &quot;vecteur&quot;  &quot;texte&quot;    &quot;scalaire&quot;</code></pre>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb325-1"><a href="#cb325-1"></a><span class="kw">length</span>(y)</span></code></pre></div>
+<pre><code>[1] 4</code></pre>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb327-1"><a href="#cb327-1"></a><span class="kw">length</span>(y<span class="op">$</span>vecteur)</span></code></pre></div>
+<pre><code>[1] 4</code></pre>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb329-1"><a href="#cb329-1"></a><span class="kw">cos</span>(y<span class="op">$</span>scal) <span class="op">+</span><span class="st"> </span>y[[<span class="dv">2</span>]][<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>[1] 0.8545</code></pre>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb331-1"><a href="#cb331-1"></a><span class="kw">summary</span>(y)</span></code></pre></div>
+<pre><code>         Length Class  Mode     
+matrice  15     -none- numeric  
+vecteur   4     -none- numeric  
+texte     1     -none- character
+scalaire  1     -none- numeric  </code></pre>
+</div>
+</div>
+<div id="exercice-2" class="section level3 tabset">
+<h3>Exercice</h3>
+<div id="enoncé-2" class="section level4">
+<h4>Enoncé</h4>
+<ol style="list-style-type: decimal">
+<li><p>Créer une liste contenant le nom de trois matières, les notes de 5 élèves pour chacune de ces matières, l’âge des 5 élèves et la filière (PO) d’appartenance de ces 5 élèves.</p></li>
+<li><p>Récupérer les notes du 4ème élève</p></li>
+<li><p>Créer une matrice contenant les notes et l’âge des 5 élèves.</p></li>
+</ol>
+</div>
+<div id="correction-2" class="section level4">
+<h4>Correction</h4>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb333-1"><a href="#cb333-1"></a>matiere =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Maths&quot;</span>, <span class="st">&quot;Chimie&quot;</span>, <span class="st">&quot;Sport&quot;</span>)</span>
+<span id="cb333-2"><a href="#cb333-2"></a>age =<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>)</span>
+<span id="cb333-3"><a href="#cb333-3"></a>PO =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;MIC&quot;</span>, <span class="st">&quot;IMACS&quot;</span>, <span class="st">&quot;MIC&quot;</span>, <span class="st">&quot;MIC&quot;</span>, <span class="st">&quot;IC&quot;</span>)</span>
+<span id="cb333-4"><a href="#cb333-4"></a>Notes =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">14</span>, <span class="dv">12</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">14</span>, <span class="dv">12</span>, <span class="dv">16</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>), <span class="dt">nrow =</span> <span class="dv">5</span>)</span>
+<span id="cb333-5"><a href="#cb333-5"></a>A =<span class="st"> </span><span class="kw">list</span>(<span class="dt">matieres =</span> matiere, <span class="dt">Notes =</span> Notes, <span class="dt">Age =</span> age, <span class="dt">PO =</span> PO)</span>
+<span id="cb333-6"><a href="#cb333-6"></a>A</span></code></pre></div>
+<pre><code>$matieres
+[1] &quot;Maths&quot;  &quot;Chimie&quot; &quot;Sport&quot; 
+
+$Notes
+     [,1] [,2] [,3]
+[1,]   15    6   11
+[2,]   12    3   12
+[3,]    1   14   13
+[4,]   14   12   14
+[5,]   12   16   15
+
+$Age
+[1] 20 21 22 23 24
+
+$PO
+[1] &quot;MIC&quot;   &quot;IMACS&quot; &quot;MIC&quot;   &quot;MIC&quot;   &quot;IC&quot;   </code></pre>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb335-1"><a href="#cb335-1"></a>A<span class="op">$</span>Notes[<span class="dv">4</span>, ]</span></code></pre></div>
+<pre><code>[1] 14 12 14</code></pre>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb337-1"><a href="#cb337-1"></a>B =<span class="st"> </span><span class="kw">cbind</span>(A<span class="op">$</span>Notes, A<span class="op">$</span>Age)</span>
+<span id="cb337-2"><a href="#cb337-2"></a>B</span></code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]   15    6   11   20
+[2,]   12    3   12   21
+[3,]    1   14   13   22
+[4,]   14   12   14   23
+[5,]   12   16   15   24</code></pre>
+</div>
+</div>
+</div>
+<div id="data-frames" class="section level2">
+<h2>Data frames</h2>
+<p>Sous R, un data.frame est analogue à une matrice mais le contenu des colonnes peut être ici hétérogène. Un tableau de données est un ensemble de vecteurs rangés colonne par colonne, chaque colonne correspondant à une variable, chaque ligne à un individu. En particulier, lors d’études statistiques, les données à étudier sont souvent représentées par un data.frame sous R. Pour créer un tableau de données, on peut regrouper des variables de même longueur à l’aide de la commande <code>data.frame(nom1=var1,nom2=var2,...)</code>. On peut par exemple transformer une matrice en un tableau de données en utilisant la commande <code>as.data.frame(mat)</code>.</p>
+<div id="exemple" class="section level3 tabset">
+<h3>Exemple</h3>
+<p>On donne ici quelques exemples à tester sous R pour vous familiariser avec les data.frames. En particulier, vous pouvez découvrir des fonctions utiles dont <code>summary()</code>, <code>attach()</code>, …</p>
+<div id="data.frame" class="section level4">
+<h4><code>data.frame()</code></h4>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb339-1"><a href="#cb339-1"></a><span class="co"># Création du data.frame H</span></span>
+<span id="cb339-2"><a href="#cb339-2"></a>taille =<span class="st"> </span><span class="kw">runif</span>(<span class="dv">12</span>, <span class="dv">150</span>, <span class="dv">180</span>)</span>
+<span id="cb339-3"><a href="#cb339-3"></a>masse =<span class="st"> </span><span class="kw">runif</span>(<span class="dv">12</span>, <span class="dv">50</span>, <span class="dv">90</span>)</span>
+<span id="cb339-4"><a href="#cb339-4"></a>sexe =<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>), <span class="dv">3</span>)</span>
+<span id="cb339-5"><a href="#cb339-5"></a>H =<span class="st"> </span><span class="kw">data.frame</span>(taille, masse, sexe)</span>
+<span id="cb339-6"><a href="#cb339-6"></a>H</span></code></pre></div>
+<pre><code>     taille    masse sexe
+1  165.6911 79.45067    M
+2  173.3500 57.60821    F
+3  157.7483 66.30132    F
+4  157.2137 51.92431    M
+5  166.1377 76.41414    M
+6  163.5630 86.67736    F
+7  152.0966 85.85168    F
+8  170.7354 77.40700    M
+9  175.7064 55.37331    M
+10 162.1822 74.62086    F
+11 168.3423 87.29442    F
+12 171.0662 62.56853    M</code></pre>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb341-1"><a href="#cb341-1"></a><span class="kw">class</span>(H)</span></code></pre></div>
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+</div>
+<div id="summaryhead" class="section level4">
+<h4><code>summary()/head()</code></h4>
+<p>La fonction <code>summary()</code> permet de résumer le contenu des différentes colonnes d’un data.frame.</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb343-1"><a href="#cb343-1"></a><span class="kw">summary</span>(H)</span></code></pre></div>
+<pre><code>     taille          masse           sexe          
+ Min.   :152.1   Min.   :51.92   Length:12         
+ 1st Qu.:161.1   1st Qu.:61.33   Class :character  
+ Median :165.9   Median :75.52   Mode  :character  
+ Mean   :165.3   Mean   :71.79                     
+ 3rd Qu.:170.8   3rd Qu.:81.05                     
+ Max.   :175.7   Max.   :87.29                     </code></pre>
+<p>La fonction <code>head()</code> permet de visualiser les premières lignes d’un data.frame</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb345-1"><a href="#cb345-1"></a><span class="kw">head</span>(H)</span></code></pre></div>
+<pre><code>    taille    masse sexe
+1 165.6911 79.45067    M
+2 173.3500 57.60821    F
+3 157.7483 66.30132    F
+4 157.2137 51.92431    M
+5 166.1377 76.41414    M
+6 163.5630 86.67736    F</code></pre>
+</div>
+<div id="data.frame-listmatrix" class="section level4">
+<h4>data.frame / list/matrix</h4>
+<p>Au travers de ces quelques commandes, vous pouvez voir les analogies entre data.frame, list et matrix mais restez prudent sur la nature de l’objet que vous manipulez!</p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb347-1"><a href="#cb347-1"></a>H[<span class="dv">1</span>, ]</span></code></pre></div>
+<pre><code>    taille    masse sexe
+1 165.6911 79.45067    M</code></pre>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb349-1"><a href="#cb349-1"></a>H<span class="op">$</span>taille</span></code></pre></div>
+<pre><code> [1] 165.6911 173.3500 157.7483 157.2137 166.1377 163.5630 152.0966 170.7354
+ [9] 175.7064 162.1822 168.3423 171.0662</code></pre>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb351-1"><a href="#cb351-1"></a>H<span class="op">$</span>sexe</span></code></pre></div>
+<pre><code> [1] &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot; &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot; &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot;</code></pre>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb353-1"><a href="#cb353-1"></a><span class="kw">is.data.frame</span>(H)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb355-1"><a href="#cb355-1"></a><span class="kw">is.matrix</span>(H)</span></code></pre></div>
+<pre><code>[1] FALSE</code></pre>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb357-1"><a href="#cb357-1"></a>MH =<span class="st"> </span><span class="kw">as.matrix</span>(H)</span>
+<span id="cb357-2"><a href="#cb357-2"></a>MH</span></code></pre></div>
+<pre><code>      taille     masse      sexe
+ [1,] &quot;165.6911&quot; &quot;79.45067&quot; &quot;M&quot; 
+ [2,] &quot;173.3500&quot; &quot;57.60821&quot; &quot;F&quot; 
+ [3,] &quot;157.7483&quot; &quot;66.30132&quot; &quot;F&quot; 
+ [4,] &quot;157.2137&quot; &quot;51.92431&quot; &quot;M&quot; 
+ [5,] &quot;166.1377&quot; &quot;76.41414&quot; &quot;M&quot; 
+ [6,] &quot;163.5630&quot; &quot;86.67736&quot; &quot;F&quot; 
+ [7,] &quot;152.0966&quot; &quot;85.85168&quot; &quot;F&quot; 
+ [8,] &quot;170.7354&quot; &quot;77.40700&quot; &quot;M&quot; 
+ [9,] &quot;175.7064&quot; &quot;55.37331&quot; &quot;M&quot; 
+[10,] &quot;162.1822&quot; &quot;74.62086&quot; &quot;F&quot; 
+[11,] &quot;168.3423&quot; &quot;87.29442&quot; &quot;F&quot; 
+[12,] &quot;171.0662&quot; &quot;62.56853&quot; &quot;M&quot; </code></pre>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb359-1"><a href="#cb359-1"></a><span class="kw">summary</span>(MH)</span></code></pre></div>
+<pre><code>    taille             masse               sexe          
+ Length:12          Length:12          Length:12         
+ Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character  </code></pre>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb361-1"><a href="#cb361-1"></a><span class="kw">as.list</span>(H)</span></code></pre></div>
+<pre><code>$taille
+ [1] 165.6911 173.3500 157.7483 157.2137 166.1377 163.5630 152.0966 170.7354
+ [9] 175.7064 162.1822 168.3423 171.0662
+
+$masse
+ [1] 79.45067 57.60821 66.30132 51.92431 76.41414 86.67736 85.85168 77.40700
+ [9] 55.37331 74.62086 87.29442 62.56853
+
+$sexe
+ [1] &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot; &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot; &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot;</code></pre>
+</div>
+<div id="attachdetach" class="section level4">
+<h4><code>attach()/detach()</code></h4>
+<p>La fonction <code>attach()</code> permet d’accéder aux variables d’un data.frame sans appeler le data.frame.</p>
+<p>La fonction <code>detach()</code> peut être utilisée pour supprimer la variable d’un data.frame, qui était précédemment attachée avec <code>attach()</code>.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb363-1"><a href="#cb363-1"></a><span class="kw">rm</span>(taille)</span>
+<span id="cb363-2"><a href="#cb363-2"></a>H<span class="op">$</span>taille</span></code></pre></div>
+<pre><code> [1] 165.6911 173.3500 157.7483 157.2137 166.1377 163.5630 152.0966 170.7354
+ [9] 175.7064 162.1822 168.3423 171.0662</code></pre>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb365-1"><a href="#cb365-1"></a><span class="kw">attach</span>(H)</span>
+<span id="cb365-2"><a href="#cb365-2"></a>taille</span></code></pre></div>
+<pre><code> [1] 165.6911 173.3500 157.7483 157.2137 166.1377 163.5630 152.0966 170.7354
+ [9] 175.7064 162.1822 168.3423 171.0662</code></pre>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb367-1"><a href="#cb367-1"></a><span class="kw">detach</span>(H)  <span class="co"># taille est alors introuvable</span></span></code></pre></div>
+</div>
+</div>
+<div id="exercice-3" class="section level3 tabset">
+<h3>Exercice</h3>
+<div id="enoncé-3" class="section level4">
+<h4>Enoncé</h4>
+<p>On reprend le data.frame <span class="math inline">\(H\)</span> contruit dans la sous-section Exemple.</p>
+<ol style="list-style-type: decimal">
+<li>Extraire la masse des individus dont la taille est supérieure à 160.</li>
+<li>Extraire la masse et le sexe de ces mêmes individus.</li>
+<li>Extraire la taille des individus de sexe masculin dont la masse est inférieure à 80 (c’est possible en une seule ligne avec <code>&amp;</code>).</li>
+</ol>
+</div>
+<div id="correction-3" class="section level4">
+<h4>Correction</h4>
+<p>Question 1</p>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb368-1"><a href="#cb368-1"></a>H<span class="op">$</span>masse[H<span class="op">$</span>taille <span class="op">&gt;</span><span class="st"> </span><span class="dv">160</span>]</span></code></pre></div>
+<pre><code>[1] 79.45067 57.60821 76.41414 86.67736 77.40700 55.37331 74.62086 87.29442
+[9] 62.56853</code></pre>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb370-1"><a href="#cb370-1"></a>H[H<span class="op">$</span>taille <span class="op">&gt;</span><span class="st"> </span><span class="dv">160</span>, <span class="dv">2</span>]</span></code></pre></div>
+<pre><code>[1] 79.45067 57.60821 76.41414 86.67736 77.40700 55.37331 74.62086 87.29442
+[9] 62.56853</code></pre>
+<p>Question 2</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb372-1"><a href="#cb372-1"></a>H[H<span class="op">$</span>taille <span class="op">&gt;</span><span class="st"> </span><span class="dv">160</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</span></code></pre></div>
+<pre><code>      masse sexe
+1  79.45067    M
+2  57.60821    F
+5  76.41414    M
+6  86.67736    F
+8  77.40700    M
+9  55.37331    M
+10 74.62086    F
+11 87.29442    F
+12 62.56853    M</code></pre>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb374-1"><a href="#cb374-1"></a>H[H<span class="op">$</span>taille <span class="op">&gt;</span><span class="st"> </span><span class="dv">160</span>, <span class="kw">c</span>(<span class="st">&quot;masse&quot;</span>, <span class="st">&quot;sexe&quot;</span>)]</span></code></pre></div>
+<pre><code>      masse sexe
+1  79.45067    M
+2  57.60821    F
+5  76.41414    M
+6  86.67736    F
+8  77.40700    M
+9  55.37331    M
+10 74.62086    F
+11 87.29442    F
+12 62.56853    M</code></pre>
+<p>Question 3</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb376-1"><a href="#cb376-1"></a>H<span class="op">$</span>taille[H<span class="op">$</span>sexe <span class="op">==</span><span class="st"> &quot;M&quot;</span> <span class="op">&amp;</span><span class="st"> </span>H<span class="op">$</span>masse <span class="op">&lt;</span><span class="st"> </span><span class="dv">80</span>]</span></code></pre></div>
+<pre><code>[1] 165.6911 157.2137 166.1377 170.7354 175.7064 171.0662</code></pre>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb378-1"><a href="#cb378-1"></a>H[H<span class="op">$</span>sexe <span class="op">==</span><span class="st"> &quot;M&quot;</span> <span class="op">&amp;</span><span class="st"> </span>H<span class="op">$</span>masse <span class="op">&lt;</span><span class="st"> </span><span class="dv">80</span>, <span class="st">&quot;taille&quot;</span>]</span></code></pre></div>
+<pre><code>[1] 165.6911 157.2137 166.1377 170.7354 175.7064 171.0662</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="premiers-graphiques" class="section level1">
+<h1>Premiers graphiques</h1>
+<p>Nous allons dans cette partie présenter les bases des graphiques en R. Une présentation plus spécifique du package <strong>ggplot2</strong> est disponible dans le <a href="Part4-Ravance.html">tutoriel 4 de R avancé</a>.</p>
+<div id="gestion-des-fenêtres-graphiques" class="section level2">
+<h2>Gestion des fenêtres graphiques</h2>
+<p>Pour ouvrir une fenêtre graphique, on utilise <code>x11()</code> sous Unix, <code>windows()</code> sous Windows et <code>quartz()</code> sous MacOS X. La commande <code>dev.list()</code> permet de lister les fenêtres graphiques ouvertes. Il est important de clôturer une fenêtre graphique avec la commande <code>dev.off()</code>.</p>
+<p>La fonction <code>split.screen</code> permet de partitionner une fenêtre graphique active en plusieurs sous-fenêtres graphiques. Par exemple, <code>split.screen(c(1,2))</code> divise la fenêtre graphique en 2 parties qu’on sélectionne avec <code>screen(1)</code> et <code>screen(2)</code>. On peut également obtenir de telles partitions avec la commande <code>layout</code> ou l’option <em>mfrow</em> de la fonction <code>par()</code>.</p>
+</div>
+<div id="fonctions-graphiques" class="section level2">
+<h2>Fonctions graphiques</h2>
+<p>En R il faut distinguer les fonctions graphiques <em>principales</em> <strong>qui créent une nouvelle fenêtre graphique</strong> lors de l’execution avec possibilité d’un titre, d’axes labélisés, … et les fonctions graphiques <em>secondaires</em> qui ont une action sur un graphique déjà existant.</p>
+<div id="fonctions-graphiques-principales" class="section level3">
+<h3>Fonctions graphiques principales</h3>
+<p>Voici une liste des fonctions principales les plus connues :</p>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="91%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Fonction</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">plot(x)</td>
+<td align="left">graphe des valeurs de x (axe des y) ordonnées sur l’axe des x</td>
+</tr>
+<tr class="even">
+<td align="left">plot(x, y)</td>
+<td align="left">graphe bivarié de x (sur l’axe des x) et y (sur l’axe des y)</td>
+</tr>
+<tr class="odd">
+<td align="left">pie(x)</td>
+<td align="left">graphe en camembert</td>
+</tr>
+<tr class="even">
+<td align="left">boxplot(x)</td>
+<td align="left">graphe boites à moustaches</td>
+</tr>
+<tr class="odd">
+<td align="left">pairs(x)</td>
+<td align="left">si x est une matrice ou un tableau de données, dessine tous les graphes bivariés entre les colonnes de x</td>
+</tr>
+<tr class="even">
+<td align="left">hist(x)</td>
+<td align="left">histogramme des fréquences de x</td>
+</tr>
+<tr class="odd">
+<td align="left">barplot(x)</td>
+<td align="left">histogramme des valeurs de x</td>
+</tr>
+<tr class="even">
+<td align="left">contour(x,y,z)</td>
+<td align="left">courbes de niveau (les données sont interpolées pour tracer les courbes), x et y doivent être des vecteurs et z une matrice telle que dim(z)=c(length(x), length(y))</td>
+</tr>
+<tr class="odd">
+<td align="left">image(x,y,z)</td>
+<td align="left">idem mais les données sont représentées avec des couleurs</td>
+</tr>
+<tr class="even">
+<td align="left">persp(x,y,z)</td>
+<td align="left">idem mais en perspective</td>
+</tr>
+</tbody>
+</table>
+<p>Pour chaque fonction, les options peuvent être trouvées via l’aide. Certaines de ces options sont identiques pour plusieurs fonctions graphiques; voici les principales (avec leurs éventuelles valeurs par défaut) :</p>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="95%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">option</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">add=FALSE</td>
+<td align="left">si TRUE superpose le graphe au graphe existant (s’il y en a un)</td>
+</tr>
+<tr class="even">
+<td align="left">axes=TRUE</td>
+<td align="left">si FALSE ne trace pas les axes ni le cadre</td>
+</tr>
+<tr class="odd">
+<td align="left">type=</td>
+<td align="left">le type de graphe qui sera dessiné, p : points, l : lignes, b : points connectés par des lignes, h : lignes verticales,o : idem mais les lignes recouvrent les points, s : escaliers, les données étant représentées par le sommet (par le bas) des lignes verticales</td>
+</tr>
+<tr class="even">
+<td align="left">xlim=,ylim=</td>
+<td align="left">fixe les limites inférieures et supérieures des axes</td>
+</tr>
+<tr class="odd">
+<td align="left">xlab=,ylab=</td>
+<td align="left">annotations des axes (variables de mode caractère)</td>
+</tr>
+<tr class="even">
+<td align="left">main=</td>
+<td align="left">titre principal (variable de mode caractère)</td>
+</tr>
+<tr class="odd">
+<td align="left">sub=</td>
+<td align="left">sous-titre (écrit dans une police plus petite)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fonctions-graphiques-secondaires" class="section level3">
+<h3>Fonctions graphiques secondaires</h3>
+<p>Fonctions graphiques secondaires les plus connues :</p>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">points(x,y)</td>
+<td align="left">ajoute des points (l’option type= peut être utilisée)</td>
+</tr>
+<tr class="even">
+<td align="left">lines(x,y)</td>
+<td align="left">idem mais avec des lignes</td>
+</tr>
+<tr class="odd">
+<td align="left">text(x,y,labels,…)</td>
+<td align="left">ajoute le texte spécifié par labels aux coordonnées (x,y)</td>
+</tr>
+<tr class="even">
+<td align="left">segments(x0,y0,x1,y1)</td>
+<td align="left">trace des lignes des points (x0,y0) aux points (x1,y1)</td>
+</tr>
+<tr class="odd">
+<td align="left">abline(a,b)</td>
+<td align="left">trace une ligne de pente b et d’ordonnée à l’origine a</td>
+</tr>
+<tr class="even">
+<td align="left">rect(x1,y1,x2,y2)</td>
+<td align="left">trace une ligne horizontale sur l’ordonnée y</td>
+</tr>
+<tr class="odd">
+<td align="left">abline(h=y)</td>
+<td align="left">trace une ligne verticale sur l’abscisse x</td>
+</tr>
+<tr class="even">
+<td align="left">abline(v=x)</td>
+<td align="left">trace un rectangle délimité à gauche par x1, à droite par x2,en bas par y1 et en haut par y2</td>
+</tr>
+<tr class="odd">
+<td align="left">polygon(x,y)</td>
+<td align="left">trace un polygone reliant les points dont les coordonnées sont données par x et y</td>
+</tr>
+<tr class="even">
+<td align="left">legend(x,y,legend)</td>
+<td align="left">ajoute la légende au point de coordonnées (x,y) avec les symboles donnés par legend</td>
+</tr>
+<tr class="odd">
+<td align="left">title()</td>
+<td align="left">ajoute un titre et optionnellement un sous-titre</td>
+</tr>
+<tr class="even">
+<td align="left">axis(side, vect)</td>
+<td align="left">ajoute un axe en bas (side=1), à gauche (2), en haut (3) ou à droite (4) ; vect (optionnel) indique les abscisses (ou ordonnées) où les graduations seront tracées</td>
+</tr>
+<tr class="odd">
+<td align="left">box()</td>
+<td align="left">ajoute un cadre autour du graphe</td>
+</tr>
+</tbody>
+</table>
+<!--
+{\footnotesize
+\begin{tabular}{l l}
+{\tt points(x,y)} &  ajoute des points (l'option type= peut être utilisée)\\
+{\tt lines(x,y)}  &  idem mais avec des lignes\\
+{\tt text(x,y,labels,...)} & ajoute le texte spécifié par labels au coordonnées (x,y)\\
+{\tt segments(x0,y0,} & trace des lignes des points (x0,y0) aux points (x1,y1)\\
+\hspace*{0.5cm}{\tt x1,y1)} & \\
+{\tt abline(a,b)} &  trace une ligne de pente b et d'ordonnée à l'origine a\\
+{\tt abline(h=y)} &  trace une ligne horizontale sur l'ordonnée y\\
+{\tt abline(v=x)} &   trace une ligne verticale sur l'abscisse x\\
+{\tt rect(x1,y1,x2,y2)} &  trace un rectangle délimité à gauche par x1, à droite par x2,\\
+                        &  en bas par y1 et en haut par y2\\
+{\tt polygon(x,y)} &  trace un polygone reliant les points dont les coordonnées\\
+                   & sont données par x et y\\
+{\tt legend(x,y,legend)} & ajoute la légende au point de coordonnées (x,y) avec les\\
+                         & symboles donnés par legend\\
+{\tt title()} &  ajoute un titre et optionnellement un sous-titre\\
+{\tt axis(side, vect)} & ajoute un axe en bas (side=1), à gauche (2), en haut (3)\\
+                      &  ou à droite (4) ; vect (optionnel) indique les abscisses\\
+                      & (ou ordonnées) où les graduations seront tracées\\
+{\tt box()} &  ajoute un cadre autour du graphe\\
+\end{tabular}}
+-->
+</div>
+</div>
+<div id="exemples-3" class="section level2 tabset">
+<h2>Exemples</h2>
+<div id="exemple-1" class="section level3">
+<h3>Exemple 1</h3>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb380-1"><a href="#cb380-1"></a>x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="dt">l =</span> <span class="dv">50</span>)</span>
+<span id="cb380-2"><a href="#cb380-2"></a><span class="co"># 2 graphiques</span></span>
+<span id="cb380-3"><a href="#cb380-3"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb380-4"><a href="#cb380-4"></a><span class="co"># premier graphique</span></span>
+<span id="cb380-5"><a href="#cb380-5"></a><span class="kw">plot</span>(x, <span class="kw">sin</span>(x), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col =</span> <span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;sinus&quot;</span>)</span>
+<span id="cb380-6"><a href="#cb380-6"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="dv">0</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">5</span>, <span class="dt">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb380-7"><a href="#cb380-7"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">sin</span>(<span class="fl">0.7</span>), <span class="dt">col =</span> <span class="dv">3</span>)</span>
+<span id="cb380-8"><a href="#cb380-8"></a><span class="kw">text</span>(<span class="op">-</span><span class="dv">5</span>, <span class="fl">-0.5</span>, <span class="st">&quot;texte&quot;</span>, <span class="dt">font =</span> <span class="dv">3</span>)</span>
+<span id="cb380-9"><a href="#cb380-9"></a><span class="co"># deuxieme graphique</span></span>
+<span id="cb380-10"><a href="#cb380-10"></a><span class="kw">plot</span>(x, <span class="kw">cos</span>(x), <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">col =</span> <span class="dv">3</span>, <span class="dt">xlab =</span> <span class="st">&quot;Abscisses&quot;</span>)</span>
+<span id="cb380-11"><a href="#cb380-11"></a><span class="kw">points</span>(x, <span class="kw">cos</span>(x), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)</span>
+<span id="cb380-12"><a href="#cb380-12"></a><span class="kw">points</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">pch =</span> <span class="st">&quot;o&quot;</span>, <span class="dt">cex =</span> <span class="dv">3</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb380-13"><a href="#cb380-13"></a><span class="kw">lines</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-90-1.png" width="768" /></p>
+</div>
+<div id="exemple-2" class="section level3">
+<h3>Exemple 2</h3>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb381-1"><a href="#cb381-1"></a><span class="kw">data</span>(iris)</span>
+<span id="cb381-2"><a href="#cb381-2"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb381-3"><a href="#cb381-3"></a><span class="kw">plot</span>(iris[, <span class="dv">1</span>], iris[, <span class="dv">2</span>], <span class="dt">xlab =</span> <span class="st">&quot;Sepal Length&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Sepal Width&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Iris data&quot;</span>,</span>
+<span id="cb381-4"><a href="#cb381-4"></a>    <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;p&quot;</span>)</span>
+<span id="cb381-5"><a href="#cb381-5"></a><span class="kw">points</span>(iris[iris<span class="op">$</span>Species <span class="op">==</span><span class="st"> &quot;setosa&quot;</span>, <span class="dv">1</span>], iris[iris<span class="op">$</span>Species <span class="op">==</span><span class="st"> &quot;setosa&quot;</span>, <span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>,</span>
+<span id="cb381-6"><a href="#cb381-6"></a>    <span class="dt">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb381-7"><a href="#cb381-7"></a><span class="kw">hist</span>(iris[, <span class="dv">1</span>], <span class="dt">xlab =</span> <span class="st">&quot;Sepal Length&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogramme de la variable Sepal Length&quot;</span>)</span>
+<span id="cb381-8"><a href="#cb381-8"></a><span class="kw">boxplot</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">las =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-91-1.png" width="768" /></p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb382-1"><a href="#cb382-1"></a><span class="kw">pairs</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-92-1.png" width="768" /></p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb383-1"><a href="#cb383-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb383-2"><a href="#cb383-2"></a><span class="kw">pie</span>(<span class="kw">table</span>(iris[, <span class="dv">5</span>]))</span>
+<span id="cb383-3"><a href="#cb383-3"></a><span class="kw">pie</span>(<span class="kw">table</span>(iris[, <span class="dv">5</span>]), <span class="dt">clockwise =</span> T)</span>
+<span id="cb383-4"><a href="#cb383-4"></a><span class="kw">barplot</span>(<span class="kw">table</span>(iris[, <span class="dv">5</span>]))</span>
+<span id="cb383-5"><a href="#cb383-5"></a><span class="kw">stripchart</span>(iris, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-93-1.png" width="768" /></p>
+</div>
+<div id="exemple-3" class="section level3">
+<h3>Exemple 3</h3>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb384-1"><a href="#cb384-1"></a>M =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">ncol =</span> <span class="dv">10</span>)</span>
+<span id="cb384-2"><a href="#cb384-2"></a><span class="kw">image</span>(M)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-94-1.png" width="768" /></p>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb385-1"><a href="#cb385-1"></a>x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="dt">length =</span> <span class="dv">30</span>)</span>
+<span id="cb385-2"><a href="#cb385-2"></a>y =<span class="st"> </span>x</span>
+<span id="cb385-3"><a href="#cb385-3"></a>f =<span class="st"> </span><span class="cf">function</span>(x, y) {</span>
+<span id="cb385-4"><a href="#cb385-4"></a>    r =<span class="st"> </span><span class="kw">sqrt</span>(x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>y<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb385-5"><a href="#cb385-5"></a>    <span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="kw">sin</span>(r)<span class="op">/</span>r</span>
+<span id="cb385-6"><a href="#cb385-6"></a>}</span>
+<span id="cb385-7"><a href="#cb385-7"></a>z =<span class="st"> </span><span class="kw">outer</span>(x, y, f)</span>
+<span id="cb385-8"><a href="#cb385-8"></a>z[<span class="kw">is.na</span>(z)] =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb385-9"><a href="#cb385-9"></a><span class="kw">persp</span>(x, y, z)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-95-1.png" width="768" /></p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb386-1"><a href="#cb386-1"></a><span class="kw">persp</span>(x, y, z, <span class="dt">theta =</span> <span class="dv">30</span>, <span class="dt">phi =</span> <span class="dv">30</span>, <span class="dt">expand =</span> <span class="fl">0.5</span>, <span class="dt">col =</span> <span class="st">&quot;lightblue&quot;</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-95-2.png" width="768" /></p>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb387-1"><a href="#cb387-1"></a><span class="kw">image</span>(x, y, z)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-95-3.png" width="768" /></p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb388-1"><a href="#cb388-1"></a><span class="kw">contour</span>(x, y, z)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-95-4.png" width="768" /></p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb389-1"><a href="#cb389-1"></a><span class="kw">filled.contour</span>(x, y, z)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-95-5.png" width="768" /></p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb390-1"><a href="#cb390-1"></a><span class="kw">image</span>(x, y, z)</span>
+<span id="cb390-2"><a href="#cb390-2"></a><span class="kw">contour</span>(x, y, z, <span class="dt">add =</span> T)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-95-6.png" width="768" /></p>
+</div>
+</div>
+<div id="exercices" class="section level2 tabset">
+<h2>Exercices</h2>
+<div id="enoncé-1-1" class="section level3">
+<h3>Enoncé 1</h3>
+<ol style="list-style-type: decimal">
+<li>Tracer la fonction arctangente entre <span class="math inline">\(-10\)</span> et <span class="math inline">\(10\)</span></li>
+<li>Ajouter les deux asymptotes en <span class="math inline">\(-\infty\)</span> et <span class="math inline">\(+\infty\)</span> en bleu</li>
+<li>Ajouter les points sur la courbe pour <span class="math inline">\(x=-\pi\)</span>, <span class="math inline">\(0\)</span> et <span class="math inline">\(\pi\)</span> en vert</li>
+<li>Ajouter la tangente en zéro en pointillés rouge</li>
+</ol>
+</div>
+<div id="enoncé-2-1" class="section level3">
+<h3>Enoncé 2</h3>
+<ol style="list-style-type: decimal">
+<li>Charger les données “airquality” disponible sous R à l’aide de <code>data()</code></li>
+<li>Utiliser la commande <code>pairs()</code> pour visualiser variable contre variable</li>
+<li>Créer une fenêtre graphique contenant les boxplots des 4 premières variables, l’histogramme de la variable Ozone, le graphique en camembert de la variable Month, et le graphique représentant la variable Wind contre la variable Ozone avec une couleur par mois et une légende.</li>
+</ol>
+</div>
+<div id="enoncé-3-1" class="section level3">
+<h3>Enoncé 3</h3>
+<p>Saurez-vous tracer la “tête à Toto” ?</p>
+<p><img src="image/toto.png" id="id" class="class" style="width:30.0%" /></p>
+</div>
+<div id="correction-4" class="section level3">
+<h3>Correction</h3>
+<p>Exercice 1 :</p>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb391-1"><a href="#cb391-1"></a>x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="fl">0.01</span>)</span>
+<span id="cb391-2"><a href="#cb391-2"></a><span class="kw">plot</span>(x, <span class="kw">atan</span>(x), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span>pi<span class="op">/</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.2</span>, pi<span class="op">/</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.2</span>))</span>
+<span id="cb391-3"><a href="#cb391-3"></a><span class="kw">abline</span>(<span class="dt">h =</span> pi<span class="op">/</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb391-4"><a href="#cb391-4"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="op">-</span>pi<span class="op">/</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb391-5"><a href="#cb391-5"></a><span class="kw">points</span>(<span class="kw">c</span>(<span class="op">-</span>pi, <span class="dv">0</span>, pi), <span class="kw">c</span>(<span class="kw">atan</span>(<span class="op">-</span>pi), <span class="dv">0</span>, <span class="kw">atan</span>(pi)), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb391-6"><a href="#cb391-6"></a><span class="kw">lines</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-96-1.png" width="768" /></p>
+<p>Exercice 2 :</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb392-1"><a href="#cb392-1"></a><span class="co"># Question 1</span></span>
+<span id="cb392-2"><a href="#cb392-2"></a><span class="kw">data</span>(airquality)</span>
+<span id="cb392-3"><a href="#cb392-3"></a><span class="kw">head</span>(airquality)</span></code></pre></div>
+<pre><code>  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6</code></pre>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb394-1"><a href="#cb394-1"></a><span class="co"># Question 2</span></span>
+<span id="cb394-2"><a href="#cb394-2"></a><span class="kw">pairs</span>(airquality)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-97-1.png" width="768" /></p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb395-1"><a href="#cb395-1"></a><span class="co"># Question 3</span></span>
+<span id="cb395-2"><a href="#cb395-2"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb395-3"><a href="#cb395-3"></a><span class="kw">boxplot</span>(airquality[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</span>
+<span id="cb395-4"><a href="#cb395-4"></a><span class="kw">pie</span>(<span class="kw">table</span>(airquality[, <span class="st">&quot;Month&quot;</span>]))</span>
+<span id="cb395-5"><a href="#cb395-5"></a><span class="kw">plot</span>(airquality<span class="op">$</span>Ozone, airquality<span class="op">$</span>Wind, <span class="dt">col =</span> airquality<span class="op">$</span>Month, <span class="dt">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb395-6"><a href="#cb395-6"></a><span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="dt">legend =</span> <span class="kw">unique</span>(airquality<span class="op">$</span>Month), <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(airquality<span class="op">$</span>Month),</span>
+<span id="cb395-7"><a href="#cb395-7"></a>    <span class="dt">pch =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-97-2.png" width="768" /></p>
+<p>Exercice 3 :</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb396-1"><a href="#cb396-1"></a><span class="kw">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">15</span>, <span class="dv">15</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">15</span>, <span class="dv">15</span>), <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">axes =</span> <span class="ot">FALSE</span>, <span class="dt">xlab =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb396-2"><a href="#cb396-2"></a>    <span class="dt">ylab =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb396-3"><a href="#cb396-3"></a><span class="kw">points</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dt">pch =</span> <span class="st">&quot;+&quot;</span>, <span class="dt">cex =</span> <span class="dv">4</span>)</span>
+<span id="cb396-4"><a href="#cb396-4"></a><span class="kw">points</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>), <span class="dt">pch =</span> <span class="st">&quot;O&quot;</span>, <span class="dt">cex =</span> <span class="dv">4</span>)</span>
+<span id="cb396-5"><a href="#cb396-5"></a><span class="kw">lines</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">-5</span>), <span class="dt">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb396-6"><a href="#cb396-6"></a><span class="kw">lines</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">6</span>, <span class="dv">-6</span>), <span class="dt">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb396-7"><a href="#cb396-7"></a><span class="kw">lines</span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="kw">sin</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">360</span> <span class="op">*</span><span class="st"> </span>pi<span class="op">/</span><span class="dv">180</span>), <span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="kw">cos</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">360</span> <span class="op">*</span><span class="st"> </span>pi<span class="op">/</span><span class="dv">180</span>), <span class="dt">lwd =</span> <span class="dv">5</span>)</span>
+<span id="cb396-8"><a href="#cb396-8"></a><span class="co"># En option, le chapeau</span></span>
+<span id="cb396-9"><a href="#cb396-9"></a><span class="kw">lines</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">12</span>, <span class="dv">12</span>), <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">10</span>), <span class="dt">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb396-10"><a href="#cb396-10"></a><span class="kw">rect</span>(<span class="op">-</span><span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">14</span>, <span class="dt">border =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">3</span>, <span class="dt">col =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Part2-InitR_files/figure-html/unnamed-chunk-98-1.png" width="768" /></p>
+</div>
+</div>
+<div id="exportation-de-graphiques" class="section level2">
+<h2>Exportation de graphiques</h2>
+<p>Dans l’environnement Windows, une première solution consiste à copier le graphique (menu <code>Fichier &gt; Copier</code> vers le presse-papier). Le graphique ainsi placé dans le presse-papier peut ensuite être collé dans le logiciel de son choix.</p>
+<p>Pour sauvegarder le graphique dans un fichier, on utilisera dans le menu <strong>Fichier</strong> la rubrique <strong>Sauver sous</strong>. Plusieurs formats sont disponibles : vectoriel (métafichier), postscript, pdf, png, bmp, jpeg.</p>
+<p>Une autre façon de procéder est d’utiliser les fonctions associées à la sauvegarde de fichiers graphiques : <code>bmp()</code>, <code>jpeg()</code>, <code>png()</code>, <code>pdf()</code>, <code>postscript()</code>.</p>
+<p>Cette procédure est également utile en environnement Windows lorsque l’on souhaite sauver un graphique tracé lors du déroulement d’une fonction.</p>
+<p>On peut également utiliser la commande <code>dev.print(...)</code> pour sauvegarder une figure en pdf ou eps.</p>
+</div>
+</div>
+<div id="secProg" class="section level1">
+<h1>Programmation</h1>
+<p>Cette partie est consacrée à la création des fonctions, les instructions de contrôle, la syntaxe des itérations et la fonction <code>apply()</code> (et ses dérivées).</p>
+<div id="créer-une-fonction" class="section level2">
+<h2>Créer une fonction</h2>
+<p>Il est possible sous R de construire ses propres fonctions. Il est conseillé d’écrire sa fonction dans un fichier <code>nomfonction.R</code>, puis dans la console, de charger la fonction grâce à la commande <code>&gt;source("nomfonction.R")</code> et de l’utiliser. On peut également écrire directement la fonction dans la console. De manière générale, la définition d’une nouvelle fonction passe par l’expression suivante :</p>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb397-1"><a href="#cb397-1"></a>nomfonction=<span class="cf">function</span>(arg1[=exp1],arg2[=exp2],...){</span>
+<span id="cb397-2"><a href="#cb397-2"></a>    bloc d instructions</span>
+<span id="cb397-3"><a href="#cb397-3"></a>    sortie =<span class="st"> </span>...</span>
+<span id="cb397-4"><a href="#cb397-4"></a>    <span class="kw">return</span>(sortie)</span>
+<span id="cb397-5"><a href="#cb397-5"></a>}</span></code></pre></div>
+<p>Les accolades signalent le début et la fin du code source de la fonction, les crochets indiquent le caractère facultatif des valeurs par défaut des arguments. L’objet <em>sortie</em> contient le ou les résultats retournés par la fonction, on peut en particulier utiliser une liste pour retourner plusieurs résultats.</p>
+<div id="exemples-4" class="section level3 tabset">
+<h3>Exemples</h3>
+<div id="exemple-1-1" class="section level4">
+<h4>Exemple 1</h4>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb398-1"><a href="#cb398-1"></a>MaFonction =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb398-2"><a href="#cb398-2"></a>    x <span class="op">+</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb398-3"><a href="#cb398-3"></a>}</span>
+<span id="cb398-4"><a href="#cb398-4"></a>MaFonction</span></code></pre></div>
+<pre><code>function(x) {
+    x + 2
+}</code></pre>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb400-1"><a href="#cb400-1"></a><span class="kw">MaFonction</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] 5</code></pre>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb402-1"><a href="#cb402-1"></a>x =<span class="st"> </span><span class="kw">MaFonction</span>(<span class="dv">4</span>)</span>
+<span id="cb402-2"><a href="#cb402-2"></a>x</span></code></pre></div>
+<pre><code>[1] 6</code></pre>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb404-1"><a href="#cb404-1"></a>Fonction2 =<span class="st"> </span><span class="cf">function</span>(a, <span class="dt">b =</span> <span class="dv">7</span>) {</span>
+<span id="cb404-2"><a href="#cb404-2"></a>    a <span class="op">+</span><span class="st"> </span>b</span>
+<span id="cb404-3"><a href="#cb404-3"></a>}</span>
+<span id="cb404-4"><a href="#cb404-4"></a><span class="kw">Fonction2</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] 5</code></pre>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb406-1"><a href="#cb406-1"></a><span class="kw">Fonction2</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>[1] 12</code></pre>
+</div>
+<div id="exemple-2-1" class="section level4">
+<h4>Exemple 2</h4>
+<p>Fonction retournant le périmètre et la surface d’un cercle à partir de son rayon :</p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb408-1"><a href="#cb408-1"></a>CalculsCercle =<span class="st"> </span><span class="cf">function</span>(r) {</span>
+<span id="cb408-2"><a href="#cb408-2"></a>    p =<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">*</span><span class="st"> </span>r</span>
+<span id="cb408-3"><a href="#cb408-3"></a>    s =<span class="st"> </span>pi <span class="op">*</span><span class="st"> </span>r <span class="op">*</span><span class="st"> </span>r</span>
+<span id="cb408-4"><a href="#cb408-4"></a>    resultats =<span class="st"> </span><span class="kw">list</span>(<span class="dt">perimetre =</span> p, <span class="dt">surface =</span> s)</span>
+<span id="cb408-5"><a href="#cb408-5"></a>    <span class="kw">return</span>(resultats)</span>
+<span id="cb408-6"><a href="#cb408-6"></a>}</span>
+<span id="cb408-7"><a href="#cb408-7"></a>res =<span class="st"> </span><span class="kw">CalculsCercle</span>(<span class="dv">3</span>)</span>
+<span id="cb408-8"><a href="#cb408-8"></a>res</span></code></pre></div>
+<pre><code>$perimetre
+[1] 18.84956
+
+$surface
+[1] 28.27433</code></pre>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb410-1"><a href="#cb410-1"></a>res<span class="op">$</span>surf</span></code></pre></div>
+<pre><code>[1] 28.27433</code></pre>
+</div>
+</div>
+<div id="exercice-4" class="section level3 tabset">
+<h3>Exercice :</h3>
+<div id="enoncé-4" class="section level4">
+<h4>Enoncé</h4>
+<ol style="list-style-type: decimal">
+<li><p>Construire une fonction qui prend en argument deux réels x et y et qui retourne l’arrondi à 3 chiffres après la virgule de <span class="math inline">\(x^2 + y\)</span>. Vous pouvez vous aider de la fonction <code>round()</code>.</p></li>
+<li><p>Construire une fonction qui permet de calculer la densité de probabilité d’une loi normale de moyenne <span class="math inline">\(m\)</span> et d’écart-type <span class="math inline">\(s\)</span> au point <span class="math inline">\(x\)</span>.</p></li>
+</ol>
+</div>
+<div id="correction-5" class="section level4">
+<h4>Correction</h4>
+<p>Question 1</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb412-1"><a href="#cb412-1"></a>arrond =<span class="st"> </span><span class="cf">function</span>(x, y) {</span>
+<span id="cb412-2"><a href="#cb412-2"></a>    s =<span class="st"> </span><span class="kw">round</span>((x<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>y, <span class="dv">3</span>)</span>
+<span id="cb412-3"><a href="#cb412-3"></a>    <span class="kw">return</span>(s)</span>
+<span id="cb412-4"><a href="#cb412-4"></a>}</span>
+<span id="cb412-5"><a href="#cb412-5"></a><span class="kw">arrond</span>(<span class="fl">1.23456</span>, <span class="fl">9.8765</span>)</span></code></pre></div>
+<pre><code>[1] 11.401</code></pre>
+<p>Question 2</p>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb414-1"><a href="#cb414-1"></a>densitegauss =<span class="st"> </span><span class="cf">function</span>(m, sigma, x) {</span>
+<span id="cb414-2"><a href="#cb414-2"></a>    f =<span class="st"> </span>(<span class="dv">1</span><span class="op">/</span>(<span class="kw">sqrt</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi) <span class="op">*</span><span class="st"> </span>sigma)) <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>((x <span class="op">-</span><span class="st"> </span>m)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>sigma<span class="op">^</span><span class="dv">2</span>))</span>
+<span id="cb414-3"><a href="#cb414-3"></a>    <span class="kw">return</span>(f)</span>
+<span id="cb414-4"><a href="#cb414-4"></a>}</span>
+<span id="cb414-5"><a href="#cb414-5"></a><span class="kw">densitegauss</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.2</span>)</span></code></pre></div>
+<pre><code>[1] 0.1984763</code></pre>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb416-1"><a href="#cb416-1"></a><span class="kw">dnorm</span>(<span class="fl">1.2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>[1] 0.1984763</code></pre>
+</div>
+</div>
+</div>
+<div id="structures-de-contrôle-et-itérations" class="section level2">
+<h2>Structures de contrôle et itérations</h2>
+<div id="instructions-conditionnelles" class="section level3">
+<h3>Instructions conditionnelles</h3>
+<p>La syntaxe <code>if(condition){instructions}</code> permet de calculer les instructions uniquement si la condition est vraie. Le code <code>if(condition){ A }else { B }</code> calcule les instructions A si la condition est vraie et les instructions B sinon. On peut également utiliser <code>ifelse</code>.</p>
+<p>Dans l’exemple suivant, les deux commandes sont équivalentes :</p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb418-1"><a href="#cb418-1"></a><span class="cf">if</span> (x <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb418-2"><a href="#cb418-2"></a>    y =<span class="st"> </span>x <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(x)</span>
+<span id="cb418-3"><a href="#cb418-3"></a>} <span class="cf">else</span> {</span>
+<span id="cb418-4"><a href="#cb418-4"></a>    y =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb418-5"><a href="#cb418-5"></a>}</span>
+<span id="cb418-6"><a href="#cb418-6"></a>y =<span class="st"> </span><span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, x <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(x), <span class="dv">0</span>)</span></code></pre></div>
+<div id="exercice-5" class="section level4 tabset">
+<h4>Exercice</h4>
+<div id="enoncé-5" class="section level5">
+<h5>Enoncé</h5>
+<!--
+- Sans utiliser l'opérateur `\%*\%`, écrire une fonction *prod.mat* qui effectuera le produit matriciel de deux matrices seulement si les dimensions de celles-ci le permettent. Cette fonction aura deux arguments (mat1 et mat2) et devra tout d'abord vérifier si le produit matriciel est possible. Si celui-ci est impossible,
+la fonction retourne un message d'erreur. Comparer le résultat avec l'opérateur `\%*\%`.
+-->
+<p>Soit <span class="math inline">\(X\)</span> une variable aléatoire de loi de Poisson de paramètre <span class="math inline">\(\lambda=2\)</span>. Écrire une fonction qui prend en argument un réel <span class="math inline">\(x\)</span> et qui retourne la probabilité que <span class="math inline">\(X\)</span> soit égal à <span class="math inline">\(x\)</span>.</p>
+</div>
+<div id="correction-6" class="section level5">
+<h5>Correction</h5>
+<p>Question 1</p>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb419-1"><a href="#cb419-1"></a>Poiss =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb419-2"><a href="#cb419-2"></a>    p =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb419-3"><a href="#cb419-3"></a>    <span class="cf">if</span> ((x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) <span class="op">&amp;</span><span class="st"> </span>(<span class="kw">round</span>(x) <span class="op">==</span><span class="st"> </span>x)) {</span>
+<span id="cb419-4"><a href="#cb419-4"></a>        p =<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="dv">2</span>) <span class="op">*</span><span class="st"> </span>(<span class="dv">2</span><span class="op">^</span>x)<span class="op">/</span>(<span class="kw">factorial</span>(x))</span>
+<span id="cb419-5"><a href="#cb419-5"></a>    } <span class="cf">else</span> {</span>
+<span id="cb419-6"><a href="#cb419-6"></a>        <span class="kw">print</span>(<span class="st">&quot;x n&#39;est pas un entier&quot;</span>)</span>
+<span id="cb419-7"><a href="#cb419-7"></a>    }</span>
+<span id="cb419-8"><a href="#cb419-8"></a>    <span class="kw">return</span>(p)</span>
+<span id="cb419-9"><a href="#cb419-9"></a>}</span>
+<span id="cb419-10"><a href="#cb419-10"></a></span>
+<span id="cb419-11"><a href="#cb419-11"></a><span class="kw">Poiss</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] 0.180447</code></pre>
+<div class="sourceCode" id="cb421"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb421-1"><a href="#cb421-1"></a><span class="kw">dpois</span>(<span class="dv">3</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>[1] 0.180447</code></pre>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb423-1"><a href="#cb423-1"></a><span class="kw">Poiss</span>(<span class="fl">1.5</span>)</span></code></pre></div>
+<pre><code>[1] &quot;x n&#39;est pas un entier&quot;</code></pre>
+<pre><code>NULL</code></pre>
+</div>
+</div>
+</div>
+<div id="itérations" class="section level3">
+<h3>Itérations</h3>
+<p>On utilise les boucles pour exécuter plusieurs fois une instruction ou un bloc d’instructions. Les trois types de boucle sont :</p>
+<ul>
+<li>la boucle <strong>for</strong> : <code>for(var in seq){ commandes }</code></li>
+<li>la boucle <strong>while</strong> : <code>while(cond){ commandes }</code></li>
+<li>la boucle <strong>repeat</strong> : <code>repeat { commandes ; if (cond) break }</code></li>
+</ul>
+<p>Dans une boucle <strong>for</strong>, le nombre d’itérations est fixe alors qu’il peut être infini pour les boucles <strong>while</strong> et <strong>repeat</strong> !</p>
+<div id="exemples-5" class="section level4 tabset">
+<h4>Exemples</h4>
+<p>Pour illustrer les trois types de boucle, on a codé de trois façons différentes la somme des éléments d’un vecteur <code>x</code> ce qui correspond à la fonction <code>sum()</code> de R.</p>
+<div id="exemple-for" class="section level5">
+<h5>Exemple <code>for()</code></h5>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb426-1"><a href="#cb426-1"></a>somme1 =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb426-2"><a href="#cb426-2"></a>    t =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb426-3"><a href="#cb426-3"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) t =<span class="st"> </span>t <span class="op">+</span><span class="st"> </span>x[i]</span>
+<span id="cb426-4"><a href="#cb426-4"></a>    <span class="kw">return</span>(t)</span>
+<span id="cb426-5"><a href="#cb426-5"></a>}</span>
+<span id="cb426-6"><a href="#cb426-6"></a></span>
+<span id="cb426-7"><a href="#cb426-7"></a>x =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</span>
+<span id="cb426-8"><a href="#cb426-8"></a><span class="kw">somme1</span>(x)</span></code></pre></div>
+<pre><code>[1] 55</code></pre>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb428-1"><a href="#cb428-1"></a><span class="kw">sum</span>(x)</span></code></pre></div>
+<pre><code>[1] 55</code></pre>
+</div>
+<div id="exemple-while" class="section level5">
+<h5>Exemple <code>while()</code></h5>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb430-1"><a href="#cb430-1"></a>somme2 =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb430-2"><a href="#cb430-2"></a>    t =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb430-3"><a href="#cb430-3"></a>    i =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb430-4"><a href="#cb430-4"></a>    <span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(x)) {</span>
+<span id="cb430-5"><a href="#cb430-5"></a>        t =<span class="st"> </span>t <span class="op">+</span><span class="st"> </span>x[i]</span>
+<span id="cb430-6"><a href="#cb430-6"></a>        i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb430-7"><a href="#cb430-7"></a>    }</span>
+<span id="cb430-8"><a href="#cb430-8"></a>    <span class="kw">return</span>(t)</span>
+<span id="cb430-9"><a href="#cb430-9"></a>}</span>
+<span id="cb430-10"><a href="#cb430-10"></a>x =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</span>
+<span id="cb430-11"><a href="#cb430-11"></a><span class="kw">somme2</span>(x)</span></code></pre></div>
+<pre><code>[1] 55</code></pre>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb432-1"><a href="#cb432-1"></a><span class="kw">sum</span>(x)</span></code></pre></div>
+<pre><code>[1] 55</code></pre>
+</div>
+<div id="exemple-repeat" class="section level5">
+<h5>Exemple <code>repeat()</code></h5>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb434-1"><a href="#cb434-1"></a>somme3 =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb434-2"><a href="#cb434-2"></a>    t =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb434-3"><a href="#cb434-3"></a>    i =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb434-4"><a href="#cb434-4"></a>    <span class="cf">repeat</span> {</span>
+<span id="cb434-5"><a href="#cb434-5"></a>        t =<span class="st"> </span>t <span class="op">+</span><span class="st"> </span>x[i]</span>
+<span id="cb434-6"><a href="#cb434-6"></a>        i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb434-7"><a href="#cb434-7"></a>        <span class="cf">if</span> (i <span class="op">&gt;</span><span class="st"> </span><span class="kw">length</span>(x))</span>
+<span id="cb434-8"><a href="#cb434-8"></a>            <span class="cf">break</span></span>
+<span id="cb434-9"><a href="#cb434-9"></a>    }</span>
+<span id="cb434-10"><a href="#cb434-10"></a>    <span class="kw">return</span>(t)</span>
+<span id="cb434-11"><a href="#cb434-11"></a>}</span>
+<span id="cb434-12"><a href="#cb434-12"></a></span>
+<span id="cb434-13"><a href="#cb434-13"></a>x =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</span>
+<span id="cb434-14"><a href="#cb434-14"></a><span class="kw">somme3</span>(x)</span></code></pre></div>
+<pre><code>[1] 55</code></pre>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb436-1"><a href="#cb436-1"></a><span class="kw">sum</span>(x)</span></code></pre></div>
+<pre><code>[1] 55</code></pre>
+</div>
+</div>
+<div id="exercice-6" class="section level4 tabset">
+<h4>Exercice</h4>
+<div id="enoncé-6" class="section level5">
+<h5>Enoncé</h5>
+<ol style="list-style-type: decimal">
+<li>Écrire une fonction <em>ma.variance</em> qui calcule la variance empirique corrigée pour un vecteur <span class="math inline">\(x = (x_1, . . . , x_n)\)</span>. Comparer avec la fonction prédéfinie <code>var()</code>.</li>
+<li>Écrire une fonction qui calcule les <span class="math inline">\(n\)</span> premiers termes de la suite de Fibonacci (<span class="math inline">\(u_1=0, u_2=1, \forall n&gt;2, u_n=u_{n-1}+u_{n-2}\)</span>)</li>
+<li>Ecrire une fonction qui prend en entrée un entier <span class="math inline">\(x\)</span> et retourne sa factorielle <span class="math inline">\(x!\)</span> avec une boucle <em>for()</em> puis avec une boucle <em>while()</em>.</li>
+</ol>
+</div>
+<div id="correction-7" class="section level5">
+<h5>Correction</h5>
+<p>Question 1</p>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb438-1"><a href="#cb438-1"></a>ma.variance =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb438-2"><a href="#cb438-2"></a>    v =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb438-3"><a href="#cb438-3"></a>    m =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb438-4"><a href="#cb438-4"></a>    n =<span class="st"> </span><span class="kw">length</span>(x)</span>
+<span id="cb438-5"><a href="#cb438-5"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
+<span id="cb438-6"><a href="#cb438-6"></a>        v =<span class="st"> </span>v <span class="op">+</span><span class="st"> </span>x[i]<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb438-7"><a href="#cb438-7"></a>        m =<span class="st"> </span>m <span class="op">+</span><span class="st"> </span>x[i]</span>
+<span id="cb438-8"><a href="#cb438-8"></a>    }</span>
+<span id="cb438-9"><a href="#cb438-9"></a>    vv =<span class="st"> </span>(v <span class="op">-</span><span class="st"> </span>((m<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>n))<span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb438-10"><a href="#cb438-10"></a>    <span class="kw">return</span>(vv)</span>
+<span id="cb438-11"><a href="#cb438-11"></a>}</span>
+<span id="cb438-12"><a href="#cb438-12"></a></span>
+<span id="cb438-13"><a href="#cb438-13"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb438-14"><a href="#cb438-14"></a><span class="kw">ma.variance</span>(x)</span></code></pre></div>
+<pre><code>[1] 5.248936</code></pre>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb440-1"><a href="#cb440-1"></a><span class="kw">var</span>(x)</span></code></pre></div>
+<pre><code>[1] 5.248936</code></pre>
+<p>Question 2</p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb442-1"><a href="#cb442-1"></a>fibo =<span class="st"> </span><span class="cf">function</span>(n) {</span>
+<span id="cb442-2"><a href="#cb442-2"></a>    res =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb442-3"><a href="#cb442-3"></a>    res[<span class="dv">1</span>] =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb442-4"><a href="#cb442-4"></a>    res[<span class="dv">2</span>] =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb442-5"><a href="#cb442-5"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">3</span><span class="op">:</span>n) {</span>
+<span id="cb442-6"><a href="#cb442-6"></a>        res[i] =<span class="st"> </span>res[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>res[i <span class="op">-</span><span class="st"> </span><span class="dv">2</span>]</span>
+<span id="cb442-7"><a href="#cb442-7"></a>    }</span>
+<span id="cb442-8"><a href="#cb442-8"></a>    <span class="kw">return</span>(res)</span>
+<span id="cb442-9"><a href="#cb442-9"></a>}</span>
+<span id="cb442-10"><a href="#cb442-10"></a><span class="kw">fibo</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code> [1]  0  1  1  2  3  5  8 13 21 34</code></pre>
+<p>Question 3</p>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb444-1"><a href="#cb444-1"></a>facto1 =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb444-2"><a href="#cb444-2"></a>    res =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb444-3"><a href="#cb444-3"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>x) {</span>
+<span id="cb444-4"><a href="#cb444-4"></a>        res =<span class="st"> </span>res <span class="op">*</span><span class="st"> </span>i</span>
+<span id="cb444-5"><a href="#cb444-5"></a>    }</span>
+<span id="cb444-6"><a href="#cb444-6"></a>    <span class="kw">return</span>(res)</span>
+<span id="cb444-7"><a href="#cb444-7"></a>}</span>
+<span id="cb444-8"><a href="#cb444-8"></a></span>
+<span id="cb444-9"><a href="#cb444-9"></a>facto2 =<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb444-10"><a href="#cb444-10"></a>    res =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb444-11"><a href="#cb444-11"></a>    <span class="cf">while</span> (x <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb444-12"><a href="#cb444-12"></a>        res =<span class="st"> </span>res <span class="op">*</span><span class="st"> </span>x</span>
+<span id="cb444-13"><a href="#cb444-13"></a>        x =<span class="st"> </span>x <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb444-14"><a href="#cb444-14"></a>    }</span>
+<span id="cb444-15"><a href="#cb444-15"></a>    <span class="kw">return</span>(res)</span>
+<span id="cb444-16"><a href="#cb444-16"></a>}</span>
+<span id="cb444-17"><a href="#cb444-17"></a></span>
+<span id="cb444-18"><a href="#cb444-18"></a><span class="kw">factorial</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>[1] 120</code></pre>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb446-1"><a href="#cb446-1"></a><span class="kw">facto1</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>[1] 120</code></pre>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb448-1"><a href="#cb448-1"></a><span class="kw">facto2</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>[1] 120</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="apply-et-ses-variantes" class="section level2">
+<h2><code>apply()</code> et ses variantes</h2>
+<p>Il est recommandé d’éviter les boucles très chronophages. On peut utiliser pour cela la fonction <code>apply()</code> et ses variantes <code>sapply()</code>, <code>lapply()</code>, <code>tapply()</code> sur des vecteurs ou matrices.</p>
+<p>La fonction <code>apply()</code> permet d’appliquer la même fonction <em>FUN</em> sur toutes les lignes <em>(MARGIN=1)</em> ou les colonnes <em>(MARGIN=2)</em> d’une matrice <em>MAT</em> : <code>apply(MAT , MARGIN, FUN)</code>.</p>
+<p>Les fonctions <code>lapply()</code> et <code>sapply()</code> calculent la même fonction sur tous les éléments d’un vecteur ou d’une liste. La commande <code>lapply(X,FUN, ARG.COMMUN)</code> permet d’appliquer la fonction <em>FUN</em> à tous les éléments du vecteur ou de la liste <em>X</em>. Les valeurs de <em>X</em> sont affectées au premier argument de la fonction <em>FUN</em>. Si la fonction <em>FUN</em> a plusieurs paramètres d’entrée, ils sont spécifiés dans <em>ARG.COMMUN</em>. Cette fonction retourne le résultat sous la forme de listes. <code>sapply()</code> est une fonction similaire à <code>lapply()</code> mais le résultat est retourné sous forme de vecteurs, si possible.</p>
+<p>La fonction <code>tapply()</code> applique une fonction <em>FUN</em> sur les sous-groupes d’un vecteur <em>X</em> définis par une variable de type factor <em>GRP</em> : <code>tapply(X,GRP,FUN,...)</code>.</p>
+<div id="exemples-6" class="section level3">
+<h3>Exemples</h3>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb450-1"><a href="#cb450-1"></a><span class="kw">data</span>(iris)</span>
+<span id="cb450-2"><a href="#cb450-2"></a><span class="kw">head</span>(iris)</span></code></pre></div>
+<pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb452-1"><a href="#cb452-1"></a><span class="kw">apply</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">2</span>, mean)</span></code></pre></div>
+<pre><code>Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+    5.843333     3.057333     3.758000     1.199333 </code></pre>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb454-1"><a href="#cb454-1"></a><span class="kw">apply</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">1</span>, mean)</span></code></pre></div>
+<pre><code> [1] 2.550 2.375 2.350 2.350 2.550 2.850 2.425 2.525 2.225 2.400 2.700 2.500
+[13] 2.325 2.125 2.800 3.000 2.750 2.575 2.875 2.675 2.675 2.675 2.350 2.650
+[25] 2.575 2.450 2.600 2.600 2.550 2.425 2.425 2.675 2.725 2.825 2.425 2.400
+[37] 2.625 2.500 2.225 2.550 2.525 2.100 2.275 2.675 2.800 2.375 2.675 2.350
+[49] 2.675 2.475 4.075 3.900 4.100 3.275 3.850 3.575 3.975 2.900 3.850 3.300
+[61] 2.875 3.650 3.300 3.775 3.350 3.900 3.650 3.400 3.600 3.275 3.925 3.550
+[73] 3.800 3.700 3.725
+ [ reached getOption(&quot;max.print&quot;) -- omitted 75 entries ]</code></pre>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb456-1"><a href="#cb456-1"></a><span class="kw">lapply</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], mean)</span></code></pre></div>
+<pre><code>$Sepal.Length
+[1] 5.843333
+
+$Sepal.Width
+[1] 3.057333
+
+$Petal.Length
+[1] 3.758
+
+$Petal.Width
+[1] 1.199333</code></pre>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb458-1"><a href="#cb458-1"></a><span class="kw">sapply</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], mean)</span></code></pre></div>
+<pre><code>Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+    5.843333     3.057333     3.758000     1.199333 </code></pre>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb460-1"><a href="#cb460-1"></a><span class="kw">tapply</span>(iris[, <span class="dv">1</span>], iris[, <span class="dv">5</span>], mean)</span></code></pre></div>
+<pre><code>    setosa versicolor  virginica 
+     5.006      5.936      6.588 </code></pre>
+</div>
+<div id="exercices-1" class="section level3 tabset">
+<h3>Exercices</h3>
+<div id="enoncé-1-2" class="section level4">
+<h4>Enoncé 1</h4>
+<p>Soit la fonction suivante :</p>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb462-1"><a href="#cb462-1"></a>Exo1 =<span class="st"> </span><span class="cf">function</span>(M) {</span>
+<span id="cb462-2"><a href="#cb462-2"></a>    res =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb462-3"><a href="#cb462-3"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) {</span>
+<span id="cb462-4"><a href="#cb462-4"></a>        tmp =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb462-5"><a href="#cb462-5"></a>        <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>) {</span>
+<span id="cb462-6"><a href="#cb462-6"></a>            tmp =<span class="st"> </span>tmp <span class="op">+</span><span class="st"> </span>M[i, j]</span>
+<span id="cb462-7"><a href="#cb462-7"></a>        }</span>
+<span id="cb462-8"><a href="#cb462-8"></a>        res[i] =<span class="st"> </span>tmp</span>
+<span id="cb462-9"><a href="#cb462-9"></a>    }</span>
+<span id="cb462-10"><a href="#cb462-10"></a>    <span class="kw">return</span>(res)</span>
+<span id="cb462-11"><a href="#cb462-11"></a>}</span>
+<span id="cb462-12"><a href="#cb462-12"></a></span>
+<span id="cb462-13"><a href="#cb462-13"></a>M =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">nrow =</span> <span class="dv">5</span>, <span class="dt">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb462-14"><a href="#cb462-14"></a><span class="kw">Exo1</span>(M)</span></code></pre></div>
+<p>Proposer une fonction équivalente sans aucune boucle.</p>
+</div>
+<div id="enoncé-2-2" class="section level4">
+<h4>Enoncé 2</h4>
+<ol style="list-style-type: decimal">
+<li>Réaliser une liste de <span class="math inline">\(100\)</span> réalisations d’une loi normale <span class="math inline">\(\mathcal{N}(m,1)\)</span> pour <span class="math inline">\(m=-2\)</span>, <span class="math inline">\(0\)</span> et <span class="math inline">\(2\)</span> respectivement en utilisant <code>lapply()</code> et <code>rnorm()</code>.</li>
+<li>Créer un vecteur contenant la moyenne de chaque échantillon de la question 1.</li>
+</ol>
+</div>
+<div id="correction-8" class="section level4">
+<h4>Correction</h4>
+<p>Exercice 1 :</p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb463-1"><a href="#cb463-1"></a>M =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">nrow =</span> <span class="dv">5</span>, <span class="dt">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb463-2"><a href="#cb463-2"></a><span class="kw">apply</span>(M, <span class="dv">1</span>, sum)</span></code></pre></div>
+<pre><code>[1] 34 38 42 46 50</code></pre>
+<p>Exercice 2 :</p>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb465-1"><a href="#cb465-1"></a>x =<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="cf">function</span>(x) {</span>
+<span id="cb465-2"><a href="#cb465-2"></a>    <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dt">mean =</span> x, <span class="dt">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb465-3"><a href="#cb465-3"></a>})</span>
+<span id="cb465-4"><a href="#cb465-4"></a><span class="kw">sapply</span>(x, mean)</span></code></pre></div>
+<pre><code>[1] -2.02603591 -0.02118669  1.99377824</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="entrée-sortie" class="section level1">
+<h1>Entrée / Sortie</h1>
+<div id="importation-dun-jeu-de-données" class="section level2">
+<h2>Importation d’un jeu de données</h2>
+<p>Pour importer un tableau de données contenu dans un fichier texte en un data.frame, on utilise la fonction <code>read.table()</code>. Par exemple, pour un fichier nommé “Tableau.txt”, on utilisera la commande <code>Tab1 = read.table("Tableau.txt")</code> qui crée un data.frame <em>Tab1</em>. Si le fichier n’est pas placé dans le répertoire courant, on pourra spécifier le chemin d’accès de ce dernier directement dans la commande <code>read.table()</code>. Cette dernière admet les options principales suivantes :</p>
+<ul>
+<li><strong>header</strong> : indique si la première ligne contient des noms de variables. Par défaut, la valeur de cette option est FALSE.</li>
+<li><strong>sep</strong> : précise le séparateur de champ dans le fichier entre guillemets (" " par défaut).</li>
+<li><strong>dec</strong> : le caractère utilisé pour les décimales (“.” par défaut).</li>
+<li><strong>row.names</strong> : indique par l’intermédiaire d’un vecteur de mode caractère le nom des lignes (par défaut : 1; 2; 3; : : : ).</li>
+<li><strong>col.names</strong> : idem pour les colonnes.</li>
+<li><strong>na.strings</strong> : précise la valeur des données manquantes. Par défaut, la valeur de cette option est “NA”.</li>
+<li><strong>nrows</strong> : nombre maximum de lignes à lire.</li>
+<li><strong>skip</strong> : nombre de lignes à sauter avant de commencer à lire des données. Cette option est utile quand le fichier texte contient par exemple un préambule.</li>
+<li><strong>blank.lines.skip</strong> : si “TRUE”, ignore les lignes blanches.</li>
+<li><strong>comment.char</strong> : précise le caractère utilisé pour faire des commentaires. Toutes les lignes commençant par ce caractère ne seront pas prises en compte.</li>
+</ul>
+<p>Cette liste d’options n’est pas exhaustive (cf l’aide en ligne <code>help(read.table)</code>) mais permet déjà d’analyser un nombre conséquent de fichiers textes. Les fonctions <code>read.csv()</code> et <code>read.csv2()</code> en sont des cas particuliers, c’est-à-dire avec des options spécifiques (caractère séparateur, marque décimale) adaptées aux fichiers lus / écrits par des tableurs en format <strong>.csv</strong> .</p>
+<div id="exercice-7" class="section level3 tabset">
+<h3>Exercice</h3>
+<div id="enoncé-7" class="section level4">
+<h4>Enoncé</h4>
+<p>Executez les commandes suivantes pour préparer l’exercice.</p>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb467-1"><a href="#cb467-1"></a><span class="kw">data</span>(iris)</span>
+<span id="cb467-2"><a href="#cb467-2"></a><span class="kw">dir.create</span>(<span class="st">&quot;DataAux&quot;</span>)</span>
+<span id="cb467-3"><a href="#cb467-3"></a><span class="kw">write.table</span>(iris, <span class="dt">file =</span> <span class="st">&quot;DataAux/iris1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> F, <span class="dt">col.names =</span> T)</span>
+<span id="cb467-4"><a href="#cb467-4"></a><span class="kw">rownames</span>(iris) =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;indiv&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(iris), <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>)</span>
+<span id="cb467-5"><a href="#cb467-5"></a><span class="kw">write.table</span>(iris, <span class="dt">file =</span> <span class="st">&quot;DataAux/iris2.csv&quot;</span>, <span class="dt">row.names =</span> T, <span class="dt">col.names =</span> F)</span>
+<span id="cb467-6"><a href="#cb467-6"></a><span class="kw">write.table</span>(iris, <span class="dt">file =</span> <span class="st">&quot;DataAux/iris3.txt&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">dec =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;*&quot;</span>)</span></code></pre></div>
+<p>Chargez à l’aide de la fonction <code>read.table()</code> les données <em>iris1.txt</em>, <em>iris2.csv</em> et <em>iris3.txt</em> disponibles dans le dossier <em>DataAux</em>.</p>
+</div>
+<div id="correction-9" class="section level4">
+<h4>Correction</h4>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb468-1"><a href="#cb468-1"></a>iris1 =<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;DataAux/iris1.txt&quot;</span>, <span class="dt">header =</span> T, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>)</span>
+<span id="cb468-2"><a href="#cb468-2"></a><span class="kw">head</span>(iris1)</span></code></pre></div>
+<pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb470-1"><a href="#cb470-1"></a>iris2 =<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;DataAux/iris2.csv&quot;</span>, <span class="dt">header =</span> F, <span class="dt">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb470-2"><a href="#cb470-2"></a><span class="kw">head</span>(iris2)</span></code></pre></div>
+<pre><code>         V2  V3  V4  V5     V6
+indiv-1 5.1 3.5 1.4 0.2 setosa
+indiv-2 4.9 3.0 1.4 0.2 setosa
+indiv-3 4.7 3.2 1.3 0.2 setosa
+indiv-4 4.6 3.1 1.5 0.2 setosa
+indiv-5 5.0 3.6 1.4 0.2 setosa
+indiv-6 5.4 3.9 1.7 0.4 setosa</code></pre>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb472-1"><a href="#cb472-1"></a>iris3 =<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;DataAux/iris3.txt&quot;</span>, <span class="dt">header =</span> T, <span class="dt">row.names =</span> <span class="dv">1</span>, <span class="dt">sep =</span> <span class="st">&quot;*&quot;</span>, <span class="dt">dec =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb472-2"><a href="#cb472-2"></a><span class="kw">head</span>(iris3)</span></code></pre></div>
+<pre><code>        Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+indiv-1          5.1         3.5          1.4         0.2  setosa
+indiv-2          4.9         3.0          1.4         0.2  setosa
+indiv-3          4.7         3.2          1.3         0.2  setosa
+indiv-4          4.6         3.1          1.5         0.2  setosa
+indiv-5          5.0         3.6          1.4         0.2  setosa
+indiv-6          5.4         3.9          1.7         0.4  setosa</code></pre>
+</div>
+</div>
+</div>
+<div id="exportation" class="section level2">
+<h2>Exportation</h2>
+<div id="exportation-en-fichier-texte" class="section level3">
+<h3>Exportation en fichier texte</h3>
+<p>Si maintenant on désire sauvegarder un objet R dans un fichier texte, on peut utiliser la commande <code>write.table()</code>. Les principales options de cette fonction sont :</p>
+<ul>
+<li><strong>file</strong> : nom du fichier dans lequel écrire (vérifier le répertoire courant)</li>
+<li><strong>append</strong> : prend une valeur logique. Si TRUE, R ajoute les données dans le fichier concerné sans effacer les précédentes. La valeur par défaut est FALSE.</li>
+<li><strong>sep</strong> : précise le séparateur à utiliser.</li>
+<li><strong>eol</strong> : caractère de fin de ligne. Par défaut prend la valeur “n” (retour chariot)</li>
+<li><strong>na</strong> : caractère à utiliser pour les données manquantes.</li>
+<li><strong>dec</strong> : précise le caractère à utiliser pour les décimales.</li>
+</ul>
+</div>
+<div id="sauvegarde-.rdata" class="section level3">
+<h3>Sauvegarde <code>.RData</code></h3>
+<p>R permet d’enregistrer des objets entiers, en conservant à la fois les données contenues dans les objets et les structures des objets.</p>
+<p>La fonction <code>save.image()</code> peut être utilisée à tout moment pour enregistrer une image de session, c’est à dire l’ensemble des objets dans l’environnement de travail d’une session R. La sauvegarde d’une image de la session vous est également proposée lors de la fermeture de R.</p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb474-1"><a href="#cb474-1"></a><span class="kw">save.image</span>(<span class="dt">file =</span> <span class="st">&quot;eximage.RData&quot;</span>)</span></code></pre></div>
+<p>La fonction <code>save()</code> permet d’enregistrer spécifiquement un ou des objets dans un fichier de format <em>.RData</em>. Ce fichier peut être à tout moment rechargé sous R avec la fonction <code>load()</code>. Voici un exemple :</p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb475-1"><a href="#cb475-1"></a>x &lt;-<span class="st"> </span>stats<span class="op">::</span><span class="kw">runif</span>(<span class="dv">20</span>)</span>
+<span id="cb475-2"><a href="#cb475-2"></a>y &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="ot">TRUE</span>, <span class="dt">c =</span> <span class="st">&quot;oops&quot;</span>)</span>
+<span id="cb475-3"><a href="#cb475-3"></a><span class="kw">save</span>(x, y, <span class="dt">file =</span> <span class="st">&quot;xy.RData&quot;</span>)</span>
+<span id="cb475-4"><a href="#cb475-4"></a><span class="kw">load</span>(<span class="st">&quot;xy.RData&quot;</span>)</span></code></pre></div>
+<p>On peut aussi enregistrer un seul objet, sans inclure le nom de l’objet, à l’aide de la fonction <code>saveRDS()</code>. L’objet, sauvegardé au format <em>.rds</em> peut être rechargé avec la fonction <code>readRDS()</code>.</p>
+<!--
+### Exercice {.tabset}
+
+#### Enoncé
+- Exporter les tableaux de données créés dans la Section ??? vers un fichier texte.
+- A partir du fichier *population.txt*, créer un fichier texte contenant uniquement la population européenne.
+
+#### Correction
+-->
+<p>Pour plus de détails sur les importations et exportations, se référer au document <a href="https://cran.r-project.org/doc/manuals/r-release/R-data.html" target="_blank">R Data Import/Export</a> disponible sur le CRAN.</p>
+</div>
+</div>
+</div>
+</div>
+
+   
+   
+            
+      
+
+  <script>
+    $(document).ready(function () {
+
+			
+ 		
+		$('#content img:not(.no-lightbox)').addClass("image-lb");
+	$('#content').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+	    delegate: '.image-lb',
+	    gallery: {enabled: true },
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>

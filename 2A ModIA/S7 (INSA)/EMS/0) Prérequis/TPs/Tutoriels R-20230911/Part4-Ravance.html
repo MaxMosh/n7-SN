@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Cathy Maugis-Rabusseau" />
+    
+        <meta name="date" content="2022-07-15" />
+    
+    <title>Pour aller plus loin avec R et RStudio</title>
+
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+    <script src="site_libs/navigation-1.1/tabsets.js"></script>
+    <script src="site_libs/navigation-1.1/codefolding.js"></script>
+    <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+    <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+    <link href="site_libs/readthedown-0.1/readthedown.css" rel="stylesheet" />
+    <link href="site_libs/readthedown-0.1/readthedown_fonts_embed.css" rel="stylesheet" />
+    <script src="site_libs/readthedown-0.1/readthedown.js"></script>
+    <script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+    <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+    <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+    <link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+    
+    
+        <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode { white-space: pre; position: relative; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      code.sourceCode { white-space: pre-wrap; }
+      code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          background-color: #ffffff;
+          color: #a0a0a0;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+      div.sourceCode
+        { color: #1f1c1b; background-color: #ffffff; }
+      @media screen {
+      code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span. { color: #1f1c1b; } /* Normal */
+      code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+      code span.an { color: #ca60ca; } /* Annotation */
+      code span.at { color: #0057ae; } /* Attribute */
+      code span.bn { color: #b08000; } /* BaseN */
+      code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+      code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #924c9d; } /* Char */
+      code span.cn { color: #aa5500; } /* Constant */
+      code span.co { color: #898887; } /* Comment */
+      code span.cv { color: #0095ff; } /* CommentVar */
+      code span.do { color: #607880; } /* Documentation */
+      code span.dt { color: #0057ae; } /* DataType */
+      code span.dv { color: #b08000; } /* DecVal */
+      code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+      code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+      code span.fl { color: #b08000; } /* Float */
+      code span.fu { color: #644a9b; } /* Function */
+      code span.im { color: #ff5500; } /* Import */
+      code span.in { color: #b08000; } /* Information */
+      code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+      code span.op { color: #1f1c1b; } /* Operator */
+      code span.ot { color: #006e28; } /* Other */
+      code span.pp { color: #006e28; } /* Preprocessor */
+      code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+      code span.sc { color: #3daee9; } /* SpecialChar */
+      code span.ss { color: #ff5500; } /* SpecialString */
+      code span.st { color: #bf0303; } /* String */
+      code span.va { color: #0057ae; } /* Variable */
+      code span.vs { color: #bf0303; } /* VerbatimString */
+      code span.wa { color: #bf0303; } /* Warning */
+    </style>
+    
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+        <script>
+      $(document).ready(function () {
+	  	  	  window.initializeCodeFolding("show" === "show");
+	        });
+    </script>
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+            <!-- readthedown start -->   
+   <div id="content" data-toggle="wy-nav-shift">
+     <nav id="nav-top" role="navigation" aria-label="top navigation">
+       <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+     </nav>
+         
+      <div class="btn-group pull-right">
+     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+     <ul class="dropdown-menu" style="min-width: 50px;">
+	    	    <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+	    <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+	    	    	         </ul>
+   </div>
+   
+      
+   <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="index.html">Tutoriels R</a>
+       </div>
+       <div id="navbar" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav">
+           <li>
+     <a href="Part1-Intro.html">Partie 1 - Introduction</a>
+   </li>
+   <li>
+     <a href="Part2-InitR.html">Partie 2 - Bases de R</a>
+   </li>
+   <li>
+     <a href="Part3-StatR.html">Partie 3 - Stat. avec R</a>
+   </li>
+   <li>
+     <a href="Part4-Ravance.html">Partie 4 - Pour aller plus loin</a>
+   </li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           
+         </ul>
+       </div><!--/.nav-collapse -->
+     </div><!--/.container -->
+   </div><!--/.navbar -->
+        
+      <h1 class="title">Pour aller plus loin avec R et RStudio</h1>
+      
+         <!-- readthedown authors -->
+   <div id="sidebar">
+    <h2><a href="#content">Pour aller plus loin avec R et RStudio</a></h2>
+    <div id="toc">
+      <ul>
+      <li><a href="#le-package-tidyverse">Le package <strong>tidyverse</strong> <img src="image/logotidyverse.png" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#principe">Principe</a></li>
+      <li><a href="#manipulation-de-variables-qualitatives-avec-forcats">Manipulation de variables qualitatives avec <code>forcats</code> <img src="image/forcats.jpg" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#section"></a></li>
+      </ul></li>
+      <li><a href="#manipulation-avec-dplyr">Manipulation avec <code>dplyr</code> <img src="image/dplyr.png" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#slice"><code>slice()</code></a></li>
+      <li><a href="#filter"><code>filter()</code></a></li>
+      <li><a href="#select"><code>select()</code></a></li>
+      <li><a href="#arrange"><code>arrange()</code></a></li>
+      <li><a href="#le-pipe">Le <em>pipe</em> <code>%&gt;%</code></a></li>
+      <li><a href="#if_else-case_when"><code>if_else()</code> / <code>case_when()</code></a></li>
+      <li><a href="#group_by"><code>group_by()</code></a></li>
+      <li><a href="#summarise"><code>summarise()</code></a></li>
+      <li><a href="#mutate-transmute"><code>mutate() / transmute()</code></a></li>
+      </ul></li>
+      <li><a href="#manipulation-de-chaines-de-caractère-avec-stringr">Manipulation de chaines de caractère avec <code>stringr</code> <img src="image/stringr.png" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#str_length"><code>str_length()</code></a></li>
+      <li><a href="#str_c"><code>str_c()</code></a></li>
+      <li><a href="#str_to_lower-str_to_upper-str_to_title"><code>str_to_lower()</code> / <code>str_to_upper')</code> / <code>str_to_title()</code></a></li>
+      <li><a href="#str_sub-str_extract"><code>str_sub()</code> / <code>str_extract()</code></a></li>
+      <li><a href="#str_detect"><code>str_detect()</code></a></li>
+      <li><a href="#str_split"><code>str_split()</code></a></li>
+      <li><a href="#str_replace"><code>str_replace()</code></a></li>
+      </ul></li>
+      <li><a href="#visualisation-avec-ggplot2">Visualisation avec <code>ggplot2</code> <img src="image/ggplot2.png" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#les-geom-usuels">Les <code>geom</code> usuels</a></li>
+      <li><a href="#pour-aller-plus-loin">Pour aller plus loin</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#le-package-rmarkdown">Le package <strong>rmarkdown</strong> <img src="image/rmarkdown.jpg" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#etapes-de-création-dun-document">Etapes de création d’un document</a></li>
+      <li><a href="#sectEnTete">Contenu de l’en-tête</a></li>
+      <li><a href="#sectMarkdown">Quelques éléments markdown</a></li>
+      <li><a href="#sectChunk">Options des blocs de code (chunks)</a></li>
+      </ul></li>
+      <li><a href="#le-package-reticulate-pour-python">Le package <strong>reticulate</strong> pour Python <img src="image/reticulate.png" id="id" class="class" style="width:10.0%" /></a><ul>
+      <li><a href="#exemple-1">Exemple 1</a></li>
+      <li><a href="#exemple-2">Exemple 2</a></li>
+      </ul></li>
+      <li><a href="#references">References</a></li>
+      </ul>
+    </div>
+    <div id="postamble" data-toggle="wy-nav-shift" class="status">
+                  <p class="author"><span class="glyphicon glyphicon-user"></span> Cathy Maugis-Rabusseau</p>
+                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2022-07-15</p>
+          </div>
+   </div>
+   
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div id="main">
+<style type="text/css">
+.badCode {
+background-color: #FEF4F5;
+</style>
+<p>Dans ce tutoriel, nous allons aborder des points plus avancés de l’utilisation de R et RStudio. Nous allons donner quelques éléments sur le package <strong>tidyverse</strong>, en particulier des librairies <strong>ggplot2</strong>, <strong>dplyr</strong>, <strong>forcats</strong> et <strong>stringr</strong> qu’il contient. Dans une seconde partie, on abordera l’utilisation de <strong>Rmardown</strong> pour la rédaction de documents élégants contenant du texte, du code, des résultats d’execution, des expressions mathématiques en latex, …</p>
+<div id="le-package-tidyverse" class="section level1">
+<h1>Le package <strong>tidyverse</strong> <img src="image/logotidyverse.png" id="id" class="class" style="width:10.0%" /></h1>
+<div id="principe" class="section level2">
+<h2>Principe</h2>
+<p>Le terme <a href="https://www.tidyverse.org" target="_blank"><strong>tidyverse</strong></a> est une contraction de <strong>tidy</strong> (“bien rangé”) et de <strong>universe</strong>. C’est une collection d’extensions conçues pour travailler ensemble, avec des fonctions de syntaxe cohérente et compatibles, et basées sur une philosophie commune. Ces extensions sont en grande partie dues à <a href="http://hadley.nz/" target="_blank">Hadley Wickham</a>.</p>
+<p>En installant le package <code>tidyverse</code>, on installe plusieurs extensions qui constituent le “coeur” :</p>
+<ul>
+<li><code>ggplot2</code> (visualisation)</li>
+<li><code>dplyr</code> (manipulation des données)</li>
+<li><code>tidyr</code> (remise en forme des données)</li>
+<li><code>purrr</code> (programmation)</li>
+<li><code>readr</code> (importation de données)</li>
+<li><code>tibble</code> (tableaux de données)</li>
+<li><code>forcats</code> (variables qualitatives)</li>
+<li><code>stringr</code> (chaînes de caractères)</li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="image/tidyverse.png" alt="Librairies dans tidyverse" width="35%" />
+<p class="caption">
+Librairies dans tidyverse
+</p>
+</div>
+<p>Elles sont automatiquement chargées avec la commande <code>library(tidyverse)</code>. On peut aussi les charger une à une (par exemple <code>library(ggplot2)</code>). La liste complète des extensions de tidyverse se trouve sur le <a href="https://www.tidyverse.org/" target="_blank">site officiel du tidyverse</a>.</p>
+<p>La philosophie de tidyverse est basée sur le concept de <em>tidy data</em>, développé à l’origine par Hadley Wickham dans l’article <em>“Tidy Data.” Journal of Statistical Software</em> <span class="citation">(2014)</span>. L’idée est d’organiser les données pour faciliter le travail de préparation des données avant l’analyse statistique. Les principes des données <em>tidy</em> sont :</p>
+<ul>
+<li>chaque variable est une colonne</li>
+<li>chaque observation est une ligne</li>
+<li>chaque type d’observation est dans une table différente</li>
+</ul>
+<p>Une autre particularité du tidyverse est que les packages de tidyverse travaillent avec des tableaux de données de type <code>tibble</code> (géré avec le package du même nom), qui est une évolution du format data.frame de R. On peut convertir un data.frame en tibble avec la commande <code>as_tibble()</code>, et un tibble en data.frame avec <code>as.data.frame()</code>.</p>
+<p>Pour la suite de ce tutoriel, installez et chargez la librairie <strong>tidyverse</strong>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<p>Pour la suite, nous utiliserons le jeu de données <strong>wine</strong> disponible dans le dossier <em>“Data/”</em> , qui nous a déjà servi dans le Tutoriel 3.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Wine =<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;Data/wine.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">head</span>(Wine)</span></code></pre></div>
+<pre><code>     Qualite Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+1352  medium    1    0.62     0.01      8     46 0.99332   11.8
+5493  medium    0    0.34     0.10     17     63 0.99370    9.2
+5153  medium    0    0.22     0.22     39    110 0.99855    9.0
+5308  medium    0    0.35     0.46     61    183 0.99786    9.0
+3866  medium    0    0.42     0.32     20    167 0.99479   10.6
+694   medium    1    0.48     0.32     21    122 0.99840    9.4</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">class</span>(Wine)</span></code></pre></div>
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">has_rownames</span>(Wine)</span></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>Wine.tbl =<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">rownames_to_column</span>(Wine))</span>
+<span id="cb9-2"><a href="#cb9-2"></a>Wine.tbl</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 1352    medium      1    0.62     0.01      8     46   0.993   11.8
+ 2 5493    medium      0    0.34     0.1      17     63   0.994    9.2
+ 3 5153    medium      0    0.22     0.22     39    110   0.999    9  
+ 4 5308    medium      0    0.35     0.46     61    183   0.998    9  
+ 5 3866    medium      0    0.42     0.32     20    167   0.995   10.6
+ 6 694     medium      1    0.48     0.32     21    122   0.998    9.4
+ 7 5085    good        0    0.21     0.32     39    113   0.994   10.2
+ 8 2280    medium      0    0.28     0.14     64    159   0.992   10  
+ 9 5231    medium      0    0.3      0.25     21    124   0.994   10.8
+10 4388    medium      0    0.4      0.42     41    176   0.996    9.4
+# … with 590 more rows</code></pre>
+</div>
+<div id="manipulation-de-variables-qualitatives-avec-forcats" class="section level2">
+<h2>Manipulation de variables qualitatives avec <code>forcats</code> <img src="image/forcats.jpg" id="id" class="class" style="width:10.0%" /></h2>
+<p>Les variables qualitatives peuvent être de deux types sous R, <code>character</code>et <code>factor</code>, ce qui amène parfois à des erreurs de manipulation et d’utilisation de fonctions non adaptées au type de la variable qualitative étudiée. <a href="https://forcats.tidyverse.org/" target="_blank"><strong>forcats</strong></a> est une extension de tidyverse qui permet de faciliter la manipulation des variables qualitatives quelque soit leur type. Voici quelques fonctions utiles de <code>forcast</code> :</p>
+<ul>
+<li><code>fct_recode()</code> : permet de recoder les modalités d’une variable qualitative</li>
+<li><code>fct_collapse()</code> : permet de regrouper des modalités</li>
+<li><code>fct_other()</code>: permet de regrouper une liste de modalités dans une seule modalité “Other”</li>
+<li><code>fct_lump()</code>: permet de regrouper automatiquement les modalités les moins fréquentes (seuil modifiable) en une seule modalité “Other”</li>
+<li><code>fct_explicit_na()</code>: permet de recoder les données manquantes <code>NA</code> en une modalité choisie</li>
+<li><code>fct_relevel()</code> : permet d’ordonner manuellement les modalités d’une variable qualitative</li>
+<li><code>fct_reorder()</code>: permet d’ordonner les modalités d’une variable qualitative en fonction d’une autre variable à laquelle on applique une fonction donnée en argument</li>
+<li><code>fct_infreq()</code> : permet d’ordonner les modalités selon les effectifs</li>
+</ul>
+<p>L’extension <a href="https://juba.github.io/questionr/" target="_blank"><strong>questionr</strong></a> propose une interface graphique pour recoder les modalités d’une variable qualitative. On peut aussi se servir de cette interface pour découper une variable quantitative en classes (pour faire comme la fonction <code>cut()</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">library</span>(questionr)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>Wine<span class="op">$</span>Type =<span class="st"> </span><span class="kw">as.factor</span>(Wine<span class="op">$</span>Type)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>Wine<span class="op">$</span>Type =<span class="st"> </span><span class="kw">fct_recode</span>(Wine<span class="op">$</span>Type, <span class="dt">blanc =</span> <span class="st">&quot;0&quot;</span>, <span class="dt">rouge =</span> <span class="st">&quot;1&quot;</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="kw">freq</span>(Wine<span class="op">$</span>Type)</span></code></pre></div>
+<pre><code>        n    % val%
+blanc 425 70.8 70.8
+rouge 175 29.2 29.2</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">freq</span>(Wine<span class="op">$</span>Qualite)</span></code></pre></div>
+<pre><code>         n    % val%
+bad     19  3.2  3.2
+good   110 18.3 18.3
+medium 471 78.5 78.5</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>Qualite =<span class="st"> </span><span class="kw">fct_recode</span>(Wine<span class="op">$</span>Qualite, <span class="dt">mauvais =</span> <span class="st">&quot;bad&quot;</span>, <span class="dt">bon =</span> <span class="st">&quot;good&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">freq</span>(Qualite)</span></code></pre></div>
+<pre><code>          n    % val%
+mauvais  19  3.2  3.2
+bon     110 18.3 18.3
+medium  471 78.5 78.5</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">freq</span>(<span class="kw">fct_relevel</span>(Wine<span class="op">$</span>Qualite, <span class="st">&quot;good&quot;</span>, <span class="st">&quot;bad&quot;</span>, <span class="st">&quot;medium&quot;</span>))</span></code></pre></div>
+<pre><code>         n    % val%
+good   110 18.3 18.3
+bad     19  3.2  3.2
+medium 471 78.5 78.5</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">ggplot</span>(Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">fct_reorder</span>(Qualite, Alcool, median), <span class="dt">y =</span> Alcool)) <span class="op">+</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Qualite&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">ggplot</span>(Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">fct_infreq</span>(Qualite))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Qualite&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-8-2.png" width="768" /></p>
+<div id="section" class="section level3">
+<h3></h3>
+</div>
+</div>
+<div id="manipulation-avec-dplyr" class="section level2 tabset">
+<h2>Manipulation avec <code>dplyr</code> <img src="image/dplyr.png" id="id" class="class" style="width:10.0%" /></h2>
+<p><a href="https://dplyr.tidyverse.org/" target="_blank"><strong>dplyr</strong></a> est une extension pour le traitement et la manipulation de données contenues dans un ou plusieurs tableaux. Elle considère que les données sont organisées selon le <em>tidy data</em>, ses fonctions s’appliquent sur des <code>tibble</code> ou des <code>data.frame</code> et renvoient le résultat sous forme d’un <code>tibble</code>. Nous allons illustrer ici les fonctions principales disponibles dans <code>dplyr</code>.</p>
+<div id="slice" class="section level3">
+<h3><code>slice()</code></h3>
+<p>La fonction <code>slice()</code> permet de sélectionner des lignes du tableau selon leur position. Par exemple si on souhaite accéder à la 20ème ligne du jeu de données <em>Wine</em>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">slice</span>(Wine.tbl, <span class="dv">20</span>)</span></code></pre></div>
+<pre><code># A tibble: 1 × 9
+  rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+  &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1 6420    medium      0    0.36      0.5     63    178   0.992    9.7</code></pre>
+</div>
+<div id="filter" class="section level3">
+<h3><code>filter()</code></h3>
+<p>La fonction <code>filter()</code> filtre les lignes d’une table selon une condition. Seules les lignes pour lesquelles le test renvoie <code>TRUE</code> sont conservées.</p>
+<p>Par exemple, si on veut ne conserver que les vins de Qualité “medium” :</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">filter</span>(Wine.tbl, Qualite <span class="op">==</span><span class="st"> &quot;medium&quot;</span>)</span></code></pre></div>
+<pre><code># A tibble: 471 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 1352    medium      1    0.62     0.01      8     46   0.993   11.8
+ 2 5493    medium      0    0.34     0.1      17     63   0.994    9.2
+ 3 5153    medium      0    0.22     0.22     39    110   0.999    9  
+ 4 5308    medium      0    0.35     0.46     61    183   0.998    9  
+ 5 3866    medium      0    0.42     0.32     20    167   0.995   10.6
+ 6 694     medium      1    0.48     0.32     21    122   0.998    9.4
+ 7 2280    medium      0    0.28     0.14     64    159   0.992   10  
+ 8 5231    medium      0    0.3      0.25     21    124   0.994   10.8
+ 9 4388    medium      0    0.4      0.42     41    176   0.996    9.4
+10 4172    medium      0    0.14     0.28     10     56   0.994    9.9
+# … with 461 more rows</code></pre>
+<p>Si on veut ne conserver que les vins avec au moins 11 degrés d’alcool et une teneur en acide volatile de moins de 0.3 :</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">filter</span>(Wine.tbl, Alcool <span class="op">&gt;=</span><span class="st"> </span><span class="dv">11</span> <span class="op">&amp;</span><span class="st"> </span>AcidVol <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.3</span>)</span></code></pre></div>
+<pre><code># A tibble: 99 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 2155    good        0    0.25     0.34     31     93   0.992   11.3
+ 2 2258    medium      0    0.27     0.25     41    188   0.992   11.3
+ 3 4560    good        0    0.11     0.34     41    114   0.996   11  
+ 4 5430    good        0    0.26     0.23     23    111   0.993   11.5
+ 5 6496    good        0    0.29     0.3      20    110   0.989   12.8
+ 6 3046    medium      0    0.27     0.49     35     92   0.991   12.2
+ 7 4690    medium      0    0.17     0.35     33     78   0.991   11.3
+ 8 4799    good        0    0.21     0.4      40    121   0.992   12  
+ 9 5167    medium      0    0.26     0.27     20     80   0.991   11.5
+10 5291    medium      0    0.22     0.26     23    112   0.993   11.4
+# … with 89 more rows</code></pre>
+<p>Si on veut filtrer les vins ayant un taux d’alcool entre 10.5 et 11 :</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">filter</span>(Wine.tbl, <span class="kw">between</span>(Alcool, <span class="fl">10.5</span>, <span class="dv">11</span>))</span></code></pre></div>
+<pre><code># A tibble: 94 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 3866    medium      0    0.42     0.32     20    167   0.995   10.6
+ 2 5231    medium      0    0.3      0.25     21    124   0.994   10.8
+ 3 4560    good        0    0.11     0.34     41    114   0.996   11  
+ 4 3615    medium      0    0.19     0.39     22     84   0.994   10.8
+ 5 2983    medium      0    0.36     0.56     25    102   0.992   10.5
+ 6 6347    medium      0    0.26     0.5      25     93   0.994   10.5
+ 7 3003    good        0    0.26     0.31     29    128   0.994   10.9
+ 8 1291    medium      1    0.74     0         6     12   0.995   11  
+ 9 1350    medium      1    0.57     0        21     41   0.995   10.8
+10 6336    medium      0    0.16     0.36     13     61   0.991   10.8
+# … with 84 more rows</code></pre>
+</div>
+<div id="select" class="section level3">
+<h3><code>select()</code></h3>
+<p>La fonction <code>select()</code> permet de sélectionner des colonnes d’une table. Nous donnons quelques exemples ci-dessous. On renvoie à l’aide <code>?select</code> pour voir les options disponibles pour sélectionner plusieurs colonnes, sélectionner selon une condition sur les noms, … On peut aussi utiliser la fonction <code>rename()</code> (voir l’aide.)</p>
+<p>Dans notre exemple, si on veut récupérer les variables <em>Alcool</em> et <em>Qualite</em></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">select</span>(Wine.tbl, Alcool, Qualite)</span></code></pre></div>
+<pre><code># A tibble: 600 × 2
+   Alcool Qualite
+    &lt;dbl&gt; &lt;chr&gt;  
+ 1   11.8 medium 
+ 2    9.2 medium 
+ 3    9   medium 
+ 4    9   medium 
+ 5   10.6 medium 
+ 6    9.4 medium 
+ 7   10.2 good   
+ 8   10   medium 
+ 9   10.8 medium 
+10    9.4 medium 
+# … with 590 more rows</code></pre>
+<p>Si on veut éliminer les variables <em>AcidVol</em> et <em>SO2tot</em> :</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">select</span>(Wine.tbl, <span class="op">-</span>AcidVol, <span class="op">-</span>SO2tot)</span></code></pre></div>
+<pre><code># A tibble: 600 × 7
+   rowname Qualite  Type AcidCitr SO2lbr Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 1352    medium      1     0.01      8   0.993   11.8
+ 2 5493    medium      0     0.1      17   0.994    9.2
+ 3 5153    medium      0     0.22     39   0.999    9  
+ 4 5308    medium      0     0.46     61   0.998    9  
+ 5 3866    medium      0     0.32     20   0.995   10.6
+ 6 694     medium      1     0.32     21   0.998    9.4
+ 7 5085    good        0     0.32     39   0.994   10.2
+ 8 2280    medium      0     0.14     64   0.992   10  
+ 9 5231    medium      0     0.25     21   0.994   10.8
+10 4388    medium      0     0.42     41   0.996    9.4
+# … with 590 more rows</code></pre>
+<p>Si on veut récupérer les colonnes dont le nom commence par <em>Acid</em></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw">select</span>(Wine.tbl, <span class="kw">starts_with</span>(<span class="st">&quot;Acid&quot;</span>))</span></code></pre></div>
+<pre><code># A tibble: 600 × 2
+   AcidVol AcidCitr
+     &lt;dbl&gt;    &lt;dbl&gt;
+ 1    0.62     0.01
+ 2    0.34     0.1 
+ 3    0.22     0.22
+ 4    0.35     0.46
+ 5    0.42     0.32
+ 6    0.48     0.32
+ 7    0.21     0.32
+ 8    0.28     0.14
+ 9    0.3      0.25
+10    0.4      0.42
+# … with 590 more rows</code></pre>
+<p>Si on veut récupérer les colonnes qui contiennent <em>Acid</em> :</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">select</span>(Wine.tbl, <span class="kw">contains</span>(<span class="st">&quot;Acid&quot;</span>))</span></code></pre></div>
+<pre><code># A tibble: 600 × 2
+   AcidVol AcidCitr
+     &lt;dbl&gt;    &lt;dbl&gt;
+ 1    0.62     0.01
+ 2    0.34     0.1 
+ 3    0.22     0.22
+ 4    0.35     0.46
+ 5    0.42     0.32
+ 6    0.48     0.32
+ 7    0.21     0.32
+ 8    0.28     0.14
+ 9    0.3      0.25
+10    0.4      0.42
+# … with 590 more rows</code></pre>
+</div>
+<div id="arrange" class="section level3">
+<h3><code>arrange()</code></h3>
+<p>La fonction `<code>arrange()</code> permet de réordonner les lignes du jeu de données en fonction d’une ou plusieurs variables.</p>
+<p>Par exemple, pour ordonner les lignes de <em>Wine</em> en fonction des valeurs de la variable <em>Alcool</em></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">arrange</span>(Wine.tbl, Alcool)</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 4225    medium      0    0.19     0.21     89    159   0.993    8  
+ 2 3185    medium      0    0.3      0.74     46    165   0.998    8.7
+ 3 2830    medium      0    0.29     0.3      46    238   0.999    8.7
+ 4 5650    good        0    0.16     0.27     25    135   0.998    8.7
+ 5 5278    medium      0    0.23     0.25     19    111   1.00     8.7
+ 6 1741    medium      0    0.37     0.67     49    155   0.998    8.7
+ 7 1684    medium      0    0.43     0.61     54    155   0.997    8.7
+ 8 1737    medium      0    0.37     0.67     49    155   0.998    8.7
+ 9 3258    medium      0    0.31     0.49     52    220   0.996    8.8
+10 1477    medium      1    0.5      0.5      48     82   1.00     8.8
+# … with 590 more rows</code></pre>
+<p>Pour trier par ordre décroissant, on utilise la fonction <code>desc()</code></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw">arrange</span>(Wine.tbl, <span class="kw">desc</span>(Alcool))</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 5504    good        0   0.455     0.18     33    106   0.987   14  
+ 2 6389    medium      0   0.62      0.33     24    118   0.988   13.6
+ 3 5729    good        0   0.34      0.31     18     68   0.990   13.4
+ 4 5103    good        0   0.33      0.31     21     93   0.990   13.4
+ 5 5795    good        0   0.45      0.24     24     87   0.989   13.4
+ 6 492     good        1   0.41      0.5      12     25   0.995   13.3
+ 7 4973    good        0   0.28      0.24     49    121   0.989   13.2
+ 8 6437    medium      0   0.28      0.38     54    216   0.992   13.1
+ 9 5099    good        0   0.33      0.3      30    124   0.989   13.1
+10 1288    medium      1   0.6       0.08      3      7   0.993   13  
+# … with 590 more rows</code></pre>
+<p>Pour trier selon les deux variables <em>Qualite</em> et <em>Alcool</em> :</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="kw">arrange</span>(Wine.tbl, Qualite, Alcool)</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 5812    bad         0    0.31     0.37     13    164   0.996    8.8
+ 2 3937    bad         0    0.28     0.35     61    180   0.997    9  
+ 3 460     bad         1    0.58     0.66     10     47   1.00     9  
+ 4 2226    bad         0    0.56     0.12     22    177   0.998    9.1
+ 5 2262    bad         0    0.57     0.1      23    188   0.997    9.2
+ 6 4131    bad         0    0.54     0.27      8    178   0.995    9.4
+ 7 3074    bad         0    0.25     0.24     13     85   0.994    9.5
+ 8 1646    bad         0    0.45     0.26     63    206   0.994    9.8
+ 9 4000    bad         0    0.19     0.42     16    104   0.995   10  
+10 4001    bad         0    0.16     0.49     18    107   0.995   10.2
+# … with 590 more rows</code></pre>
+<p>On peut remarquer que l’on obtient le même résultat avec la commande</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a><span class="st">    </span><span class="kw">arrange</span>(Qualite, Alcool)</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 5812    bad         0    0.31     0.37     13    164   0.996    8.8
+ 2 3937    bad         0    0.28     0.35     61    180   0.997    9  
+ 3 460     bad         1    0.58     0.66     10     47   1.00     9  
+ 4 2226    bad         0    0.56     0.12     22    177   0.998    9.1
+ 5 2262    bad         0    0.57     0.1      23    188   0.997    9.2
+ 6 4131    bad         0    0.54     0.27      8    178   0.995    9.4
+ 7 3074    bad         0    0.25     0.24     13     85   0.994    9.5
+ 8 1646    bad         0    0.45     0.26     63    206   0.994    9.8
+ 9 4000    bad         0    0.19     0.42     16    104   0.995   10  
+10 4001    bad         0    0.16     0.49     18    107   0.995   10.2
+# … with 590 more rows</code></pre>
+<p>Cette commande <em>pipe</em> <code>%&gt;%</code> est importante dans dplyr.</p>
+</div>
+<div id="le-pipe" class="section level3">
+<h3>Le <em>pipe</em> <code>%&gt;%</code></h3>
+<p>On est souvent amené à enchaîner plusieurs opérations sur un tableau. Par exemple,</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">arrange</span>(<span class="kw">select</span>(<span class="kw">filter</span>(Wine.tbl, Alcool <span class="op">&gt;=</span><span class="st"> </span><span class="dv">11</span>), Qualite, Alcool), Qualite)</span></code></pre></div>
+<pre><code># A tibble: 205 × 2
+   Qualite Alcool
+   &lt;chr&gt;    &lt;dbl&gt;
+ 1 bad       11.5
+ 2 bad       11.6
+ 3 bad       11.5
+ 4 bad       11.2
+ 5 bad       11.2
+ 6 good      12.7
+ 7 good      11.3
+ 8 good      11  
+ 9 good      11.5
+10 good      12.8
+# … with 195 more rows</code></pre>
+<p>mais cet enchainement de fonctions est peu lisible. On peut améliorer la lisibilité du code en utilisant le <em>pipe</em>, noté <code>%&gt;%</code>. Si on execute `<code>expr%&gt;%f</code>, le résultat de <code>expr</code> est passé comme premier argument de la fonction <code>f</code>, ce qui revient à executer <code>f(expr)</code>. Ainsi notre exemple précédent peut se réécrire avec le code suivant :</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="st">    </span><span class="kw">filter</span>(Alcool <span class="op">&gt;=</span><span class="st"> </span><span class="dv">11</span>) <span class="op">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="st">    </span><span class="kw">select</span>(Qualite, Alcool) <span class="op">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4"></a><span class="st">    </span><span class="kw">arrange</span>(Qualite)</span></code></pre></div>
+<pre><code># A tibble: 205 × 2
+   Qualite Alcool
+   &lt;chr&gt;    &lt;dbl&gt;
+ 1 bad       11.5
+ 2 bad       11.6
+ 3 bad       11.5
+ 4 bad       11.2
+ 5 bad       11.2
+ 6 good      12.7
+ 7 good      11.3
+ 8 good      11  
+ 9 good      11.5
+10 good      12.8
+# … with 195 more rows</code></pre>
+</div>
+<div id="if_else-case_when" class="section level3">
+<h3><code>if_else()</code> / <code>case_when()</code></h3>
+<p>Ces fonctions permettent de créer une nouvelle variable à partir d’une ou plusieurs variables existantes en faisant un ou des tests. La fonction <code>if_else()</code> prend en argument un test, une valeur à renvoyer si le test est vrai, et une valeur à renvoyer si le test est faux. <code>case_when()</code> généralise <code>if_else()</code> en permettant de considérer plusieurs tests et leurs valeurs associées en même temps. Mais attention, les conditions étant testées l’une après l’autre, l’ordre des tests est important.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="kw">head</span>(<span class="kw">cbind</span>(Wine<span class="op">$</span>Alcool, <span class="kw">if_else</span>(Wine<span class="op">$</span>Alcool <span class="op">&gt;</span><span class="st"> </span><span class="dv">11</span>, <span class="st">&quot;Alcool sup. à 11&quot;</span>, <span class="st">&quot;Alcool inf. à 11&quot;</span>)))</span></code></pre></div>
+<pre><code>     [,1]   [,2]              
+[1,] &quot;11.8&quot; &quot;Alcool sup. à 11&quot;
+[2,] &quot;9.2&quot;  &quot;Alcool inf. à 11&quot;
+[3,] &quot;9&quot;    &quot;Alcool inf. à 11&quot;
+[4,] &quot;9&quot;    &quot;Alcool inf. à 11&quot;
+[5,] &quot;10.6&quot; &quot;Alcool inf. à 11&quot;
+[6,] &quot;9.4&quot;  &quot;Alcool inf. à 11&quot;</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>new &lt;-<span class="st"> </span><span class="kw">case_when</span>(Wine<span class="op">$</span>Alcool <span class="op">&gt;</span><span class="st"> </span><span class="dv">11</span> <span class="op">&amp;</span><span class="st"> </span>Wine<span class="op">$</span>Type <span class="op">==</span><span class="st"> &quot;rouge&quot;</span> <span class="op">~</span><span class="st"> &quot;vins rouges de degré sup. à 11&quot;</span>,</span>
+<span id="cb51-2"><a href="#cb51-2"></a>    Wine<span class="op">$</span>Alcool <span class="op">&gt;</span><span class="st"> </span><span class="dv">11</span> <span class="op">&amp;</span><span class="st"> </span>Wine<span class="op">$</span>Type <span class="op">==</span><span class="st"> &quot;blanc&quot;</span> <span class="op">~</span><span class="st"> &quot;vins blancs de degré sup. à 11&quot;</span>,</span>
+<span id="cb51-3"><a href="#cb51-3"></a>    <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Autre&quot;</span>)</span>
+<span id="cb51-4"><a href="#cb51-4"></a><span class="kw">freq</span>(new)</span></code></pre></div>
+<pre><code>                                 n    % val%
+Autre                          413 68.8 68.8
+vins blancs de degré sup. à 11 142 23.7 23.7
+vins rouges de degré sup. à 11  45  7.5  7.5</code></pre>
+</div>
+<div id="group_by" class="section level3">
+<h3><code>group_by()</code></h3>
+<p>La fonction <code>group_by()</code> permet de créer des groupes de lignes à partir des valeurs d’une ou plusieurs variables. Par exemple on peut regrouper les vins selon leur qualité :</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="st">    </span><span class="kw">group_by</span>(Qualite)</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+# Groups:   Qualite [3]
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 1352    medium      1    0.62     0.01      8     46   0.993   11.8
+ 2 5493    medium      0    0.34     0.1      17     63   0.994    9.2
+ 3 5153    medium      0    0.22     0.22     39    110   0.999    9  
+ 4 5308    medium      0    0.35     0.46     61    183   0.998    9  
+ 5 3866    medium      0    0.42     0.32     20    167   0.995   10.6
+ 6 694     medium      1    0.48     0.32     21    122   0.998    9.4
+ 7 5085    good        0    0.21     0.32     39    113   0.994   10.2
+ 8 2280    medium      0    0.28     0.14     64    159   0.992   10  
+ 9 5231    medium      0    0.3      0.25     21    124   0.994   10.8
+10 4388    medium      0    0.4      0.42     41    176   0.996    9.4
+# … with 590 more rows</code></pre>
+<p>Dans l’affichage, on voit apparaitre “Groups” dans les premières lignes, le reste n’a pas changé. Mais une fois les groupes créés, ils peuvent être utilisés dans les différentes fonctions de <code>dplyr</code> SAUF pour <code>arrange()</code>.</p>
+<p>Si on veut grouper selon plusieurs variables, il suffit de les passer en argument de <code>group_by()</code>:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb55-2"><a href="#cb55-2"></a><span class="st">    </span><span class="kw">group_by</span>(Qualite, Type)</span></code></pre></div>
+<pre><code># A tibble: 600 × 9
+# Groups:   Qualite, Type [6]
+   rowname Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 1352    medium      1    0.62     0.01      8     46   0.993   11.8
+ 2 5493    medium      0    0.34     0.1      17     63   0.994    9.2
+ 3 5153    medium      0    0.22     0.22     39    110   0.999    9  
+ 4 5308    medium      0    0.35     0.46     61    183   0.998    9  
+ 5 3866    medium      0    0.42     0.32     20    167   0.995   10.6
+ 6 694     medium      1    0.48     0.32     21    122   0.998    9.4
+ 7 5085    good        0    0.21     0.32     39    113   0.994   10.2
+ 8 2280    medium      0    0.28     0.14     64    159   0.992   10  
+ 9 5231    medium      0    0.3      0.25     21    124   0.994   10.8
+10 4388    medium      0    0.4      0.42     41    176   0.996    9.4
+# … with 590 more rows</code></pre>
+</div>
+<div id="summarise" class="section level3">
+<h3><code>summarise()</code></h3>
+<p>La fonction <code>summarise()</code> permet de calculer quelques indicateurs statistiques sur une ou plusieurs variables. Par exemple, si on veut connaitre la teneur moyenne en acide volatile de tous les vins</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb57-2"><a href="#cb57-2"></a><span class="st">    </span><span class="kw">summarise</span>(<span class="dt">AcidVolmean =</span> <span class="kw">mean</span>(AcidVol, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
+<pre><code># A tibble: 1 × 1
+  AcidVolmean
+        &lt;dbl&gt;
+1       0.351</code></pre>
+<p>Si on veut maintenant la teneur moyenne en acide volatile sur tous les vins regroupés par qualité :</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a><span class="st">    </span><span class="kw">group_by</span>(Qualite) <span class="op">%&gt;%</span></span>
+<span id="cb59-3"><a href="#cb59-3"></a><span class="st">    </span><span class="kw">summarise</span>(<span class="dt">AcidVolmean =</span> <span class="kw">mean</span>(AcidVol, <span class="dt">na.rm =</span> T))</span></code></pre></div>
+<pre><code># A tibble: 3 × 2
+  Qualite AcidVolmean
+  &lt;chr&gt;         &lt;dbl&gt;
+1 bad           0.423
+2 good          0.303
+3 medium        0.360</code></pre>
+<p>On veut également calculer la teneur en acide volatile minimale et maximale dans chaque groupe :</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb61-2"><a href="#cb61-2"></a><span class="st">    </span><span class="kw">group_by</span>(Qualite) <span class="op">%&gt;%</span></span>
+<span id="cb61-3"><a href="#cb61-3"></a><span class="st">    </span><span class="kw">summarise</span>(<span class="dt">AcidVolmean =</span> <span class="kw">mean</span>(AcidVol, <span class="dt">na.rm =</span> T), <span class="dt">AcidVolmin =</span> <span class="kw">min</span>(AcidVol, <span class="dt">na.rm =</span> T),</span>
+<span id="cb61-4"><a href="#cb61-4"></a>        <span class="dt">AcidVolmax =</span> <span class="kw">max</span>(AcidVol, <span class="dt">na.rm =</span> T))</span></code></pre></div>
+<pre><code># A tibble: 3 × 4
+  Qualite AcidVolmean AcidVolmin AcidVolmax
+  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1 bad           0.423       0.16      0.63 
+2 good          0.303       0.1       0.915
+3 medium        0.360       0.12      1.04 </code></pre>
+<p><code>summarise()</code> possède un opérateur <code>n()</code> pour connaître le nombre de lignes par groupe :</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb63-2"><a href="#cb63-2"></a><span class="st">    </span><span class="kw">group_by</span>(Qualite) <span class="op">%&gt;%</span></span>
+<span id="cb63-3"><a href="#cb63-3"></a><span class="st">    </span><span class="kw">summarise</span>(<span class="dt">nb =</span> <span class="kw">n</span>())</span></code></pre></div>
+<pre><code># A tibble: 3 × 2
+  Qualite    nb
+  &lt;chr&gt;   &lt;int&gt;
+1 bad        19
+2 good      110
+3 medium    471</code></pre>
+<p><code>n()</code> peut aussi être utilisé avec <code>filter()</code> et <code>mutate()</code>. On peut aussi directement utiliser la fonction <code>count()</code></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a>Wine.tbl <span class="op">%&gt;%</span></span>
+<span id="cb65-2"><a href="#cb65-2"></a><span class="st">    </span><span class="kw">count</span>(Qualite)</span></code></pre></div>
+<pre><code># A tibble: 3 × 2
+  Qualite     n
+  &lt;chr&gt;   &lt;int&gt;
+1 bad        19
+2 good      110
+3 medium    471</code></pre>
+</div>
+<div id="mutate-transmute" class="section level3">
+<h3><code>mutate() / transmute()</code></h3>
+<p><code>mutate()</code> permet de créer de nouvelles variables (colonnes) dans le tableau en conservant toutes les autres variables existantes. Par exemple, si on convertit la densité, qui est donnée en g/cm3, en mg/cm3 :</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a>Wine.tbl =<span class="st"> </span><span class="kw">mutate</span>(Wine.tbl, <span class="dt">densmg =</span> <span class="dv">1000</span> <span class="op">*</span><span class="st"> </span>Densite)</span>
+<span id="cb67-2"><a href="#cb67-2"></a><span class="kw">select</span>(Wine.tbl, Densite, densmg)</span></code></pre></div>
+<pre><code># A tibble: 600 × 2
+   Densite densmg
+     &lt;dbl&gt;  &lt;dbl&gt;
+ 1   0.993   993.
+ 2   0.994   994.
+ 3   0.999   999.
+ 4   0.998   998.
+ 5   0.995   995.
+ 6   0.998   998.
+ 7   0.994   994.
+ 8   0.992   992 
+ 9   0.994   994.
+10   0.996   996.
+# … with 590 more rows</code></pre>
+<p>La fonction <code>transmute()</code> permet également d’ajouter une variable mais en supprimant les autres cette fois.</p>
+</div>
+</div>
+<div id="manipulation-de-chaines-de-caractère-avec-stringr" class="section level2 tabset">
+<h2>Manipulation de chaines de caractère avec <code>stringr</code> <img src="image/stringr.png" id="id" class="class" style="width:10.0%" /></h2>
+<p><a href="https://stringr.tidyverse.org/" target="_blank"><strong>stringr</strong></a> est une extension pour la manipulation de chaînes de caractères. On présente ici les fonctions les plus utilisées, qui seront illustrées sur l’exemple suivant :</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>ExChaine &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">nom =</span> <span class="kw">c</span>(<span class="st">&quot;M. Gérard MARTIN&quot;</span>, <span class="st">&quot;Mme Marie DUPONT&quot;</span>, <span class="st">&quot;M. Rémi THOMAS&quot;</span>),</span>
+<span id="cb69-2"><a href="#cb69-2"></a>    <span class="dt">adresse =</span> <span class="kw">c</span>(<span class="st">&quot;30 avenue de la République&quot;</span>, <span class="st">&quot;40 rue de la Libération&quot;</span>, <span class="st">&quot;2 impasse des pivoines&quot;</span>),</span>
+<span id="cb69-3"><a href="#cb69-3"></a>    <span class="dt">ville =</span> <span class="kw">c</span>(<span class="st">&quot;Toulouse&quot;</span>, <span class="st">&quot;Marseille&quot;</span>, <span class="st">&quot;Bordeaux&quot;</span>))</span>
+<span id="cb69-4"><a href="#cb69-4"></a>ExChaine</span></code></pre></div>
+<pre><code># A tibble: 3 × 3
+  nom              adresse                    ville    
+  &lt;chr&gt;            &lt;chr&gt;                      &lt;chr&gt;    
+1 M. Gérard MARTIN 30 avenue de la République Toulouse 
+2 Mme Marie DUPONT 40 rue de la Libération    Marseille
+3 M. Rémi THOMAS   2 impasse des pivoines     Bordeaux </code></pre>
+<p>Pour plus de détails vous pouvez vous référer au chapitre 14 du livre de Wickham, H. et G. Grolemund <span class="citation">(2016)</span> dédié à la librairie <code>stringr</code> ainsi qu’au <a href="https://stringr.tidyverse.org/" target="_blank">site web officiel de stringr</a>.</p>
+<div id="str_length" class="section level3">
+<h3><code>str_length()</code></h3>
+<p>La fonction <code>str_length()</code> permet d’obtenir la longueur d’une chaîne / tableau de caractères :</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="kw">str_length</span>(ExChaine)</span></code></pre></div>
+<pre><code>[1] 59 84 38</code></pre>
+</div>
+<div id="str_c" class="section level3">
+<h3><code>str_c()</code></h3>
+<p>La fonction <code>str_c()</code> est la fonction de <code>stringr</code> dédiée à la concaténation des chaines de caractères. On a déjà vu la fonction <code>paste()</code>de R. Voici quelques exemples :</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="kw">str_c</span>(ExChaine<span class="op">$</span>nom, ExChaine<span class="op">$</span>ville, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;M. Gérard MARTIN Toulouse&quot;  &quot;Mme Marie DUPONT Marseille&quot;
+[3] &quot;M. Rémi THOMAS Bordeaux&quot;   </code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a><span class="kw">str_c</span>(ExChaine<span class="op">$</span>nom, ExChaine<span class="op">$</span>ville, <span class="dt">sep =</span> <span class="st">&quot;/-/&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;M. Gérard MARTIN/-/Toulouse&quot;  &quot;Mme Marie DUPONT/-/Marseille&quot;
+[3] &quot;M. Rémi THOMAS/-/Bordeaux&quot;   </code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1"></a><span class="kw">str_c</span>(ExChaine<span class="op">$</span>nom, <span class="kw">c</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;/---/&quot;</span>, <span class="st">&quot;!!!&quot;</span>), ExChaine<span class="op">$</span>ville)</span></code></pre></div>
+<pre><code>[1] &quot;M. Gérard MARTIN Toulouse&quot;      &quot;Mme Marie DUPONT/---/Marseille&quot;
+[3] &quot;M. Rémi THOMAS!!!Bordeaux&quot;     </code></pre>
+</div>
+<div id="str_to_lower-str_to_upper-str_to_title" class="section level3">
+<h3><code>str_to_lower()</code> / <code>str_to_upper')</code> / <code>str_to_title()</code></h3>
+<p>Les fonctions <code>str_to_lower()</code>, <code>str_to_upper()</code> et <code>str_to_title()</code> permettent de mettre en minuscules, en majuscules, ou en lettres capitales respectivement les éléments d’une chaînes de caractères</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a><span class="kw">str_to_lower</span>(ExChaine<span class="op">$</span>nom)</span></code></pre></div>
+<pre><code>[1] &quot;m. gérard martin&quot; &quot;mme marie dupont&quot; &quot;m. rémi thomas&quot;  </code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a><span class="kw">str_to_upper</span>(ExChaine<span class="op">$</span>nom)</span></code></pre></div>
+<pre><code>[1] &quot;M. GÉRARD MARTIN&quot; &quot;MME MARIE DUPONT&quot; &quot;M. RÉMI THOMAS&quot;  </code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="kw">str_to_title</span>(ExChaine<span class="op">$</span>nom)</span></code></pre></div>
+<pre><code>[1] &quot;M. Gérard Martin&quot; &quot;Mme Marie Dupont&quot; &quot;M. Rémi Thomas&quot;  </code></pre>
+</div>
+<div id="str_sub-str_extract" class="section level3">
+<h3><code>str_sub()</code> / <code>str_extract()</code></h3>
+<p>La fonction <code>str_sub()</code> permet d’extraire des sous-chaînes de caractères en indiquant les positions des premier et dernier caractères :</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="kw">str_sub</span>(ExChaine<span class="op">$</span>nom, <span class="dv">3</span>, <span class="dv">9</span>)</span></code></pre></div>
+<pre><code>[1] &quot; Gérard&quot; &quot;e Marie&quot; &quot; Rémi T&quot;</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a><span class="kw">str_sub</span>(ExChaine<span class="op">$</span>nom, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>[1] &quot; Gérard MARTIN&quot; &quot;e Marie DUPONT&quot; &quot; Rémi THOMAS&quot;  </code></pre>
+<p>La fonction <code>str_extract()</code> permet d’extraire les valeurs correspondant à un motif.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a><span class="kw">str_extract</span>(ExChaine, <span class="st">&quot;pivoines&quot;</span>)</span></code></pre></div>
+<pre><code>[1] NA         &quot;pivoines&quot; NA        </code></pre>
+<p>Plus subtil, cette commande permet de récupérer tous les numéros des adresses :</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a><span class="kw">str_extract</span>(ExChaine<span class="op">$</span>adresse, <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">d+&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;30&quot; &quot;40&quot; &quot;2&quot; </code></pre>
+<p>Pour aller plus loin, vous pouvez consulter les références donner pour la librairie <code>stringr</code>.</p>
+</div>
+<div id="str_detect" class="section level3">
+<h3><code>str_detect()</code></h3>
+<p>La fonction <code>str_detect()</code> permet de détecter la présence d’un motif parmi les élements d’un vecteur de caractères. Elle renvoie un vecteur de booléens.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a><span class="kw">str_detect</span>(ExChaine<span class="op">$</span>nom, <span class="st">&quot;o&quot;</span>)</span></code></pre></div>
+<pre><code>[1] FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a><span class="kw">str_detect</span>(ExChaine<span class="op">$</span>nom, <span class="st">&quot;r&quot;</span>)</span></code></pre></div>
+<pre><code>[1]  TRUE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a><span class="kw">str_detect</span>(<span class="kw">str_to_lower</span>(ExChaine<span class="op">$</span>nom), <span class="st">&quot;r&quot;</span>)</span></code></pre></div>
+<pre><code>[1] TRUE TRUE TRUE</code></pre>
+<p>La fonction <code>str_count()</code> dénombre les occurences d’un motif dans un vecteur de caractères.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a><span class="kw">str_count</span>(ExChaine<span class="op">$</span>nom, <span class="st">&quot;r&quot;</span>)</span></code></pre></div>
+<pre><code>[1] 2 1 0</code></pre>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a><span class="kw">str_count</span>(<span class="kw">str_to_lower</span>(ExChaine<span class="op">$</span>nom), <span class="st">&quot;r&quot;</span>)</span></code></pre></div>
+<pre><code>[1] 3 1 1</code></pre>
+</div>
+<div id="str_split" class="section level3">
+<h3><code>str_split()</code></h3>
+<p>La fonction <code>str_split()</code> permet de découper une chaîne de caractère (premier argument) en fonction d’un délimiteur (second argument).</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a><span class="kw">str_split</span>(ExChaine, <span class="st">&quot; &quot;</span>)</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;c(\&quot;M.&quot;    &quot;Gérard&quot;    &quot;MARTIN\&quot;,&quot; &quot;\&quot;Mme&quot;     &quot;Marie&quot;     &quot;DUPONT\&quot;,&quot;
+[7] &quot;\&quot;M.&quot;      &quot;Rémi&quot;      &quot;THOMAS\&quot;)&quot;
+
+[[2]]
+ [1] &quot;c(\&quot;30&quot;        &quot;avenue&quot;        &quot;de&quot;            &quot;la&quot;           
+ [5] &quot;République\&quot;,&quot; &quot;\&quot;40&quot;          &quot;rue&quot;           &quot;de&quot;           
+ [9] &quot;la&quot;            &quot;Libération\&quot;,&quot; &quot;\&quot;2&quot;           &quot;impasse&quot;      
+[13] &quot;des&quot;           &quot;pivoines\&quot;)&quot;  
+
+[[3]]
+[1] &quot;c(\&quot;Toulouse\&quot;,&quot; &quot;\&quot;Marseille\&quot;,&quot;  &quot;\&quot;Bordeaux\&quot;)&quot;  </code></pre>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1"></a><span class="kw">str_split</span>(ExChaine<span class="op">$</span>nom, <span class="st">&quot; &quot;</span>)</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;M.&quot;     &quot;Gérard&quot; &quot;MARTIN&quot;
+
+[[2]]
+[1] &quot;Mme&quot;    &quot;Marie&quot;  &quot;DUPONT&quot;
+
+[[3]]
+[1] &quot;M.&quot;     &quot;Rémi&quot;   &quot;THOMAS&quot;</code></pre>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1"></a><span class="kw">str_split</span>(ExChaine<span class="op">$</span>nom, <span class="st">&quot;r&quot;</span>)</span></code></pre></div>
+<pre><code>[[1]]
+[1] &quot;M. Gé&quot;    &quot;a&quot;        &quot;d MARTIN&quot;
+
+[[2]]
+[1] &quot;Mme Ma&quot;    &quot;ie DUPONT&quot;
+
+[[3]]
+[1] &quot;M. Rémi THOMAS&quot;</code></pre>
+<p>On peut également l’appliquer sur un tableau en ajoutant l’option <code>simplify = TRUE</code>.</p>
+</div>
+<div id="str_replace" class="section level3">
+<h3><code>str_replace()</code></h3>
+<p>La fonction <code>str_replace()</code> permet de remplacer une chaîne ou un motif par une autre.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1"></a><span class="kw">str_replace</span>(ExChaine<span class="op">$</span>nom, <span class="st">&quot;Mr&quot;</span>, <span class="st">&quot;M.&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;M. Gérard MARTIN&quot; &quot;Mme Marie DUPONT&quot; &quot;M. Rémi THOMAS&quot;  </code></pre>
+<p>Pour spécifier plusieurs remplacements d’un coup, on peut utiliser <code>str_replace_all()</code></p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a><span class="kw">str_replace_all</span>(ExChaine<span class="op">$</span>adresse, <span class="kw">c</span>(<span class="dt">avenue =</span> <span class="st">&quot;Av.&quot;</span>, <span class="dt">rue =</span> <span class="st">&quot;Rue&quot;</span>, <span class="dt">impasse =</span> <span class="st">&quot;Imp.&quot;</span>))</span></code></pre></div>
+<pre><code>[1] &quot;30 Av. de la République&quot; &quot;40 Rue de la Libération&quot;
+[3] &quot;2 Imp. des pivoines&quot;    </code></pre>
+</div>
+</div>
+<div id="visualisation-avec-ggplot2" class="section level2">
+<h2>Visualisation avec <code>ggplot2</code> <img src="image/ggplot2.png" id="id" class="class" style="width:10.0%" /></h2>
+<p><a href="https://ggplot2.tidyverse.org/" target="_blank"><strong>ggplot2</strong></a> est une extension dédiée aux graphiques. Elle est basée sur une syntaxe particulière (il faut oublier les graphiques de base de R) mais robuste et efficace pour la construction de graphiques complexes. Elle demande donc un peu d’investissement pour se familiariser avec la syntaxe. Elle part du principe (comme tout package de tidyverse) que les données relatives au graphique sont stockées dans un tableau (data.frame ou tibble). Pour plus de détails, on peut consulter le livre <em>“Ggplot2: Elegant Graphics for Data Analysis”</em> de <span class="citation">Wickham (2016)</span> et le <a href="https://ggplot2.tidyverse.org/" target="_blank">site web de ggplot2</a>.</p>
+<p>Un graphique en <code>ggplot2</code> s’initialise avec la fonciton <code>ggplot()</code> qui prend en argument le jeu de données étudié. Par exemple, pour le jeu de données <em>Wine</em>,</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a>gEx =<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine)</span></code></pre></div>
+<p>Pour l’instant, on ne voit rien mais pourtant l’objet <code>gEx</code> contient des informations :</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a><span class="kw">summary</span>(gEx)</span></code></pre></div>
+<pre><code>data: Qualite, Type, AcidVol, AcidCitr, SO2lbr, SO2tot, Densite, Alcool
+  [600x8]
+faceting: &lt;ggproto object: Class FacetNull, Facet, gg&gt;
+    compute_layout: function
+    draw_back: function
+    draw_front: function
+    draw_labels: function
+    draw_panels: function
+    finish_data: function
+    init_scales: function
+    map_data: function
+    params: list
+    setup_data: function
+    setup_params: function
+    shrink: TRUE
+    train_scales: function
+    vars: function
+    super:  &lt;ggproto object: Class FacetNull, Facet, gg&gt;</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a><span class="kw">names</span>(gEx)</span></code></pre></div>
+<pre><code>[1] &quot;data&quot;        &quot;layers&quot;      &quot;scales&quot;      &quot;mapping&quot;     &quot;theme&quot;      
+[6] &quot;coordinates&quot; &quot;facet&quot;       &quot;plot_env&quot;    &quot;labels&quot;     </code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a>gEx<span class="op">$</span>layers</span></code></pre></div>
+<pre><code>list()</code></pre>
+<p>mais pour l’instant son <code>layers</code> est vide.</p>
+<p>On ajoute ensuite des éléments graphiques, appelés <code>geom</code>, à l’objet graphique grâce à l’opérateur <code>+</code> et on précise à l’aide de la fonction <code>aes()</code> les données à utiliser en argument du <code>geom</code>. Par exemple, si on veut faire l’histogramme de la variable <em>Alcool</em></p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-49-1.png" width="768" /></p>
+<p>On peut également ajouter un <strong>mappage</strong>, c’est à dire une mise en relation entre un attribut graphique d’un geom et une variable du tableau de données. Par exemple, on peut mettre des couleurs à un nuage de points en fonction d’une variable qualitative, … Il faut bien distinguer un mappage d’une modification d’un attribut graphique sans lien avec une variable. Une règle importante à retenir est donc</p>
+<ul>
+<li>pour définir un mappage (relation entre les valeurs d’une variable et un attribut graphique), on le déclare dans <code>aes()</code></li>
+<li>pour modifier un attribut graphique de la même manière pour tous les points, on le définit en-dehors de la fonction <code>aes()</code>.</li>
+</ul>
+<p>Dans la présentation qui suit des <code>geom</code> usuels, on proposera quelques illustrations de mappages. Chaque <code>geom</code> a sa liste de mappages possibles.</p>
+<div id="les-geom-usuels" class="section level3 tabset">
+<h3>Les <code>geom</code> usuels</h3>
+<p>Nous allons ici présenter les <code>geom</code> les plus connus.</p>
+<div id="geom_histogram" class="section level4">
+<h4><code>geom_histogram()</code></h4>
+<p><code>geom_histogram()</code> permet de représenter l’histogramme d’une variable quantitative.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-50-1.png" width="768" /></p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool), <span class="dt">binwidth =</span> <span class="fl">0.2</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb122-2"><a href="#cb122-2"></a>    <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-51-1.png" width="768" /></p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">fill =</span> Qualite), <span class="dt">binwidth =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-52-1.png" width="768" /></p>
+</div>
+<div id="geom_point" class="section level4">
+<h4><code>geom_point()</code></h4>
+<p><code>geom_point()</code> permet de représenter un nuage de points. Il faut préciser la position en x (la variable sur l’axe horizontal) et en y (la variable sur l’axe vertical) de ces points dans <code>aes()</code>.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-53-1.png" width="768" /> On peut modifier certains attributs de ce graphique comme la couleur des points (<code>color</code>), la taille des points (<code>size</code>), leur transparence (<code>alpha</code>).</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite), <span class="dt">color =</span> <span class="st">&quot;darkblue&quot;</span>,</span>
+<span id="cb125-2"><a href="#cb125-2"></a>    <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-54-1.png" width="768" /></p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite, <span class="dt">color =</span> Qualite, <span class="dt">size =</span> AcidVol),</span>
+<span id="cb126-2"><a href="#cb126-2"></a>    <span class="dt">alpha =</span> <span class="fl">0.6</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-55-1.png" width="768" /></p>
+</div>
+<div id="geom_boxplot" class="section level4">
+<h4><code>geom_boxplot()</code></h4>
+<p><code>geom_boxplot()</code> permet de représenter des boxplot (boites à moustaches). On lui précise en y la variable quantitative dont on veut étudier la répartition, et en x la variable qualitative contenant les groupes à comparer.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-56-1.png" width="768" /></p>
+<p>Vous pouvez vous référer à l’aide et la documentation en ligne pour ensuite améliorer ce graphique en modifiant certaines options.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-57-1.png" width="768" /></p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool), <span class="dt">outlier.colour =</span> <span class="st">&quot;darkgreen&quot;</span>,</span>
+<span id="cb129-2"><a href="#cb129-2"></a>    <span class="dt">outlier.shape =</span> <span class="dv">25</span>, <span class="dt">outlier.size =</span> <span class="dv">3</span>, <span class="dt">varwidth =</span> T, <span class="dt">fill =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-58-1.png" width="768" /></p>
+</div>
+<div id="geom_violin" class="section level4">
+<h4><code>geom_violin()</code></h4>
+<p><code>geom_violin()</code> est très proche de la représentation boxplot mais utilise la représentation en violon plutôt que la boite à moustaches, ce qui permet de mieux visualiser la distribution des données.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-59-1.png" width="768" /></p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool), <span class="dt">fill =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-60-1.png" width="768" /></p>
+</div>
+<div id="geom_bar" class="section level4">
+<h4><code>geom_bar()</code></h4>
+<p><code>geom_bar()</code> permet la représentation en batôns (barplot) d’une variable qualitative (précisée en argument <code>x</code> à <code>aes()</code>).</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-61-1.png" width="768" /> On peut modifier le visuel en changeant certaines options. Par exemple,</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite), <span class="dt">fill =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="dt">width =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-62-1.png" width="768" /></p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> <span class="dv">1</span>), <span class="dt">fill =</span> <span class="st">&quot;darkblue&quot;</span>,</span>
+<span id="cb134-2"><a href="#cb134-2"></a>    <span class="dt">width =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-63-1.png" width="768" /></p>
+<p>On peut aussi obtenir la représentation en camembert en modifiant un peu le graphique en baton en passant en “coordonnées polaires”</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1"></a><span class="kw">ggplot</span>(Wine, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="st">&quot; &quot;</span>, <span class="dt">fill =</span> Qualite)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">width =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_polar</span>(<span class="dt">theta =</span> <span class="st">&quot;y&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-64-1.png" width="768" /></p>
+</div>
+<div id="geom_density" class="section level4">
+<h4><code>geom_density()</code></h4>
+<p><code>geom_density()</code> permet de représenter l’estimation de la densité d’une variable quantitative. Son utilisation est similaire à <code>geom_histogram()</code>.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-65-1.png" width="768" /></p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">fill =</span> Qualite), <span class="dt">alpha =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-66-1.png" width="768" /></p>
+</div>
+<div id="geom_line" class="section level4">
+<h4><code>geom_line()</code></h4>
+<p><code>geom_line()</code> permet de tracer des lignes pour connecter des points entre eux. C’est en particulier utiliser pour représenter des séries temporelles.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a><span class="kw">data</span>(<span class="st">&quot;economics&quot;</span>)</span>
+<span id="cb138-2"><a href="#cb138-2"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> economics) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> unemploy))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-67-1.png" width="768" /></p>
+</div>
+</div>
+<div id="pour-aller-plus-loin" class="section level3 tabset">
+<h3>Pour aller plus loin</h3>
+<div id="représentations-de-plusieurs-geom" class="section level4">
+<h4>Représentations de plusieurs <code>geom</code></h4>
+<p>On peut représenter plusieurs geom sur un même graphique simultanément, il suffit d’utiliser l’opérateur <code>+</code> pour les ajouter au fur et à mesure. On donne ici quelques exemples pour illustrer.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite,</span>
+<span id="cb139-2"><a href="#cb139-2"></a>    <span class="dt">y =</span> Alcool), <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-68-1.png" width="768" /></p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-69-1.png" width="768" /></p>
+</div>
+<div id="faceting" class="section level4">
+<h4>Faceting</h4>
+<p><em>faceting</em> est le terme pour faire un même graphique plusieurs fois selon les modalités d’une ou des variable(s) qualitative(s). On peut utiliser les fonctions <code>facet_wrap()</code> et <code>facet_grid()</code> qui prennent une <code>variable</code> qualitative sous la forme d’une formule <code>~variable</code>. Les différents graphiques sont affichés les uns à côtés des autres avec <code>facet_wrap()</code> et selon une grille avec <code>facet_grid()</code> (prend une formule <code>variable ligne ~ variable colonne</code>).</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Qualite)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-70-1.png" width="768" /></p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(Qualite <span class="op">~</span></span>
+<span id="cb142-2"><a href="#cb142-2"></a><span class="st">    </span>.)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-71-1.png" width="768" /></p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(Qualite <span class="op">~</span></span>
+<span id="cb143-2"><a href="#cb143-2"></a><span class="st">    </span>Type)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-72-1.png" width="768" /></p>
+</div>
+<div id="les-scales" class="section level4">
+<h4>Les <em>scales</em></h4>
+<p>Les <em>scales</em> permettent de modifier la façon dont un attribut graphique est lié aux valeurs d’une variable. Pour les modifier, on ajoute un nouvel élément de la forme <code>scale_&lt;attribut&gt;_&lt;type&gt;</code> à l’objet graphique ggplot2 avec <code>+</code>. Les fonctions <em>scale</em> les plus connues sont :</p>
+<ul>
+<li><code>scale_size()</code> (avec son argument <code>range</code>) pour modifier les tailles minimales, maximales, …</li>
+<li><code>scale_x()</code> et <code>scale_y()</code> pour modifier l’axe <code>x</code>et l’axe <code>y</code> respectivement</li>
+<li><code>scale_x_continuous()</code> (resp. <code>scale_x_discrete()</code>) pour modifier l’axe des <code>x</code> dans le cas d’une variable quantitative (resp. une variable qualitative)</li>
+<li><code>scale_y_continuous()</code> (resp. <code>scale_y_discrete()</code>) pour modifier l’axe des <code>y</code> dans le cas d’une variable quantitative (resp. une variable qualitative)</li>
+<li><code>scale_color()</code> pour modifier les couleurs de dessin</li>
+<li><code>scale_fill()</code> pour modifier les couleurs de remplissage</li>
+</ul>
+<p>Pour les couleurs, on peut spécifier un gradient de couleur sur une variable quantitative avec <code>scale_color_gradient()</code>, modifier manuellement la palette de couleur avec <code>scale_color_manual()</code>, faire appel à une palette de couleur prédéfinie (par exemple en utilisant le package <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html" target="_blank">viridis</a> avec <code>scale_color_viridis</code>, en s’appuyant sur les palettes disponibles dans <a href="https://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3" target="_blank">ColorBrewer</a> avec <code>scale_color_brewer()</code>), … <!--
+Pour aller plus loin sur le sujet des couleurs, vous pouvez consulter  ????????
+--></p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite, <span class="dt">size =</span> AcidVol)) <span class="op">+</span></span>
+<span id="cb144-2"><a href="#cb144-2"></a><span class="st">    </span><span class="kw">scale_size</span>(<span class="st">&quot;Acide vol.&quot;</span>, <span class="dt">range =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="fl">0.2</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="st">&quot;Alcool&quot;</span>,</span>
+<span id="cb144-3"><a href="#cb144-3"></a>    <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Densité&quot;</span>, <span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.985</span>, <span class="fl">1.01</span>))</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-73-1.png" width="768" /></p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1"></a><span class="kw">ggplot</span>(Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_discrete</span>(<span class="st">&quot;Qualité du vin&quot;</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-74-1.png" width="768" /></p>
+</div>
+<div id="thèmes" class="section level4">
+<h4>Thèmes</h4>
+<p>Les thèmes permettent de gérer l’affichage des éléments graphiques non liés aux données comme les titres, les fonds, les grilles, … Il existe plusieurs thèmes prédéfinis comme <code>theme_classic()</code>, <code>theme_minimal()</code> et <code>theme_bw()</code>. On a aussi le package <code>ggthemes</code> qui fournit d’autres thèmes par exemple.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1"></a>g =<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> Wine) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite))</span>
+<span id="cb146-2"><a href="#cb146-2"></a>g1 =<span class="st"> </span>g <span class="op">+</span><span class="st"> </span><span class="kw">theme_classic</span>()</span>
+<span id="cb146-3"><a href="#cb146-3"></a>g2 =<span class="st"> </span>g <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>()</span>
+<span id="cb146-4"><a href="#cb146-4"></a>g3 =<span class="st"> </span>g <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</span>
+<span id="cb146-5"><a href="#cb146-5"></a><span class="kw">grid.arrange</span>(g1, g2, g3, <span class="dt">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="Part4-Ravance_files/figure-html/unnamed-chunk-75-1.png" width="768" /> On peut modifier chaque élément séparément avec une commande spécifique, par exemple :</p>
+<ul>
+<li><code>ggtitle()</code> pour modifier le titre</li>
+<li><code>xlab()</code>et <code>ylab()</code> pour modifier l’intituler de l’axe des abscisses et des ordonnées respectivement</li>
+</ul>
+<p>Avec la fonction <code>theme()</code>, on peut contrôler les éléments graphiques incluant :</p>
+<ul>
+<li>les éléments linéaires (<code>element_line()</code>): traits des axes, traits des grilles mineur et majeur, bordure du panneau graphique, graduation des axes, couleurs de fond, …</li>
+<li>les éléments textuels (<code>element_text()</code>): titre du graphique et des axes, titre et textes de la légende, les étiquettes des graduations des axes, …</li>
+<li>les éléments rectangulaires (<code>element_rect()</code>) : arrière plan du graphique, du panneau et de la légende, … Les fonctions entre parenthèses sont spécifiques pour modifier chacun de ces trois éléments.</li>
+</ul>
+<p>En bref, les possibles avec ggplot2 sont infinis car de nombreux éléments sont personnalisables. Un moyen pour maitriser toutes ces possibilités est l’utilisation de l’addin RStudio <code>ggThemeAssist</code>. Pour cela, il faut installer le package <code>ggThemeAssist</code>, de sélectionner le code correspondant à un graphique ggplot2 et d’aller dans le menu Addins pour choisir <em>ggplot Theme Assistant</em>. Une interface graphique s’ouvre alors, permettant de modifier différents éléments du graphique et d’en récupérer le code correspondant.</p>
+</div>
+<div id="packages-complémentaires-et-documentations" class="section level4">
+<h4>Packages complémentaires et documentations</h4>
+<p>On donne ici une liste non exhaustive de packages que l’on peut utiliser en complément de <strong>ggplot2</strong> :</p>
+<ul>
+<li>Le package <a href="https://github.com/ropensci/plotly" target="_blank">plotly</a> permet d’avoir des graphiques interactifs. On peut par exemple utiliser la fonction <code>ggplotly()</code> sur un graphique ggplot2</li>
+<li>Le package <a href="https://cran.r-project.org/web/packages/gridExtra/index.html" target="_blank">gridExtra</a> permet d’organiser plusieurs graphiques sur une même fenêtre graphique. On peut par exemple utiliser la fonction <code>grid.arrange()</code>.<br />
+</li>
+<li>Le package <a href="https://github.com/wilkelab/cowplot" target="_blank">cowplot</a> contient des fonctionnalités qui permettent d’avoir des graphiques de qualité pour des publications, en particulier pour l’organisation de plusieurs graphiques.</li>
+<li>Le package <a href="https://github.com/dreamRs/esquisse" target="_blank">esquisse</a> est un package qui fournit une interface graphique pour la construction de graphiques avec ggplot2.</li>
+</ul>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1"></a><span class="kw">library</span>(plotly)</span>
+<span id="cb147-2"><a href="#cb147-2"></a>g =<span class="st"> </span><span class="kw">ggplot</span>(Wine, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>()</span>
+<span id="cb147-3"><a href="#cb147-3"></a><span class="kw">ggplotly</span>(g)</span></code></pre></div>
+<div id="htmlwidget-e13c96973c0783f8ed2d" style="width:768px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e13c96973c0783f8ed2d">{"x":{"data":[{"x":[11.8,9.2,9,9,10.6,9.4,10.2,10,10.8,9.4,9.9,12.7,10.2,9.1,10.4,9.2,12.3,10.4,10.1,9.7,9.2,11.3,11.3,9.4,11,9,11.5,11.5,12.8,9.9,13,10.8,9.6,9.9,9.4,12.2,10.5,10,8.7,11.3,10.5,9.5,9,9.9,9.7,10.9,10.1,12,9.6,9.5,11.5,11.4,10.1,9.9,10.2,10.1,9,11.2,10.2,10.4,11,10,12.8,10.8,10.8,13.3,9.4,9.4,9,11.3,12.7,11.3,9,9.1,9,10,11.4,9,9.5,9.5,12.6,9.2,9,10.5,9.1,10.8,9.8,9.9,11.4,10.1,10.7,13,9.5,10.4,10.5,11.7,11.7,10.6,11.1,10.5,9.8,11.7,9.9,9,10.6,11.5,9.1,12.9,10.7,10.7,11.2,11,10.2,9.4,9.8,9.1,9.5,10,11.1,8,11.2,8.7,10.7,12.7,10.7,9.2,11.8,10.1,11.3,10.8,12.1,10.4,9.9,10.4,10.9,9.8,11.4,11,10.3,10.4,13,10.1,12,10,11,8.9,9,10.5,9.8,9.1,9.5,12.5,9.5,9.7,12.1,11.3,9.5,9.2,9,12.89333333,9.6,11.5,10.8,9.1,12.2,11.5,8.8,11.1,9.9,10.4,11.4,10.5,11.8,13.4,9.8,11.4,12.33333333,12.7,13.2,9.7,11,12.4,12,11.2,9.2,9.8,10.9,9,10.5,11.2,9.8,10.6,9.9,9.5,9.1,10.4,11.2,9.5,10.5,9.5,9,12.5,11.4,9.4,10.3,10.7,9.8,9.2,12.3,11.4,9.3,10.1,10.9,10.5,10.6,10.5,10.6,12,9,10.4,8.8,11,10.8,9.4,11.5,9.7,9.5,10.6,9.5,9.2,9.4,9,8.8,10.7,9.4,9.4,10,14,8.9,11.3,11.3,11.9,9.7,11.5,9.2,9.8,11.5,10.5,10.9,9.5,12.89333333,9.2,12.1,9.2,9.9,9.7,11.2,9.5,12,9.7,10.6,13,10,9.4,10.7,11.3,10.9,9.4,9.1,9.8,10.7,11,12.6,9.4,12.7,13,9.6,11.4,9.8,9.5,11.6,9,9.9,11.7,11.7,10.9,10.5,11.5,11.7,9.4,9.8,9,9.9,12.5,11,9.4,13.1,9.3,11.3,9.5,10.4,12,12.9,9.4,12.9,9.9,12.4,9.4,9.8,9,10,10.8,9.2,10.2,10.5,9.9,10.2,11.5,10,10.2,9.3,10.9,12,9.4,9.3,9.9,9.2,12.5,9.5,12,10.4,9.9,9.7,9.4,9.5,9.6,9.9,9.1,10.7,12.6,10.5,9.9,11.8,11.5,11.6,11.3,11.95,9.4,11.4,12,10.4,12,13.1,10.4,10.5,9.2,10.9,8.9,9.4,10,11.6,12,10.9,9.6,11.7,12.4,12,11.5,9.3,9.9,10.6,8.7,10.8,11.4,11,11.9,9,10,11.4,11.4,11.4,9.9,11.4,9.4,11.45,9.1,9.2,10.8,9.8,12.2,12.4,9,9.4,9.5,9.2,9.2,10.8,10.2,11.7,10.6,9.3,10.2,11.5,9.1,9.2,8.7,12.3,11.3,9.1,11,12.3,10.5,10.1,9.3,11.1,9.9,9.4,10.2,10.9,9.8,9.7,11.1,9.1,8.9,9.2,9.4,9.4,9.4,9.2,10.6,9.8,10.2,10,11.6,11.7,10.4,11.3,9.4,11.8,10.2,11.2,10.4,9.4,10.6,9.8,11.6,10.8,9.1,9.6,11.3,11.3,9.6,11.1,8.7,10.6,13.4,12.8,11.3,9.9,9.5,12.5,11.2,8.9,9.5,11.5,10.2,10.5,11.1,9.5,9.6,11.3,10.1,10.5,11.1,10.2,11,11,12.2,10.5,9.9,8.8,9.8,9.2,10.5,8.9,10.1,11.9,10,10.6,9.2,10.53333333,11.5,9.8,11.3,9.9,9.4,12.3,11.5,10.1,9.5,9,10.1,12.5,10.6,11.4,9.3,9.9,9.1,9.5,9.2,13.55,12.5,10.4,11,12.1,12.3,11.4,11.6,13,9.4,13.4,9,8.7,8.7,9.4,11.2,9.8,9.7,9.3,9.5,9.1,10.4,10.9,9.9,11,10,9.2,12.1,9.7,9.9,10.5,10.1,10.9,11.2,11.3,10.1,9.4,10,10.3,9.5,12.6,8.8,12,10.2,11.2,12,9.5,9.6,11.4,11.7,9.8,10.2,11,10.3,9,11,12.5,12.3,12.5,9.7,11.1,12,10,10.4,9.3,10.4,12.05,11.9,9.5,11,10.2,11.7,10.7,10.2,9,12,11.7,9.4,12.7,8.9,10,11.5,9.4,9.7,11.8,9.5,9.2,9.8,9.1,10.7],"y":[0.99332,0.9937,0.99855,0.99786,0.99479,0.9984,0.99393,0.992,0.99362,0.99552,0.99352,0.99036,0.99514,0.9998,0.99454,0.9929,0.991,0.99752,0.9958,0.99212,0.9977,0.9916,0.9915,0.9966,0.99634,0.9975,0.9944,0.99274,0.98869,0.9979,0.99286,0.994,0.9972,0.99286,0.9956,0.9911,0.9923,0.99647,0.9982,0.99146,0.99428,0.997,0.99685,0.99378,0.9983,0.9937,0.99555,0.99214,0.9965,0.9952,0.99089,0.9931,0.9957,0.9983,0.9967,0.9959,0.9957,0.99266,0.99137,0.9942,0.99521,0.9936,0.99378,0.99518,0.99143,0.9952,0.99856,0.9976,0.99792,0.99146,0.98982,0.99572,0.9956,0.9979,0.9972,0.99586,0.9962,0.998,0.99545,0.99716,0.98865,0.9971,0.9958,0.9938,0.9958,0.997,0.99438,0.9968,0.99047,0.99935,0.9955,0.98946,0.99788,0.99648,0.99256,0.9986,0.9934,0.99492,0.9952,0.99511,1.00015,0.99397,0.9926,0.99776,0.99246,0.99112,0.9984,0.98944,0.995,0.9951,0.99344,0.9976,0.9931,0.997,0.99659,0.9971,0.99551,0.9922,0.9934,0.99332,0.99174,0.9986,0.9952,0.98961,0.99142,0.99324,0.99371,0.99655,0.99107,0.9939,0.99206,0.99706,0.9954,0.9918,0.9951,0.99699,0.99472,0.99268,0.99242,0.993,0.9925,0.9991,0.9928,0.9954,0.9972,0.9978,0.99755,0.99256,0.9982,0.99786,0.99718,0.99652,0.99587,0.99744,0.98894,0.99594,0.99434,0.99587,0.99773,0.9901,0.99308,0.99089,0.9938,0.9953,0.99031,0.99134,0.9964,0.99216,0.9982,0.997,0.9902,0.99677,0.9932,0.98981,0.99626,0.9986,0.99,0.99318,0.98882,0.99898,0.99112,0.9893,0.99114,0.9902,0.9956,0.99458,0.9905,0.9976,0.9917,0.99175,0.9964,0.99506,0.9921,0.9971,0.99572,0.9946,0.99194,0.9968,0.99615,0.99569,0.9978,0.9907,0.99774,0.9932,0.9949,0.9947,0.99556,0.9954,0.9896,0.99069,0.99815,0.99392,0.9962,0.9931,0.9952,0.99092,0.9938,0.99384,0.99808,0.99524,1.00242,0.9918,0.99215,0.99604,0.99189,0.99636,0.9969,0.9928,0.9942,1,0.9936,0.99827,0.99602,0.9931,0.9966,0.99785,0.99517,0.98746,0.9996,0.99036,0.9935,0.99152,0.99661,0.99495,0.99815,0.99729,0.9937,0.9933,0.9974,0.9956,0.9901,1,0.99226,0.99596,0.9994,0.99636,0.9943,0.99688,0.99216,0.99779,0.9962,0.9924,0.99735,0.99475,0.9965,0.99189,0.99074,0.9968,0.9986,0.9975,0.9938,0.99374,0.9899,0.9937,0.98952,1.0018,0.99696,0.993,0.99616,0.99416,0.993,0.9986,0.99605,0.9946,0.99038,0.99126,0.99615,0.99188,0.991,0.994,0.99164,0.99398,0.99403,0.99123,0.99404,0.9984,0.99154,0.9982,0.997,0.9969,0.992,0.99638,0.9932,0.99502,0.989,0.99425,0.99272,0.9932,0.99627,0.99494,0.9968,0.99402,0.9972,0.9931,0.9986,0.9956,0.9959,0.9934,0.9979,0.9964,1.0014,0.9914,0.9962,0.9982,0.9957,0.99498,0.9986,0.99042,0.999,0.9926,0.99152,0.99576,0.99975,0.9993,0.9935,0.99537,0.99625,0.9986,0.9936,0.99014,0.9932,0.99324,0.99161,0.98964,0.99378,0.99058,0.99348,0.9956,0.99053,0.99019,0.99202,0.99184,0.98922,0.9996,0.9929,0.9991,0.99176,0.99976,0.9982,0.99434,0.9911,0.9906,0.99638,0.99553,0.9912,0.99,0.9909,0.99084,0.9998,0.992,0.98985,0.9984,0.9922,0.993,0.9964,0.992,0.9949,0.99425,0.99176,0.9936,0.99043,0.9934,0.99182,0.99512,0.9902,0.9984,0.99782,0.9959,0.9958,0.99119,0.991,0.99675,1.0006,0.99784,0.9932,0.99577,0.9904,0.99575,0.9909,0.99522,0.99413,0.99271,0.99112,0.9983,0.99528,1.00044,0.9894,0.99032,0.9988,0.9939,0.99021,0.9938,0.9991,0.99428,0.9949,0.9934,0.9961,0.9932,0.9928,0.9963,0.9938,0.99376,0.99834,0.9959,0.99304,0.99656,0.9937,0.9984,0.9983,0.9927,0.994,0.999,0.9924,0.98961,0.99516,0.99354,0.99058,0.9978,0.995,1.0006,0.9943,0.9931,0.9974,0.99471,0.99428,0.99126,0.99299,0.9936,0.9979,0.9954,0.9936,0.9948,0.99244,0.9975,1.00295,0.9896,0.99378,0.9947,0.9937,0.9994,0.9914,0.99644,0.99685,0.99782,0.99572,0.99742,0.993,0.9963,0.9959,1.0002,0.99014,0.9981,0.99456,0.99268,0.9985,0.9964,0.9988,0.99077,0.9949,0.9961,0.99941,0.99438,0.9997,0.99659,0.99862,0.9925,0.99088,0.99814,0.99828,1.001,0.99313,0.9928,0.9944,0.9904,0.99784,0.99692,0.9922,0.9989,0.9926,0.99544,0.99625,0.99658,0.99,0.9932,0.9927,0.9952,0.99622,0.9986,0.9927,1.00051,0.98758,0.99151,0.9923,0.99732,0.99286,0.98993,0.99346,0.9971,0.98854,0.9998,0.98862,0.9979,0.9974,0.9975,0.99693,0.99082,0.99458,0.99748,0.9969,0.99727,0.99884,0.9945,0.99619,0.99287,0.99336,0.9952,0.9972,0.9911,0.99743,0.9934,0.9962,0.99204,0.99859,0.9996,0.9928,0.9978,0.9934,0.9955,0.9969,0.9979,0.98862,0.998,0.98972,0.99271,0.99076,0.99076,0.997,0.9976,0.99048,0.9927,0.99712,0.99612,0.99111,0.9927,0.9984,0.9906,0.9914,0.99316,0.9908,0.9971,0.99237,0.9973,0.99593,0.9997,0.9984,0.99256,0.9897,0.99642,0.9952,0.99114,0.9946,0.9946,0.99178,0.99669,1.0008,0.99518,0.99314,0.99754,0.9898,0.9961,0.99218,0.9911,0.9953,0.99297,0.99456,0.99938,0.9988,0.99616,0.9955,0.99605],"text":["Alcool: 11.80000<br />Densite: 0.99332","Alcool:  9.20000<br />Densite: 0.99370","Alcool:  9.00000<br />Densite: 0.99855","Alcool:  9.00000<br />Densite: 0.99786","Alcool: 10.60000<br />Densite: 0.99479","Alcool:  9.40000<br />Densite: 0.99840","Alcool: 10.20000<br />Densite: 0.99393","Alcool: 10.00000<br />Densite: 0.99200","Alcool: 10.80000<br />Densite: 0.99362","Alcool:  9.40000<br />Densite: 0.99552","Alcool:  9.90000<br />Densite: 0.99352","Alcool: 12.70000<br />Densite: 0.99036","Alcool: 10.20000<br />Densite: 0.99514","Alcool:  9.10000<br />Densite: 0.99980","Alcool: 10.40000<br />Densite: 0.99454","Alcool:  9.20000<br />Densite: 0.99290","Alcool: 12.30000<br />Densite: 0.99100","Alcool: 10.40000<br />Densite: 0.99752","Alcool: 10.10000<br />Densite: 0.99580","Alcool:  9.70000<br />Densite: 0.99212","Alcool:  9.20000<br />Densite: 0.99770","Alcool: 11.30000<br />Densite: 0.99160","Alcool: 11.30000<br />Densite: 0.99150","Alcool:  9.40000<br />Densite: 0.99660","Alcool: 11.00000<br />Densite: 0.99634","Alcool:  9.00000<br />Densite: 0.99750","Alcool: 11.50000<br />Densite: 0.99440","Alcool: 11.50000<br />Densite: 0.99274","Alcool: 12.80000<br />Densite: 0.98869","Alcool:  9.90000<br />Densite: 0.99790","Alcool: 13.00000<br />Densite: 0.99286","Alcool: 10.80000<br />Densite: 0.99400","Alcool:  9.60000<br />Densite: 0.99720","Alcool:  9.90000<br />Densite: 0.99286","Alcool:  9.40000<br />Densite: 0.99560","Alcool: 12.20000<br />Densite: 0.99110","Alcool: 10.50000<br />Densite: 0.99230","Alcool: 10.00000<br />Densite: 0.99647","Alcool:  8.70000<br />Densite: 0.99820","Alcool: 11.30000<br />Densite: 0.99146","Alcool: 10.50000<br />Densite: 0.99428","Alcool:  9.50000<br />Densite: 0.99700","Alcool:  9.00000<br />Densite: 0.99685","Alcool:  9.90000<br />Densite: 0.99378","Alcool:  9.70000<br />Densite: 0.99830","Alcool: 10.90000<br />Densite: 0.99370","Alcool: 10.10000<br />Densite: 0.99555","Alcool: 12.00000<br />Densite: 0.99214","Alcool:  9.60000<br />Densite: 0.99650","Alcool:  9.50000<br />Densite: 0.99520","Alcool: 11.50000<br />Densite: 0.99089","Alcool: 11.40000<br />Densite: 0.99310","Alcool: 10.10000<br />Densite: 0.99570","Alcool:  9.90000<br />Densite: 0.99830","Alcool: 10.20000<br />Densite: 0.99670","Alcool: 10.10000<br />Densite: 0.99590","Alcool:  9.00000<br />Densite: 0.99570","Alcool: 11.20000<br />Densite: 0.99266","Alcool: 10.20000<br />Densite: 0.99137","Alcool: 10.40000<br />Densite: 0.99420","Alcool: 11.00000<br />Densite: 0.99521","Alcool: 10.00000<br />Densite: 0.99360","Alcool: 12.80000<br />Densite: 0.99378","Alcool: 10.80000<br />Densite: 0.99518","Alcool: 10.80000<br />Densite: 0.99143","Alcool: 13.30000<br />Densite: 0.99520","Alcool:  9.40000<br />Densite: 0.99856","Alcool:  9.40000<br />Densite: 0.99760","Alcool:  9.00000<br />Densite: 0.99792","Alcool: 11.30000<br />Densite: 0.99146","Alcool: 12.70000<br />Densite: 0.98982","Alcool: 11.30000<br />Densite: 0.99572","Alcool:  9.00000<br />Densite: 0.99560","Alcool:  9.10000<br />Densite: 0.99790","Alcool:  9.00000<br />Densite: 0.99720","Alcool: 10.00000<br />Densite: 0.99586","Alcool: 11.40000<br />Densite: 0.99620","Alcool:  9.00000<br />Densite: 0.99800","Alcool:  9.50000<br />Densite: 0.99545","Alcool:  9.50000<br />Densite: 0.99716","Alcool: 12.60000<br />Densite: 0.98865","Alcool:  9.20000<br />Densite: 0.99710","Alcool:  9.00000<br />Densite: 0.99580","Alcool: 10.50000<br />Densite: 0.99380","Alcool:  9.10000<br />Densite: 0.99580","Alcool: 10.80000<br />Densite: 0.99700","Alcool:  9.80000<br />Densite: 0.99438","Alcool:  9.90000<br />Densite: 0.99680","Alcool: 11.40000<br />Densite: 0.99047","Alcool: 10.10000<br />Densite: 0.99935","Alcool: 10.70000<br />Densite: 0.99550","Alcool: 13.00000<br />Densite: 0.98946","Alcool:  9.50000<br />Densite: 0.99788","Alcool: 10.40000<br />Densite: 0.99648","Alcool: 10.50000<br />Densite: 0.99256","Alcool: 11.70000<br />Densite: 0.99860","Alcool: 11.70000<br />Densite: 0.99340","Alcool: 10.60000<br />Densite: 0.99492","Alcool: 11.10000<br />Densite: 0.99520","Alcool: 10.50000<br />Densite: 0.99511","Alcool:  9.80000<br />Densite: 1.00015","Alcool: 11.70000<br />Densite: 0.99397","Alcool:  9.90000<br />Densite: 0.99260","Alcool:  9.00000<br />Densite: 0.99776","Alcool: 10.60000<br />Densite: 0.99246","Alcool: 11.50000<br />Densite: 0.99112","Alcool:  9.10000<br />Densite: 0.99840","Alcool: 12.90000<br />Densite: 0.98944","Alcool: 10.70000<br />Densite: 0.99500","Alcool: 10.70000<br />Densite: 0.99510","Alcool: 11.20000<br />Densite: 0.99344","Alcool: 11.00000<br />Densite: 0.99760","Alcool: 10.20000<br />Densite: 0.99310","Alcool:  9.40000<br />Densite: 0.99700","Alcool:  9.80000<br />Densite: 0.99659","Alcool:  9.10000<br />Densite: 0.99710","Alcool:  9.50000<br />Densite: 0.99551","Alcool: 10.00000<br />Densite: 0.99220","Alcool: 11.10000<br />Densite: 0.99340","Alcool:  8.00000<br />Densite: 0.99332","Alcool: 11.20000<br />Densite: 0.99174","Alcool:  8.70000<br />Densite: 0.99860","Alcool: 10.70000<br />Densite: 0.99520","Alcool: 12.70000<br />Densite: 0.98961","Alcool: 10.70000<br />Densite: 0.99142","Alcool:  9.20000<br />Densite: 0.99324","Alcool: 11.80000<br />Densite: 0.99371","Alcool: 10.10000<br />Densite: 0.99655","Alcool: 11.30000<br />Densite: 0.99107","Alcool: 10.80000<br />Densite: 0.99390","Alcool: 12.10000<br />Densite: 0.99206","Alcool: 10.40000<br />Densite: 0.99706","Alcool:  9.90000<br />Densite: 0.99540","Alcool: 10.40000<br />Densite: 0.99180","Alcool: 10.90000<br />Densite: 0.99510","Alcool:  9.80000<br />Densite: 0.99699","Alcool: 11.40000<br />Densite: 0.99472","Alcool: 11.00000<br />Densite: 0.99268","Alcool: 10.30000<br />Densite: 0.99242","Alcool: 10.40000<br />Densite: 0.99300","Alcool: 13.00000<br />Densite: 0.99250","Alcool: 10.10000<br />Densite: 0.99910","Alcool: 12.00000<br />Densite: 0.99280","Alcool: 10.00000<br />Densite: 0.99540","Alcool: 11.00000<br />Densite: 0.99720","Alcool:  8.90000<br />Densite: 0.99780","Alcool:  9.00000<br />Densite: 0.99755","Alcool: 10.50000<br />Densite: 0.99256","Alcool:  9.80000<br />Densite: 0.99820","Alcool:  9.10000<br />Densite: 0.99786","Alcool:  9.50000<br />Densite: 0.99718","Alcool: 12.50000<br />Densite: 0.99652","Alcool:  9.50000<br />Densite: 0.99587","Alcool:  9.70000<br />Densite: 0.99744","Alcool: 12.10000<br />Densite: 0.98894","Alcool: 11.30000<br />Densite: 0.99594","Alcool:  9.50000<br />Densite: 0.99434","Alcool:  9.20000<br />Densite: 0.99587","Alcool:  9.00000<br />Densite: 0.99773","Alcool: 12.89333<br />Densite: 0.99010","Alcool:  9.60000<br />Densite: 0.99308","Alcool: 11.50000<br />Densite: 0.99089","Alcool: 10.80000<br />Densite: 0.99380","Alcool:  9.10000<br />Densite: 0.99530","Alcool: 12.20000<br />Densite: 0.99031","Alcool: 11.50000<br />Densite: 0.99134","Alcool:  8.80000<br />Densite: 0.99640","Alcool: 11.10000<br />Densite: 0.99216","Alcool:  9.90000<br />Densite: 0.99820","Alcool: 10.40000<br />Densite: 0.99700","Alcool: 11.40000<br />Densite: 0.99020","Alcool: 10.50000<br />Densite: 0.99677","Alcool: 11.80000<br />Densite: 0.99320","Alcool: 13.40000<br />Densite: 0.98981","Alcool:  9.80000<br />Densite: 0.99626","Alcool: 11.40000<br />Densite: 0.99860","Alcool: 12.33333<br />Densite: 0.99000","Alcool: 12.70000<br />Densite: 0.99318","Alcool: 13.20000<br />Densite: 0.98882","Alcool:  9.70000<br />Densite: 0.99898","Alcool: 11.00000<br />Densite: 0.99112","Alcool: 12.40000<br />Densite: 0.98930","Alcool: 12.00000<br />Densite: 0.99114","Alcool: 11.20000<br />Densite: 0.99020","Alcool:  9.20000<br />Densite: 0.99560","Alcool:  9.80000<br />Densite: 0.99458","Alcool: 10.90000<br />Densite: 0.99050","Alcool:  9.00000<br />Densite: 0.99760","Alcool: 10.50000<br />Densite: 0.99170","Alcool: 11.20000<br />Densite: 0.99175","Alcool:  9.80000<br />Densite: 0.99640","Alcool: 10.60000<br />Densite: 0.99506","Alcool:  9.90000<br />Densite: 0.99210","Alcool:  9.50000<br />Densite: 0.99710","Alcool:  9.10000<br />Densite: 0.99572","Alcool: 10.40000<br />Densite: 0.99460","Alcool: 11.20000<br />Densite: 0.99194","Alcool:  9.50000<br />Densite: 0.99680","Alcool: 10.50000<br />Densite: 0.99615","Alcool:  9.50000<br />Densite: 0.99569","Alcool:  9.00000<br />Densite: 0.99780","Alcool: 12.50000<br />Densite: 0.99070","Alcool: 11.40000<br />Densite: 0.99774","Alcool:  9.40000<br />Densite: 0.99320","Alcool: 10.30000<br />Densite: 0.99490","Alcool: 10.70000<br />Densite: 0.99470","Alcool:  9.80000<br />Densite: 0.99556","Alcool:  9.20000<br />Densite: 0.99540","Alcool: 12.30000<br />Densite: 0.98960","Alcool: 11.40000<br />Densite: 0.99069","Alcool:  9.30000<br />Densite: 0.99815","Alcool: 10.10000<br />Densite: 0.99392","Alcool: 10.90000<br />Densite: 0.99620","Alcool: 10.50000<br />Densite: 0.99310","Alcool: 10.60000<br />Densite: 0.99520","Alcool: 10.50000<br />Densite: 0.99092","Alcool: 10.60000<br />Densite: 0.99380","Alcool: 12.00000<br />Densite: 0.99384","Alcool:  9.00000<br />Densite: 0.99808","Alcool: 10.40000<br />Densite: 0.99524","Alcool:  8.80000<br />Densite: 1.00242","Alcool: 11.00000<br />Densite: 0.99180","Alcool: 10.80000<br />Densite: 0.99215","Alcool:  9.40000<br />Densite: 0.99604","Alcool: 11.50000<br />Densite: 0.99189","Alcool:  9.70000<br />Densite: 0.99636","Alcool:  9.50000<br />Densite: 0.99690","Alcool: 10.60000<br />Densite: 0.99280","Alcool:  9.50000<br />Densite: 0.99420","Alcool:  9.20000<br />Densite: 1.00000","Alcool:  9.40000<br />Densite: 0.99360","Alcool:  9.00000<br />Densite: 0.99827","Alcool:  8.80000<br />Densite: 0.99602","Alcool: 10.70000<br />Densite: 0.99310","Alcool:  9.40000<br />Densite: 0.99660","Alcool:  9.40000<br />Densite: 0.99785","Alcool: 10.00000<br />Densite: 0.99517","Alcool: 14.00000<br />Densite: 0.98746","Alcool:  8.90000<br />Densite: 0.99960","Alcool: 11.30000<br />Densite: 0.99036","Alcool: 11.30000<br />Densite: 0.99350","Alcool: 11.90000<br />Densite: 0.99152","Alcool:  9.70000<br />Densite: 0.99661","Alcool: 11.50000<br />Densite: 0.99495","Alcool:  9.20000<br />Densite: 0.99815","Alcool:  9.80000<br />Densite: 0.99729","Alcool: 11.50000<br />Densite: 0.99370","Alcool: 10.50000<br />Densite: 0.99330","Alcool: 10.90000<br />Densite: 0.99740","Alcool:  9.50000<br />Densite: 0.99560","Alcool: 12.89333<br />Densite: 0.99010","Alcool:  9.20000<br />Densite: 1.00000","Alcool: 12.10000<br />Densite: 0.99226","Alcool:  9.20000<br />Densite: 0.99596","Alcool:  9.90000<br />Densite: 0.99940","Alcool:  9.70000<br />Densite: 0.99636","Alcool: 11.20000<br />Densite: 0.99430","Alcool:  9.50000<br />Densite: 0.99688","Alcool: 12.00000<br />Densite: 0.99216","Alcool:  9.70000<br />Densite: 0.99779","Alcool: 10.60000<br />Densite: 0.99620","Alcool: 13.00000<br />Densite: 0.99240","Alcool: 10.00000<br />Densite: 0.99735","Alcool:  9.40000<br />Densite: 0.99475","Alcool: 10.70000<br />Densite: 0.99650","Alcool: 11.30000<br />Densite: 0.99189","Alcool: 10.90000<br />Densite: 0.99074","Alcool:  9.40000<br />Densite: 0.99680","Alcool:  9.10000<br />Densite: 0.99860","Alcool:  9.80000<br />Densite: 0.99750","Alcool: 10.70000<br />Densite: 0.99380","Alcool: 11.00000<br />Densite: 0.99374","Alcool: 12.60000<br />Densite: 0.98990","Alcool:  9.40000<br />Densite: 0.99370","Alcool: 12.70000<br />Densite: 0.98952","Alcool: 13.00000<br />Densite: 1.00180","Alcool:  9.60000<br />Densite: 0.99696","Alcool: 11.40000<br />Densite: 0.99300","Alcool:  9.80000<br />Densite: 0.99616","Alcool:  9.50000<br />Densite: 0.99416","Alcool: 11.60000<br />Densite: 0.99300","Alcool:  9.00000<br />Densite: 0.99860","Alcool:  9.90000<br />Densite: 0.99605","Alcool: 11.70000<br />Densite: 0.99460","Alcool: 11.70000<br />Densite: 0.99038","Alcool: 10.90000<br />Densite: 0.99126","Alcool: 10.50000<br />Densite: 0.99615","Alcool: 11.50000<br />Densite: 0.99188","Alcool: 11.70000<br />Densite: 0.99100","Alcool:  9.40000<br />Densite: 0.99400","Alcool:  9.80000<br />Densite: 0.99164","Alcool:  9.00000<br />Densite: 0.99398","Alcool:  9.90000<br />Densite: 0.99403","Alcool: 12.50000<br />Densite: 0.99123","Alcool: 11.00000<br />Densite: 0.99404","Alcool:  9.40000<br />Densite: 0.99840","Alcool: 13.10000<br />Densite: 0.99154","Alcool:  9.30000<br />Densite: 0.99820","Alcool: 11.30000<br />Densite: 0.99700","Alcool:  9.50000<br />Densite: 0.99690","Alcool: 10.40000<br />Densite: 0.99200","Alcool: 12.00000<br />Densite: 0.99638","Alcool: 12.90000<br />Densite: 0.99320","Alcool:  9.40000<br />Densite: 0.99502","Alcool: 12.90000<br />Densite: 0.98900","Alcool:  9.90000<br />Densite: 0.99425","Alcool: 12.40000<br />Densite: 0.99272","Alcool:  9.40000<br />Densite: 0.99320","Alcool:  9.80000<br />Densite: 0.99627","Alcool:  9.00000<br />Densite: 0.99494","Alcool: 10.00000<br />Densite: 0.99680","Alcool: 10.80000<br />Densite: 0.99402","Alcool:  9.20000<br />Densite: 0.99720","Alcool: 10.20000<br />Densite: 0.99310","Alcool: 10.50000<br />Densite: 0.99860","Alcool:  9.90000<br />Densite: 0.99560","Alcool: 10.20000<br />Densite: 0.99590","Alcool: 11.50000<br />Densite: 0.99340","Alcool: 10.00000<br />Densite: 0.99790","Alcool: 10.20000<br />Densite: 0.99640","Alcool:  9.30000<br />Densite: 1.00140","Alcool: 10.90000<br />Densite: 0.99140","Alcool: 12.00000<br />Densite: 0.99620","Alcool:  9.40000<br />Densite: 0.99820","Alcool:  9.30000<br />Densite: 0.99570","Alcool:  9.90000<br />Densite: 0.99498","Alcool:  9.20000<br />Densite: 0.99860","Alcool: 12.50000<br />Densite: 0.99042","Alcool:  9.50000<br />Densite: 0.99900","Alcool: 12.00000<br />Densite: 0.99260","Alcool: 10.40000<br />Densite: 0.99152","Alcool:  9.90000<br />Densite: 0.99576","Alcool:  9.70000<br />Densite: 0.99975","Alcool:  9.40000<br />Densite: 0.99930","Alcool:  9.50000<br />Densite: 0.99350","Alcool:  9.60000<br />Densite: 0.99537","Alcool:  9.90000<br />Densite: 0.99625","Alcool:  9.10000<br />Densite: 0.99860","Alcool: 10.70000<br />Densite: 0.99360","Alcool: 12.60000<br />Densite: 0.99014","Alcool: 10.50000<br />Densite: 0.99320","Alcool:  9.90000<br />Densite: 0.99324","Alcool: 11.80000<br />Densite: 0.99161","Alcool: 11.50000<br />Densite: 0.98964","Alcool: 11.60000<br />Densite: 0.99378","Alcool: 11.30000<br />Densite: 0.99058","Alcool: 11.95000<br />Densite: 0.99348","Alcool:  9.40000<br />Densite: 0.99560","Alcool: 11.40000<br />Densite: 0.99053","Alcool: 12.00000<br />Densite: 0.99019","Alcool: 10.40000<br />Densite: 0.99202","Alcool: 12.00000<br />Densite: 0.99184","Alcool: 13.10000<br />Densite: 0.98922","Alcool: 10.40000<br />Densite: 0.99960","Alcool: 10.50000<br />Densite: 0.99290","Alcool:  9.20000<br />Densite: 0.99910","Alcool: 10.90000<br />Densite: 0.99176","Alcool:  8.90000<br />Densite: 0.99976","Alcool:  9.40000<br />Densite: 0.99820","Alcool: 10.00000<br />Densite: 0.99434","Alcool: 11.60000<br />Densite: 0.99110","Alcool: 12.00000<br />Densite: 0.99060","Alcool: 10.90000<br />Densite: 0.99638","Alcool:  9.60000<br />Densite: 0.99553","Alcool: 11.70000<br />Densite: 0.99120","Alcool: 12.40000<br />Densite: 0.99000","Alcool: 12.00000<br />Densite: 0.99090","Alcool: 11.50000<br />Densite: 0.99084","Alcool:  9.30000<br />Densite: 0.99980","Alcool:  9.90000<br />Densite: 0.99200","Alcool: 10.60000<br />Densite: 0.98985","Alcool:  8.70000<br />Densite: 0.99840","Alcool: 10.80000<br />Densite: 0.99220","Alcool: 11.40000<br />Densite: 0.99300","Alcool: 11.00000<br />Densite: 0.99640","Alcool: 11.90000<br />Densite: 0.99200","Alcool:  9.00000<br />Densite: 0.99490","Alcool: 10.00000<br />Densite: 0.99425","Alcool: 11.40000<br />Densite: 0.99176","Alcool: 11.40000<br />Densite: 0.99360","Alcool: 11.40000<br />Densite: 0.99043","Alcool:  9.90000<br />Densite: 0.99340","Alcool: 11.40000<br />Densite: 0.99182","Alcool:  9.40000<br />Densite: 0.99512","Alcool: 11.45000<br />Densite: 0.99020","Alcool:  9.10000<br />Densite: 0.99840","Alcool:  9.20000<br />Densite: 0.99782","Alcool: 10.80000<br />Densite: 0.99590","Alcool:  9.80000<br />Densite: 0.99580","Alcool: 12.20000<br />Densite: 0.99119","Alcool: 12.40000<br />Densite: 0.99100","Alcool:  9.00000<br />Densite: 0.99675","Alcool:  9.40000<br />Densite: 1.00060","Alcool:  9.50000<br />Densite: 0.99784","Alcool:  9.20000<br />Densite: 0.99320","Alcool:  9.20000<br />Densite: 0.99577","Alcool: 10.80000<br />Densite: 0.99040","Alcool: 10.20000<br />Densite: 0.99575","Alcool: 11.70000<br />Densite: 0.99090","Alcool: 10.60000<br />Densite: 0.99522","Alcool:  9.30000<br />Densite: 0.99413","Alcool: 10.20000<br />Densite: 0.99271","Alcool: 11.50000<br />Densite: 0.99112","Alcool:  9.10000<br />Densite: 0.99830","Alcool:  9.20000<br />Densite: 0.99528","Alcool:  8.70000<br />Densite: 1.00044","Alcool: 12.30000<br />Densite: 0.98940","Alcool: 11.30000<br />Densite: 0.99032","Alcool:  9.10000<br />Densite: 0.99880","Alcool: 11.00000<br />Densite: 0.99390","Alcool: 12.30000<br />Densite: 0.99021","Alcool: 10.50000<br />Densite: 0.99380","Alcool: 10.10000<br />Densite: 0.99910","Alcool:  9.30000<br />Densite: 0.99428","Alcool: 11.10000<br />Densite: 0.99490","Alcool:  9.90000<br />Densite: 0.99340","Alcool:  9.40000<br />Densite: 0.99610","Alcool: 10.20000<br />Densite: 0.99320","Alcool: 10.90000<br />Densite: 0.99280","Alcool:  9.80000<br />Densite: 0.99630","Alcool:  9.70000<br />Densite: 0.99380","Alcool: 11.10000<br />Densite: 0.99376","Alcool:  9.10000<br />Densite: 0.99834","Alcool:  8.90000<br />Densite: 0.99590","Alcool:  9.20000<br />Densite: 0.99304","Alcool:  9.40000<br />Densite: 0.99656","Alcool:  9.40000<br />Densite: 0.99370","Alcool:  9.40000<br />Densite: 0.99840","Alcool:  9.20000<br />Densite: 0.99830","Alcool: 10.60000<br />Densite: 0.99270","Alcool:  9.80000<br />Densite: 0.99400","Alcool: 10.20000<br />Densite: 0.99900","Alcool: 10.00000<br />Densite: 0.99240","Alcool: 11.60000<br />Densite: 0.98961","Alcool: 11.70000<br />Densite: 0.99516","Alcool: 10.40000<br />Densite: 0.99354","Alcool: 11.30000<br />Densite: 0.99058","Alcool:  9.40000<br />Densite: 0.99780","Alcool: 11.80000<br />Densite: 0.99500","Alcool: 10.20000<br />Densite: 1.00060","Alcool: 11.20000<br />Densite: 0.99430","Alcool: 10.40000<br />Densite: 0.99310","Alcool:  9.40000<br />Densite: 0.99740","Alcool: 10.60000<br />Densite: 0.99471","Alcool:  9.80000<br />Densite: 0.99428","Alcool: 11.60000<br />Densite: 0.99126","Alcool: 10.80000<br />Densite: 0.99299","Alcool:  9.10000<br />Densite: 0.99360","Alcool:  9.60000<br />Densite: 0.99790","Alcool: 11.30000<br />Densite: 0.99540","Alcool: 11.30000<br />Densite: 0.99360","Alcool:  9.60000<br />Densite: 0.99480","Alcool: 11.10000<br />Densite: 0.99244","Alcool:  8.70000<br />Densite: 0.99750","Alcool: 10.60000<br />Densite: 1.00295","Alcool: 13.40000<br />Densite: 0.98960","Alcool: 12.80000<br />Densite: 0.99378","Alcool: 11.30000<br />Densite: 0.99470","Alcool:  9.90000<br />Densite: 0.99370","Alcool:  9.50000<br />Densite: 0.99940","Alcool: 12.50000<br />Densite: 0.99140","Alcool: 11.20000<br />Densite: 0.99644","Alcool:  8.90000<br />Densite: 0.99685","Alcool:  9.50000<br />Densite: 0.99782","Alcool: 11.50000<br />Densite: 0.99572","Alcool: 10.20000<br />Densite: 0.99742","Alcool: 10.50000<br />Densite: 0.99300","Alcool: 11.10000<br />Densite: 0.99630","Alcool:  9.50000<br />Densite: 0.99590","Alcool:  9.60000<br />Densite: 1.00020","Alcool: 11.30000<br />Densite: 0.99014","Alcool: 10.10000<br />Densite: 0.99810","Alcool: 10.50000<br />Densite: 0.99456","Alcool: 11.10000<br />Densite: 0.99268","Alcool: 10.20000<br />Densite: 0.99850","Alcool: 11.00000<br />Densite: 0.99640","Alcool: 11.00000<br />Densite: 0.99880","Alcool: 12.20000<br />Densite: 0.99077","Alcool: 10.50000<br />Densite: 0.99490","Alcool:  9.90000<br />Densite: 0.99610","Alcool:  8.80000<br />Densite: 0.99941","Alcool:  9.80000<br />Densite: 0.99438","Alcool:  9.20000<br />Densite: 0.99970","Alcool: 10.50000<br />Densite: 0.99659","Alcool:  8.90000<br />Densite: 0.99862","Alcool: 10.10000<br />Densite: 0.99250","Alcool: 11.90000<br />Densite: 0.99088","Alcool: 10.00000<br />Densite: 0.99814","Alcool: 10.60000<br />Densite: 0.99828","Alcool:  9.20000<br />Densite: 1.00100","Alcool: 10.53333<br />Densite: 0.99313","Alcool: 11.50000<br />Densite: 0.99280","Alcool:  9.80000<br />Densite: 0.99440","Alcool: 11.30000<br />Densite: 0.99040","Alcool:  9.90000<br />Densite: 0.99784","Alcool:  9.40000<br />Densite: 0.99692","Alcool: 12.30000<br />Densite: 0.99220","Alcool: 11.50000<br />Densite: 0.99890","Alcool: 10.10000<br />Densite: 0.99260","Alcool:  9.50000<br />Densite: 0.99544","Alcool:  9.00000<br />Densite: 0.99625","Alcool: 10.10000<br />Densite: 0.99658","Alcool: 12.50000<br />Densite: 0.99000","Alcool: 10.60000<br />Densite: 0.99320","Alcool: 11.40000<br />Densite: 0.99270","Alcool:  9.30000<br />Densite: 0.99520","Alcool:  9.90000<br />Densite: 0.99622","Alcool:  9.10000<br />Densite: 0.99860","Alcool:  9.50000<br />Densite: 0.99270","Alcool:  9.20000<br />Densite: 1.00051","Alcool: 13.55000<br />Densite: 0.98758","Alcool: 12.50000<br />Densite: 0.99151","Alcool: 10.40000<br />Densite: 0.99230","Alcool: 11.00000<br />Densite: 0.99732","Alcool: 12.10000<br />Densite: 0.99286","Alcool: 12.30000<br />Densite: 0.98993","Alcool: 11.40000<br />Densite: 0.99346","Alcool: 11.60000<br />Densite: 0.99710","Alcool: 13.00000<br />Densite: 0.98854","Alcool:  9.40000<br />Densite: 0.99980","Alcool: 13.40000<br />Densite: 0.98862","Alcool:  9.00000<br />Densite: 0.99790","Alcool:  8.70000<br />Densite: 0.99740","Alcool:  8.70000<br />Densite: 0.99750","Alcool:  9.40000<br />Densite: 0.99693","Alcool: 11.20000<br />Densite: 0.99082","Alcool:  9.80000<br />Densite: 0.99458","Alcool:  9.70000<br />Densite: 0.99748","Alcool:  9.30000<br />Densite: 0.99690","Alcool:  9.50000<br />Densite: 0.99727","Alcool:  9.10000<br />Densite: 0.99884","Alcool: 10.40000<br />Densite: 0.99450","Alcool: 10.90000<br />Densite: 0.99619","Alcool:  9.90000<br />Densite: 0.99287","Alcool: 11.00000<br />Densite: 0.99336","Alcool: 10.00000<br />Densite: 0.99520","Alcool:  9.20000<br />Densite: 0.99720","Alcool: 12.10000<br />Densite: 0.99110","Alcool:  9.70000<br />Densite: 0.99743","Alcool:  9.90000<br />Densite: 0.99340","Alcool: 10.50000<br />Densite: 0.99620","Alcool: 10.10000<br />Densite: 0.99204","Alcool: 10.90000<br />Densite: 0.99859","Alcool: 11.20000<br />Densite: 0.99960","Alcool: 11.30000<br />Densite: 0.99280","Alcool: 10.10000<br />Densite: 0.99780","Alcool:  9.40000<br />Densite: 0.99340","Alcool: 10.00000<br />Densite: 0.99550","Alcool: 10.30000<br />Densite: 0.99690","Alcool:  9.50000<br />Densite: 0.99790","Alcool: 12.60000<br />Densite: 0.98862","Alcool:  8.80000<br />Densite: 0.99800","Alcool: 12.00000<br />Densite: 0.98972","Alcool: 10.20000<br />Densite: 0.99271","Alcool: 11.20000<br />Densite: 0.99076","Alcool: 12.00000<br />Densite: 0.99076","Alcool:  9.50000<br />Densite: 0.99700","Alcool:  9.60000<br />Densite: 0.99760","Alcool: 11.40000<br />Densite: 0.99048","Alcool: 11.70000<br />Densite: 0.99270","Alcool:  9.80000<br />Densite: 0.99712","Alcool: 10.20000<br />Densite: 0.99612","Alcool: 11.00000<br />Densite: 0.99111","Alcool: 10.30000<br />Densite: 0.99270","Alcool:  9.00000<br />Densite: 0.99840","Alcool: 11.00000<br />Densite: 0.99060","Alcool: 12.50000<br />Densite: 0.99140","Alcool: 12.30000<br />Densite: 0.99316","Alcool: 12.50000<br />Densite: 0.99080","Alcool:  9.70000<br />Densite: 0.99710","Alcool: 11.10000<br />Densite: 0.99237","Alcool: 12.00000<br />Densite: 0.99730","Alcool: 10.00000<br />Densite: 0.99593","Alcool: 10.40000<br />Densite: 0.99970","Alcool:  9.30000<br />Densite: 0.99840","Alcool: 10.40000<br />Densite: 0.99256","Alcool: 12.05000<br />Densite: 0.98970","Alcool: 11.90000<br />Densite: 0.99642","Alcool:  9.50000<br />Densite: 0.99520","Alcool: 11.00000<br />Densite: 0.99114","Alcool: 10.20000<br />Densite: 0.99460","Alcool: 11.70000<br />Densite: 0.99460","Alcool: 10.70000<br />Densite: 0.99178","Alcool: 10.20000<br />Densite: 0.99669","Alcool:  9.00000<br />Densite: 1.00080","Alcool: 12.00000<br />Densite: 0.99518","Alcool: 11.70000<br />Densite: 0.99314","Alcool:  9.40000<br />Densite: 0.99754","Alcool: 12.70000<br />Densite: 0.98980","Alcool:  8.90000<br />Densite: 0.99610","Alcool: 10.00000<br />Densite: 0.99218","Alcool: 11.50000<br />Densite: 0.99110","Alcool:  9.40000<br />Densite: 0.99530","Alcool:  9.70000<br />Densite: 0.99297","Alcool: 11.80000<br />Densite: 0.99456","Alcool:  9.50000<br />Densite: 0.99938","Alcool:  9.20000<br />Densite: 0.99880","Alcool:  9.80000<br />Densite: 0.99616","Alcool:  9.10000<br />Densite: 0.99550","Alcool: 10.70000<br />Densite: 0.99605"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[8,8.07594936708861,8.15189873417722,8.22784810126582,8.30379746835443,8.37974683544304,8.45569620253165,8.53164556962025,8.60759493670886,8.68354430379747,8.75949367088608,8.83544303797468,8.91139240506329,8.9873417721519,9.06329113924051,9.13924050632911,9.21518987341772,9.29113924050633,9.36708860759494,9.44303797468354,9.51898734177215,9.59493670886076,9.67088607594937,9.74683544303798,9.82278481012658,9.89873417721519,9.9746835443038,10.0506329113924,10.126582278481,10.2025316455696,10.2784810126582,10.3544303797468,10.4303797468354,10.506329113924,10.5822784810127,10.6582278481013,10.7341772151899,10.8101265822785,10.8860759493671,10.9620253164557,11.0379746835443,11.1139240506329,11.1898734177215,11.2658227848101,11.3417721518987,11.4177215189873,11.493670886076,11.5696202531646,11.6455696202532,11.7215189873418,11.7974683544304,11.873417721519,11.9493670886076,12.0253164556962,12.1012658227848,12.1772151898734,12.253164556962,12.3291139240506,12.4050632911392,12.4810126582278,12.5569620253165,12.6329113924051,12.7088607594937,12.7848101265823,12.8607594936709,12.9367088607595,13.0126582278481,13.0886075949367,13.1645569620253,13.2405063291139,13.3164556962025,13.3924050632911,13.4683544303797,13.5443037974684,13.620253164557,13.6962025316456,13.7721518987342,13.8481012658228,13.9240506329114,14],"y":[0.998104895934679,0.998081896455793,0.998056461238588,0.998027740914691,0.997994886115732,0.997957047473339,0.997913375619142,0.997863021184767,0.997805134801845,0.997738867102004,0.997663368716873,0.997577790278079,0.997481282417253,0.997372995766022,0.997252080956015,0.997118955591306,0.99698002376528,0.996835887794773,0.996686055123477,0.996530293476374,0.996370551572603,0.996209407987331,0.996049383392602,0.995892998460456,0.995742626304296,0.99559752208232,0.995456346944361,0.99531829363426,0.995182554895858,0.995048323472992,0.994914792109505,0.99478049280368,0.994643843083276,0.994506008887562,0.994368287589971,0.994231976563931,0.994098373182874,0.993968816934128,0.993846600249352,0.993731034797326,0.993619114164189,0.993507831936078,0.993394181699133,0.993275157039492,0.993148998463643,0.993020425000399,0.992891036588239,0.992761730189303,0.992633402765735,0.992506951279676,0.992383272693268,0.992263263968652,0.992147822067971,0.992035038074742,0.99192232644853,0.991809703475568,0.99169718563004,0.991584789386129,0.991472531218018,0.991360427599892,0.991248495005934,0.991136749910326,0.991025208787254,0.9909138881109,0.990802804355447,0.990691973995081,0.990581413503983,0.990471139356338,0.990361168026329,0.990251515988139,0.990142199715952,0.990033235683952,0.989924640366323,0.989816430237247,0.989708621770908,0.98960123144149,0.989494275723176,0.98938777109015,0.989281734016596,0.989176180976696],"text":["Alcool:  8.000000<br />Densite: 0.9981049","Alcool:  8.075949<br />Densite: 0.9980819","Alcool:  8.151899<br />Densite: 0.9980565","Alcool:  8.227848<br />Densite: 0.9980277","Alcool:  8.303797<br />Densite: 0.9979949","Alcool:  8.379747<br />Densite: 0.9979570","Alcool:  8.455696<br />Densite: 0.9979134","Alcool:  8.531646<br />Densite: 0.9978630","Alcool:  8.607595<br />Densite: 0.9978051","Alcool:  8.683544<br />Densite: 0.9977389","Alcool:  8.759494<br />Densite: 0.9976634","Alcool:  8.835443<br />Densite: 0.9975778","Alcool:  8.911392<br />Densite: 0.9974813","Alcool:  8.987342<br />Densite: 0.9973730","Alcool:  9.063291<br />Densite: 0.9972521","Alcool:  9.139241<br />Densite: 0.9971190","Alcool:  9.215190<br />Densite: 0.9969800","Alcool:  9.291139<br />Densite: 0.9968359","Alcool:  9.367089<br />Densite: 0.9966861","Alcool:  9.443038<br />Densite: 0.9965303","Alcool:  9.518987<br />Densite: 0.9963706","Alcool:  9.594937<br />Densite: 0.9962094","Alcool:  9.670886<br />Densite: 0.9960494","Alcool:  9.746835<br />Densite: 0.9958930","Alcool:  9.822785<br />Densite: 0.9957426","Alcool:  9.898734<br />Densite: 0.9955975","Alcool:  9.974684<br />Densite: 0.9954563","Alcool: 10.050633<br />Densite: 0.9953183","Alcool: 10.126582<br />Densite: 0.9951826","Alcool: 10.202532<br />Densite: 0.9950483","Alcool: 10.278481<br />Densite: 0.9949148","Alcool: 10.354430<br />Densite: 0.9947805","Alcool: 10.430380<br />Densite: 0.9946438","Alcool: 10.506329<br />Densite: 0.9945060","Alcool: 10.582278<br />Densite: 0.9943683","Alcool: 10.658228<br />Densite: 0.9942320","Alcool: 10.734177<br />Densite: 0.9940984","Alcool: 10.810127<br />Densite: 0.9939688","Alcool: 10.886076<br />Densite: 0.9938466","Alcool: 10.962025<br />Densite: 0.9937310","Alcool: 11.037975<br />Densite: 0.9936191","Alcool: 11.113924<br />Densite: 0.9935078","Alcool: 11.189873<br />Densite: 0.9933942","Alcool: 11.265823<br />Densite: 0.9932752","Alcool: 11.341772<br />Densite: 0.9931490","Alcool: 11.417722<br />Densite: 0.9930204","Alcool: 11.493671<br />Densite: 0.9928910","Alcool: 11.569620<br />Densite: 0.9927617","Alcool: 11.645570<br />Densite: 0.9926334","Alcool: 11.721519<br />Densite: 0.9925070","Alcool: 11.797468<br />Densite: 0.9923833","Alcool: 11.873418<br />Densite: 0.9922633","Alcool: 11.949367<br />Densite: 0.9921478","Alcool: 12.025316<br />Densite: 0.9920350","Alcool: 12.101266<br />Densite: 0.9919223","Alcool: 12.177215<br />Densite: 0.9918097","Alcool: 12.253165<br />Densite: 0.9916972","Alcool: 12.329114<br />Densite: 0.9915848","Alcool: 12.405063<br />Densite: 0.9914725","Alcool: 12.481013<br />Densite: 0.9913604","Alcool: 12.556962<br />Densite: 0.9912485","Alcool: 12.632911<br />Densite: 0.9911367","Alcool: 12.708861<br />Densite: 0.9910252","Alcool: 12.784810<br />Densite: 0.9909139","Alcool: 12.860759<br />Densite: 0.9908028","Alcool: 12.936709<br />Densite: 0.9906920","Alcool: 13.012658<br />Densite: 0.9905814","Alcool: 13.088608<br />Densite: 0.9904711","Alcool: 13.164557<br />Densite: 0.9903612","Alcool: 13.240506<br />Densite: 0.9902515","Alcool: 13.316456<br />Densite: 0.9901422","Alcool: 13.392405<br />Densite: 0.9900332","Alcool: 13.468354<br />Densite: 0.9899246","Alcool: 13.544304<br />Densite: 0.9898164","Alcool: 13.620253<br />Densite: 0.9897086","Alcool: 13.696203<br />Densite: 0.9896012","Alcool: 13.772152<br />Densite: 0.9894943","Alcool: 13.848101<br />Densite: 0.9893878","Alcool: 13.924051<br />Densite: 0.9892817","Alcool: 14.000000<br />Densite: 0.9891762"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":3.77952755905512,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[8,8.07594936708861,8.15189873417722,8.22784810126582,8.30379746835443,8.37974683544304,8.45569620253165,8.53164556962025,8.60759493670886,8.68354430379747,8.75949367088608,8.83544303797468,8.91139240506329,8.9873417721519,9.06329113924051,9.13924050632911,9.21518987341772,9.29113924050633,9.36708860759494,9.44303797468354,9.51898734177215,9.59493670886076,9.67088607594937,9.74683544303798,9.82278481012658,9.89873417721519,9.9746835443038,10.0506329113924,10.126582278481,10.2025316455696,10.2784810126582,10.3544303797468,10.4303797468354,10.506329113924,10.5822784810127,10.6582278481013,10.7341772151899,10.8101265822785,10.8860759493671,10.9620253164557,11.0379746835443,11.1139240506329,11.1898734177215,11.2658227848101,11.3417721518987,11.4177215189873,11.493670886076,11.5696202531646,11.6455696202532,11.7215189873418,11.7974683544304,11.873417721519,11.9493670886076,12.0253164556962,12.1012658227848,12.1772151898734,12.253164556962,12.3291139240506,12.4050632911392,12.4810126582278,12.5569620253165,12.6329113924051,12.7088607594937,12.7848101265823,12.8607594936709,12.9367088607595,13.0126582278481,13.0886075949367,13.1645569620253,13.2405063291139,13.3164556962025,13.3924050632911,13.4683544303797,13.5443037974684,13.620253164557,13.6962025316456,13.7721518987342,13.8481012658228,13.9240506329114,14,14,14,13.9240506329114,13.8481012658228,13.7721518987342,13.6962025316456,13.620253164557,13.5443037974684,13.4683544303797,13.3924050632911,13.3164556962025,13.2405063291139,13.1645569620253,13.0886075949367,13.0126582278481,12.9367088607595,12.8607594936709,12.7848101265823,12.7088607594937,12.6329113924051,12.5569620253165,12.4810126582278,12.4050632911392,12.3291139240506,12.253164556962,12.1772151898734,12.1012658227848,12.0253164556962,11.9493670886076,11.873417721519,11.7974683544304,11.7215189873418,11.6455696202532,11.5696202531646,11.493670886076,11.4177215189873,11.3417721518987,11.2658227848101,11.1898734177215,11.1139240506329,11.0379746835443,10.9620253164557,10.8860759493671,10.8101265822785,10.7341772151899,10.6582278481013,10.5822784810127,10.506329113924,10.4303797468354,10.3544303797468,10.2784810126582,10.2025316455696,10.126582278481,10.0506329113924,9.9746835443038,9.89873417721519,9.82278481012658,9.74683544303798,9.67088607594937,9.59493670886076,9.51898734177215,9.44303797468354,9.36708860759494,9.29113924050633,9.21518987341772,9.13924050632911,9.06329113924051,8.9873417721519,8.91139240506329,8.83544303797468,8.75949367088608,8.68354430379747,8.60759493670886,8.53164556962025,8.45569620253165,8.37974683544304,8.30379746835443,8.22784810126582,8.15189873417722,8.07594936708861,8,8],"y":[0.996042328252799,0.996202613699909,0.996352671486914,0.996491260949667,0.996617122539353,0.996728978171259,0.99682553200297,0.996905472271165,0.996967475390757,0.997010214503995,0.997032376167875,0.997032690617459,0.997009981483513,0.996963235482604,0.996891673347217,0.996795945367891,0.996682548676697,0.996553146340074,0.996408982533993,0.996252195948519,0.996088090008238,0.995920306140566,0.995752246788569,0.995587974702772,0.995432244829697,0.995288213201278,0.995149500851833,0.995008988910624,0.994863876818901,0.99471689529889,0.994574389421519,0.994441311010442,0.994312397455369,0.994181185999589,0.994043866637771,0.993901612242271,0.993760540018771,0.993629112095732,0.993512930737282,0.993405827536045,0.993299662995535,0.993188881378984,0.993071535729103,0.992948572654001,0.992822129978149,0.992694775591924,0.992566638273311,0.992437800924755,0.992308735983985,0.992180351320536,0.992053932767011,0.991930987828935,0.991813011366765,0.991697575622204,0.991581048920923,0.991463018965146,0.99134297091625,0.991220323877131,0.991094477461218,0.990964862825244,0.99083098924381,0.990692476900023,0.990549070258177,0.990400632411094,0.99024712589367,0.99008858740533,0.989925102787439,0.989756786045665,0.989583763750863,0.989406164543428,0.989224112734717,0.98903772485958,0.988847108186106,0.988652360430927,0.98845357015905,0.988250817529653,0.988044175179788,0.987833709125299,0.98761947961405,0.98740154190066,0.98740154190066,0.990950820052732,0.990943988419141,0.990941833055002,0.990944376266563,0.990951645353326,0.990963673382765,0.990980500043566,0.991002172546539,0.991028746508325,0.991060286697187,0.99109686743285,0.991138572301794,0.991185492667011,0.991237724220528,0.991295360584832,0.991358482817225,0.991427143810706,0.991501347316331,0.991581022920629,0.991666000768058,0.991755992374539,0.991850584974818,0.991949254895126,0.992051400343829,0.99215638798599,0.992263603976137,0.99237250052728,0.992482632769176,0.992595540108368,0.992712612619524,0.992833551238816,0.992958069547485,0.993085659453852,0.993215434903167,0.993346074408874,0.993475866949137,0.993601741424982,0.993716827669163,0.993826782493173,0.993938565332842,0.994056242058607,0.994180269761422,0.994308521772523,0.994436206346976,0.99456234088559,0.99469270854217,0.994830831775536,0.994975288711182,0.995119674596919,0.995255194797491,0.995379751647095,0.995501232972814,0.995627598357897,0.995763193036889,0.995906830963361,0.996053007778896,0.996198022218139,0.996346519996635,0.996498509834097,0.996653013136968,0.996808391004229,0.996963127712961,0.997118629249472,0.997277498853863,0.99744196581472,0.997612488564812,0.997782756049439,0.997952583350992,0.998122889938699,0.998294361265871,0.998467519700013,0.998642794212933,0.99882057009837,0.999001219235313,0.99918511677542,0.999372649692111,0.999564220879715,0.999760250990261,0.999961179211678,1.00016746361656,0.996042328252799],"text":["Alcool:  8.000000<br />Densite: 0.9981049","Alcool:  8.075949<br />Densite: 0.9980819","Alcool:  8.151899<br />Densite: 0.9980565","Alcool:  8.227848<br />Densite: 0.9980277","Alcool:  8.303797<br />Densite: 0.9979949","Alcool:  8.379747<br />Densite: 0.9979570","Alcool:  8.455696<br />Densite: 0.9979134","Alcool:  8.531646<br />Densite: 0.9978630","Alcool:  8.607595<br />Densite: 0.9978051","Alcool:  8.683544<br />Densite: 0.9977389","Alcool:  8.759494<br />Densite: 0.9976634","Alcool:  8.835443<br />Densite: 0.9975778","Alcool:  8.911392<br />Densite: 0.9974813","Alcool:  8.987342<br />Densite: 0.9973730","Alcool:  9.063291<br />Densite: 0.9972521","Alcool:  9.139241<br />Densite: 0.9971190","Alcool:  9.215190<br />Densite: 0.9969800","Alcool:  9.291139<br />Densite: 0.9968359","Alcool:  9.367089<br />Densite: 0.9966861","Alcool:  9.443038<br />Densite: 0.9965303","Alcool:  9.518987<br />Densite: 0.9963706","Alcool:  9.594937<br />Densite: 0.9962094","Alcool:  9.670886<br />Densite: 0.9960494","Alcool:  9.746835<br />Densite: 0.9958930","Alcool:  9.822785<br />Densite: 0.9957426","Alcool:  9.898734<br />Densite: 0.9955975","Alcool:  9.974684<br />Densite: 0.9954563","Alcool: 10.050633<br />Densite: 0.9953183","Alcool: 10.126582<br />Densite: 0.9951826","Alcool: 10.202532<br />Densite: 0.9950483","Alcool: 10.278481<br />Densite: 0.9949148","Alcool: 10.354430<br />Densite: 0.9947805","Alcool: 10.430380<br />Densite: 0.9946438","Alcool: 10.506329<br />Densite: 0.9945060","Alcool: 10.582278<br />Densite: 0.9943683","Alcool: 10.658228<br />Densite: 0.9942320","Alcool: 10.734177<br />Densite: 0.9940984","Alcool: 10.810127<br />Densite: 0.9939688","Alcool: 10.886076<br />Densite: 0.9938466","Alcool: 10.962025<br />Densite: 0.9937310","Alcool: 11.037975<br />Densite: 0.9936191","Alcool: 11.113924<br />Densite: 0.9935078","Alcool: 11.189873<br />Densite: 0.9933942","Alcool: 11.265823<br />Densite: 0.9932752","Alcool: 11.341772<br />Densite: 0.9931490","Alcool: 11.417722<br />Densite: 0.9930204","Alcool: 11.493671<br />Densite: 0.9928910","Alcool: 11.569620<br />Densite: 0.9927617","Alcool: 11.645570<br />Densite: 0.9926334","Alcool: 11.721519<br />Densite: 0.9925070","Alcool: 11.797468<br />Densite: 0.9923833","Alcool: 11.873418<br />Densite: 0.9922633","Alcool: 11.949367<br />Densite: 0.9921478","Alcool: 12.025316<br />Densite: 0.9920350","Alcool: 12.101266<br />Densite: 0.9919223","Alcool: 12.177215<br />Densite: 0.9918097","Alcool: 12.253165<br />Densite: 0.9916972","Alcool: 12.329114<br />Densite: 0.9915848","Alcool: 12.405063<br />Densite: 0.9914725","Alcool: 12.481013<br />Densite: 0.9913604","Alcool: 12.556962<br />Densite: 0.9912485","Alcool: 12.632911<br />Densite: 0.9911367","Alcool: 12.708861<br />Densite: 0.9910252","Alcool: 12.784810<br />Densite: 0.9909139","Alcool: 12.860759<br />Densite: 0.9908028","Alcool: 12.936709<br />Densite: 0.9906920","Alcool: 13.012658<br />Densite: 0.9905814","Alcool: 13.088608<br />Densite: 0.9904711","Alcool: 13.164557<br />Densite: 0.9903612","Alcool: 13.240506<br />Densite: 0.9902515","Alcool: 13.316456<br />Densite: 0.9901422","Alcool: 13.392405<br />Densite: 0.9900332","Alcool: 13.468354<br />Densite: 0.9899246","Alcool: 13.544304<br />Densite: 0.9898164","Alcool: 13.620253<br />Densite: 0.9897086","Alcool: 13.696203<br />Densite: 0.9896012","Alcool: 13.772152<br />Densite: 0.9894943","Alcool: 13.848101<br />Densite: 0.9893878","Alcool: 13.924051<br />Densite: 0.9892817","Alcool: 14.000000<br />Densite: 0.9891762","Alcool: 14.000000<br />Densite: 0.9891762","Alcool: 14.000000<br />Densite: 0.9891762","Alcool: 13.924051<br />Densite: 0.9892817","Alcool: 13.848101<br />Densite: 0.9893878","Alcool: 13.772152<br />Densite: 0.9894943","Alcool: 13.696203<br />Densite: 0.9896012","Alcool: 13.620253<br />Densite: 0.9897086","Alcool: 13.544304<br />Densite: 0.9898164","Alcool: 13.468354<br />Densite: 0.9899246","Alcool: 13.392405<br />Densite: 0.9900332","Alcool: 13.316456<br />Densite: 0.9901422","Alcool: 13.240506<br />Densite: 0.9902515","Alcool: 13.164557<br />Densite: 0.9903612","Alcool: 13.088608<br />Densite: 0.9904711","Alcool: 13.012658<br />Densite: 0.9905814","Alcool: 12.936709<br />Densite: 0.9906920","Alcool: 12.860759<br />Densite: 0.9908028","Alcool: 12.784810<br />Densite: 0.9909139","Alcool: 12.708861<br />Densite: 0.9910252","Alcool: 12.632911<br />Densite: 0.9911367","Alcool: 12.556962<br />Densite: 0.9912485","Alcool: 12.481013<br />Densite: 0.9913604","Alcool: 12.405063<br />Densite: 0.9914725","Alcool: 12.329114<br />Densite: 0.9915848","Alcool: 12.253165<br />Densite: 0.9916972","Alcool: 12.177215<br />Densite: 0.9918097","Alcool: 12.101266<br />Densite: 0.9919223","Alcool: 12.025316<br />Densite: 0.9920350","Alcool: 11.949367<br />Densite: 0.9921478","Alcool: 11.873418<br />Densite: 0.9922633","Alcool: 11.797468<br />Densite: 0.9923833","Alcool: 11.721519<br />Densite: 0.9925070","Alcool: 11.645570<br />Densite: 0.9926334","Alcool: 11.569620<br />Densite: 0.9927617","Alcool: 11.493671<br />Densite: 0.9928910","Alcool: 11.417722<br />Densite: 0.9930204","Alcool: 11.341772<br />Densite: 0.9931490","Alcool: 11.265823<br />Densite: 0.9932752","Alcool: 11.189873<br />Densite: 0.9933942","Alcool: 11.113924<br />Densite: 0.9935078","Alcool: 11.037975<br />Densite: 0.9936191","Alcool: 10.962025<br />Densite: 0.9937310","Alcool: 10.886076<br />Densite: 0.9938466","Alcool: 10.810127<br />Densite: 0.9939688","Alcool: 10.734177<br />Densite: 0.9940984","Alcool: 10.658228<br />Densite: 0.9942320","Alcool: 10.582278<br />Densite: 0.9943683","Alcool: 10.506329<br />Densite: 0.9945060","Alcool: 10.430380<br />Densite: 0.9946438","Alcool: 10.354430<br />Densite: 0.9947805","Alcool: 10.278481<br />Densite: 0.9949148","Alcool: 10.202532<br />Densite: 0.9950483","Alcool: 10.126582<br />Densite: 0.9951826","Alcool: 10.050633<br />Densite: 0.9953183","Alcool:  9.974684<br />Densite: 0.9954563","Alcool:  9.898734<br />Densite: 0.9955975","Alcool:  9.822785<br />Densite: 0.9957426","Alcool:  9.746835<br />Densite: 0.9958930","Alcool:  9.670886<br />Densite: 0.9960494","Alcool:  9.594937<br />Densite: 0.9962094","Alcool:  9.518987<br />Densite: 0.9963706","Alcool:  9.443038<br />Densite: 0.9965303","Alcool:  9.367089<br />Densite: 0.9966861","Alcool:  9.291139<br />Densite: 0.9968359","Alcool:  9.215190<br />Densite: 0.9969800","Alcool:  9.139241<br />Densite: 0.9971190","Alcool:  9.063291<br />Densite: 0.9972521","Alcool:  8.987342<br />Densite: 0.9973730","Alcool:  8.911392<br />Densite: 0.9974813","Alcool:  8.835443<br />Densite: 0.9975778","Alcool:  8.759494<br />Densite: 0.9976634","Alcool:  8.683544<br />Densite: 0.9977389","Alcool:  8.607595<br />Densite: 0.9978051","Alcool:  8.531646<br />Densite: 0.9978630","Alcool:  8.455696<br />Densite: 0.9979134","Alcool:  8.379747<br />Densite: 0.9979570","Alcool:  8.303797<br />Densite: 0.9979949","Alcool:  8.227848<br />Densite: 0.9980277","Alcool:  8.151899<br />Densite: 0.9980565","Alcool:  8.075949<br />Densite: 0.9980819","Alcool:  8.000000<br />Densite: 0.9981049","Alcool:  8.000000<br />Densite: 0.9981049"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"transparent","dash":"solid"},"fill":"toself","fillcolor":"rgba(153,153,153,0.4)","hoveron":"points","hoverinfo":"x+y","showlegend":false,"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":27.689497716895,"r":7.30593607305936,"b":41.6438356164384,"l":54.7945205479452},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[7.7,14.3],"tickmode":"array","ticktext":["8","10","12","14"],"tickvals":[8,10,12,14],"categoryorder":"array","categoryarray":["8","10","12","14"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Alcool","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.986624118995692,1.00372742290497],"tickmode":"array","ticktext":["0.990","0.995","1.000"],"tickvals":[0.99,0.995,1],"categoryorder":"array","categoryarray":["0.990","0.995","1.000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Densite","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1746a2d63c6c2":{"x":{},"y":{},"type":"scatter"},"1746a718e01d5":{"x":{},"y":{}}},"cur_data":"1746a2d63c6c2","visdat":{"1746a2d63c6c2":["function (y) ","x"],"1746a718e01d5":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Nous donnons ici quelques références pour les graphiques en ggplot2 mais il existe de nombreuses ressources sur le web:</p>
+<ul>
+<li>Le livre <em>Ggplot2: Elegant Graphics for Data Analysis</em> de H. Wickham. <span class="citation">(Wickham 2016)</span></li>
+<li>Le <a href="https://ggplot2.tidyverse.org/" target="_blank">site web de ggplot2</a></li>
+<li><a href="https://www.r-graph-gallery.com/ggplot2-package.html" target="_blank">The R Graph Gallery</a></li>
+<li><a href="https://thinkr.fr/pdf/ggplot2-french-cheatsheet.pdf" target="_blank">The Cheat Sheet de ggplot 2</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="le-package-rmarkdown" class="section level1">
+<h1>Le package <strong>rmarkdown</strong> <img src="image/rmarkdown.jpg" id="id" class="class" style="width:10.0%" /></h1>
+<p>L’extension <a href="https://rmarkdown.rstudio.com/index.html" target="_blank"><strong>Rmarkdown</strong></a> permet de créer des documents dans différents formats (html, pdf, docx, slides, …) qui contiennent du texte, du code (en R mais pas que!), les résultats, … Par exemple, les tutoriels de ce cours ont été rédigés avec Rmarkdown. L’utilisation de Rmarkdown permet d’obtenir un document final reproductible, associant code, résultats et commentaires. Le document peut être facilement regénéré et mis à jour (par exemple si les données étudiées ont été modifiées).</p>
+<p>Nous allons donner ici des éléments de base pour la création de documents avec Rmarkdown. Pour plus de détails, vous pouvez consulter par exemple le livre en ligne <a href="https://bookdown.org/yihui/rmarkdown/" target="_blank">R Markdown: The Definitive Guide</a> de Y. Xie, J. J. Allaire, G. Grolemund. <span class="citation">(2018)</span></p>
+<div id="etapes-de-création-dun-document" class="section level2">
+<h2>Etapes de création d’un document</h2>
+<p>Un document Rmarkdown est un fichier enregistré avec l’extension <code>.Rmd</code>. Pour créer un nouveau document, allez dans <code>File-&gt; NewFile-&gt; Rmarkdown...</code> (ou cliquez sur l’icone nouveau document et choisissez Rmarkdown). La boîte de dialogue suivante s’ouvre :</p>
+<div class="figure" style="text-align: center">
+<img src="image/creationRmarkdown.png" alt="Boite de dialogue Rmarkdown" width="40%" />
+<p class="caption">
+Boite de dialogue Rmarkdown
+</p>
+</div>
+<p>Vous pouvez choisir le format du fichier final souhaité, préciser le titre et l’auteur (qui peuvent être modifiés ensuite si besoin). On peut remarquer que l’on peut aussi faire des présentations avec Rmarkdown et on peut utiliser des templates existants (par exemple ce tutoirel utilise le template <em>readthedown</em> du package <code>rmdformats</code>.)</p>
+<p><strong>Exercice</strong> :</p>
+<blockquote>
+<p>Créez un nouveau document Rmarkdown au format html avec le titre et l’auteur de votre choix. Vous pouvez constater qu’un nouveau document prérempli vient de s’ouvrir dans RStudio. Nous allons maintenant détailler le contenu de ce document.</p>
+</blockquote>
+<p>Un document Rmarkdown débute toujours par <strong>l’en-tête</strong> qui est encadré par 3 tirets <code>---</code>. Cet en-tête contient les métadonnées du document : le titre, l’auteur, la date, le format de sortie (<code>output</code>). Quelques éléments seront précisés dans la section <a href="#sectEnTete">Contenu de l’en-tête</a>.</p>
+<p>On a ensuite le corps du document qui peut contenir</p>
+<ul>
+<li>du texte selon la syntaxe markdown (voir la section <a href="#sectMarkdown">Quelques éléments markdown</a>)</li>
+<li>des blocs de code (appelés <em>chunks</em>) en R, Python, … (voir la section <a href="#sectChunk">Options des blocs de code</a>)</li>
+<li>des formules mathématiques (écrites en latex entre <code>$ ... $</code>)</li>
+<li>des images, tableaux, références, ….</li>
+</ul>
+<p>Vous pouvez compiler à tout moment le document Rmarkdown en cliquant sur le bouton <img src="image/Knit.png" id="id" class="class" style="width:10.0%" /> et de choisir le format de sortie voulu. Un onglet R Markdown s’ouvre alors dans la même zone que l’onglet <em>Console</em> pour indiquer la progression de la compilation et les messages d’erreur éventuels. Une fois la compilation effectuée, le document obtenu s’ouvre et vous pouvez admirer le rendu. Vous pouvez personnaliser le document de sortie en cliquant sur l’icone <img src="image/iconeParam.png" id="id" class="class" style="width:7.0%" /> et en choisissant <code>Output Options...</code>.</p>
+<p><strong>Remarque</strong>:</p>
+<blockquote>
+<p>Pour la compilation d’un document en pdf, il est nécessaire d’avoir installé un compilateur de Latex sur son ordinateur. Si ce n’est pas le cas, vous pouvez utiliser l’extension <code>tinytex</code> (voir <a href="https://yihui.org/tinytex/" target="_blank">ici</a> pour plus de détails) <img src="image/logo-tinytex.png" id="id" class="class" style="width:5.0%" /></p>
+</blockquote>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;tinytex&quot;</span>)</span>
+<span id="cb148-2"><a href="#cb148-2"></a>tinytex<span class="op">::</span><span class="kw">install.tinytex</span>()</span></code></pre></div>
+</div>
+<div id="sectEnTete" class="section level2">
+<h2>Contenu de l’en-tête</h2>
+<p>Un document Rmarkdown débute par un en-tête entre <code>---</code> au format <a href="https://cran.r-project.org/web/packages/ymlthis/vignettes/yaml-fieldguide.html" target="_blank">YAML</a> contenant les métadonnées du document. Voici un exemple de base de préambule :</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1"></a><span class="op">---</span></span>
+<span id="cb149-2"><a href="#cb149-2"></a>title<span class="op">:</span><span class="st"> &quot;Titre&quot;</span></span>
+<span id="cb149-3"><a href="#cb149-3"></a>author<span class="op">:</span><span class="st"> &quot;Prénom Nom&quot;</span></span>
+<span id="cb149-4"><a href="#cb149-4"></a>date<span class="op">:</span><span class="st"> &quot;31 aout 2020&quot;</span></span>
+<span id="cb149-5"><a href="#cb149-5"></a>output<span class="op">:</span><span class="st"> </span>html_document</span>
+<span id="cb149-6"><a href="#cb149-6"></a><span class="op">---</span></span></code></pre></div>
+<p>Ici <code>output: html_document</code> indique le document final généré sera au format html. On peut modifier cette option par <code>pdf_document</code>pour un document pdf, <code>word_document</code> pour docx, et bien d’autres possibilités.</p>
+<p>En executant la fonction <code>Sys.Date()</code> pour l’option <code>date</code>, la date sera remise à jour automatiquement à chaque compilation du document.</p>
+<p>On peut préciser des options au document final en ajoutant des sous-options à droite du <code>output</code>. Il est également possible de spécifier des options différentes selon les formats. Voici un exemple :</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1"></a><span class="op">---</span></span>
+<span id="cb150-2"><a href="#cb150-2"></a>title<span class="op">:</span><span class="st"> &quot;Titre&quot;</span></span>
+<span id="cb150-3"><a href="#cb150-3"></a>author<span class="op">:</span><span class="st"> &quot;Prénom Nom&quot;</span></span>
+<span id="cb150-4"><a href="#cb150-4"></a>date<span class="op">:</span><span class="st"> &quot;`r Sys.Date()`&quot;</span></span>
+<span id="cb150-5"><a href="#cb150-5"></a>output<span class="op">:</span><span class="st"> </span></span>
+<span id="cb150-6"><a href="#cb150-6"></a><span class="st">  </span>html_document <span class="op">:</span></span>
+<span id="cb150-7"><a href="#cb150-7"></a><span class="st">    </span>toc <span class="op">:</span><span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb150-8"><a href="#cb150-8"></a>    toc_float <span class="op">:</span><span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb150-9"><a href="#cb150-9"></a>    number_sections <span class="op">:</span><span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb150-10"><a href="#cb150-10"></a>    fig_width <span class="op">:</span><span class="st"> </span><span class="dv">4</span></span>
+<span id="cb150-11"><a href="#cb150-11"></a>  pdf_document <span class="op">:</span><span class="st"> </span></span>
+<span id="cb150-12"><a href="#cb150-12"></a><span class="st">    </span>fig_caption<span class="op">:</span><span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb150-13"><a href="#cb150-13"></a>    highlight<span class="op">:</span><span class="st"> </span>kate</span>
+<span id="cb150-14"><a href="#cb150-14"></a><span class="op">---</span></span></code></pre></div>
+<p>Voici une liste avec quelques éléments :</p>
+<ul>
+<li><code>number_section : true</code> permet de numéroter les sections</li>
+<li><code>highlight</code> permet de spécifier le style syntaxique (par ex <code>default</code>, <code>tango</code>, <code>pygments</code>, <code>kate</code>, …).</li>
+<li>on peut ajouter son propre fichier de style .css avec l’option <code>css</code></li>
+<li>on peut préciser des options concernant les figures avec <code>fig_width</code>, <code>fig_height</code>, <code>fig_caption</code>, <code>dev</code>, …</li>
+<li>on peut ajouter une bibliographie à partir d’un fichier <code>.bib</code> avec l’option <code>bibliography</code></li>
+</ul>
+<p>Si vous utilisez la boite de dialogue des options du document de sortie <code>Output Options ...</code>, l’en-tête sera remis à jour pour suivre les options choisies.</p>
+<p>Pour plus de détails voir le site détaillant les <a href="https://rmarkdown.rstudio.com/formats.html" target="_blank">R Markdown formats</a> et l’aide mémoire de Rmarkdown (accessible via <code>Help -&gt; Cheatsheets -&gt; Rmarkdown Cheat Sheet</code>).</p>
+<p><strong>Exercice :</strong></p>
+<blockquote>
+<p>Créez un nouveau fichier Rmarkdown et enregistrez-le. Modifiez les options dans l’en-tête et compilez le document pour constater l’impact sur le document généré</p>
+</blockquote>
+</div>
+<div id="sectMarkdown" class="section level2">
+<h2>Quelques éléments markdown</h2>
+<p>Le texte d’un document Rmarkdown est régi par le langage markdown. Voici quelques éléments de syntaxe et de mise en forme</p>
+<div class="figure">
+<img src="image/markdown.png" alt="" />
+<p class="caption">Extrait du Cheat Sheet de Rmarkdown</p>
+</div>
+<p><strong>Remarque: </strong> Si vous avez organisé votre document avec des sections / sous-sections en faisant débuter une ligne par un ou plusieurs <code>#</code>, alors vous pouvez cliquer sur l’icone <img src="image/iconeHeader.png" id="id" class="class" style="width:5.0%" /> à droite de la barre d’outils associée au fichier R Markdown pour visualiser la table des matières générée automatiquement qui vous permet de naviguer facilement dans le document.</p>
+<p>Pour plus de détails, on peut aller voir</p>
+<ul>
+<li>sous RStudio, allez dans <code>Help -&gt; Markdown Quick Reference</code> : une fenêtre d’aide en bas à droite s’ouvre donnant les bases de syntaxe markdown</li>
+<li>sous RStudio, allez dans <code>Help -&gt; Cheatsheets -&gt; R Markdown Cheat Sheet</code> qui permet d’aller consulter le <a href="https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf" target="_blank">document suivant</a>.</li>
+<li>Consulter la page web du <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">markdown guide</a></li>
+</ul>
+</div>
+<div id="sectChunk" class="section level2">
+<h2>Options des blocs de code (chunks)</h2>
+<p>Pour insérer du code dans un document Rmarkdown, on utilise des blocs appelés <strong>chunk</strong>. Pour cela, il suffit de cliquer sur l’icone d’insertion d’un chunk <img src="image/iconeChunk.png" id="id" class="class" style="width:10.0%" /> dans la barre d’outils d’un document Rmarkdown. Il est possible d’insérer un chunk de code R mais pas seulement (par exemple on peut insérer du code Python). Pour du code R, un chunk de cette forme s’insère alors dans le document</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb151-1"><a href="#cb151-1"></a><span class="bn">```{r}</span></span>
+<span id="cb151-2"><a href="#cb151-2"></a></span>
+<span id="cb151-3"><a href="#cb151-3"></a><span class="bn">```</span></span></code></pre></div>
+<p>On peut alors saisir du code R dans ce chunk. On peut ajouter un nom à un bloc juste après <code>r</code> (<code>{r nomdubloc}</code>). On peut également préciser des options dans les accolades <code>{r nomdubloc, ....}</code>, par exemple</p>
+<div class="figure" style="text-align: center">
+<img src="image/optionschunk.png" alt="Quelques options des blocs de code (chunk)" width="100%" />
+<p class="caption">
+Quelques options des blocs de code (chunk)
+</p>
+</div>
+<!--
++ eval (TRUE par défaut, ou FALSE) : détermine si le code R doit être évalué ou non,
++ echo (TRUE par défaut, ou FALSE) : détermine si le code R doit être affiché ou non,
++ results ('markup' par défaut, 'hide', 'hold' ou 'asis') : détermine comment les sorties doivent être affichées,
++ error (FALSE par défaut, ou TRUE) : détermine si les messages d'erreur doivent être affichée,
++ warning (TRUE par défaut, ou FALSE) : détermine si les messages d'avertissement doivent être affichées.
+-->
+<p>Ces options peuvent être modifiées manuellement ou en utilisant l’interface graphique (en cliquant sur l’icone d’engrenage situé en haut à droite de chaque bloc).</p>
+<p>Lorsque l’on veut appliquer une (des) option(s) à l’ensemble des blocs du document, on utilise la fonction <code>knitr::opts_chunk$set()</code> dans un bloc spécial appelé <code>setup</code> et qui est le premier bloc du document:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb152-1"><a href="#cb152-1"></a><span class="bn">```{r setup, include=FALSE}</span></span>
+<span id="cb152-2"><a href="#cb152-2"></a><span class="bn">knitr::opts_chunk$set(echo = TRUE)</span></span>
+<span id="cb152-3"><a href="#cb152-3"></a><span class="bn">```</span></span></code></pre></div>
+<!--## Exercice
+
+A FAIRE
+-->
+</div>
+</div>
+<div id="le-package-reticulate-pour-python" class="section level1 tabset">
+<h1>Le package <strong>reticulate</strong> pour Python <img src="image/reticulate.png" id="id" class="class" style="width:10.0%" /></h1>
+<p>Il est possible d’executer du code Python sous Rstudio, de compiler un document Rmarkdown contenant à la fois du code Python et du code R, écrire des scripts python, …</p>
+<p>L’interface R pour faire du Python est le package <a href="https://rstudio.github.io/reticulate/" target="_blank"><code>reticulate</code></a>. Il fournit un ensemble d’outils pour l’inter-opérabilité entre Python et R, il comprend des fonctionnalités pour :</p>
+<ul>
+<li><p>appeler Python à partir de R de différentes manières, y compris R Markdown, importer des modules Python, utiliser Python de manière interactive dans une session R, …</p></li>
+<li><p>faire l’articulation entre les objets R et Python (par exemple, entre les data.frames de R et Pandas, ou entre les matrices R et les tableaux NumPy).</p></li>
+<li><p>faire la liaison à différentes versions de Python, y compris les environnements Virtual et les environnements Conda.</p></li>
+</ul>
+<p>Par défaut, <code>reticulate</code> utilise la version de Python indiquée dans le PATH (<code>Sys.which("python")</code>) mais il est possible de lui spécifier une autre version de python à l’aide de la fonction <code>use_python("...")</code>. On peut aussi utiliser `<code>use_virtualenv("...")</code> ou <code>use_condaenv("...")</code> pour Virtual et Conda respectivement.</p>
+<p>On peut installer des packages de python avec les commandes <code>pip</code> ou <code>conda</code>.</p>
+<p>On peut intégrer du python de différentes façons</p>
+<ul>
+<li>Des chunks Python dans un document Rmarkdown (<code>{python} ....</code>)</li>
+<li>Communication bidirectionnelle entre R et Python (les fonctions de R peuvent accéder aux objets python et inversement) :
+<ul>
+<li>pour utiliser un objet python (<em>objectpy</em>) avec R, on utilise <code>py</code> (<em>py$objectpy</em>)</li>
+<li>pour utiliser un objet R (<em>objectR</em>) avec python, on utilise <code>r</code> (<em>r.objectR</em>)</li>
+</ul></li>
+<li>Appel d’un module Python avec la commande <code>import()</code></li>
+<li>Appel d’une fonction python avec la commande <code>source_python("nomfonction.py")</code> (comme la commande <code>source()</code>pour R)</li>
+<li>Passer à une console python interactive avec la fonction <code>repl_python()</code> dans une session de R.</li>
+</ul>
+<p>Deux exemples d’échanges entre R et Python sont disponibles ci-dessous.</p>
+<div id="exemple-1" class="section level2">
+<h2>Exemple 1</h2>
+<div class="sourceCode" id="cb153"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb153-1"><a href="#cb153-1"></a><span class="bn">```{r}</span></span>
+<span id="cb153-2"><a href="#cb153-2"></a><span class="bn">library(reticulate)</span></span>
+<span id="cb153-3"><a href="#cb153-3"></a><span class="bn">WineR=read.table(&quot;../Data/wine.txt&quot;,header=T)</span></span>
+<span id="cb153-4"><a href="#cb153-4"></a><span class="bn">head(WineR)</span></span>
+<span id="cb153-5"><a href="#cb153-5"></a><span class="bn">library(ggplot2)</span></span>
+<span id="cb153-6"><a href="#cb153-6"></a><span class="bn">ggplot(WineR,aes(x = Alcool, y = Densite)) + geom_point()</span></span>
+<span id="cb153-7"><a href="#cb153-7"></a><span class="bn">```</span></span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb154-1"><a href="#cb154-1"></a><span class="bn">```{python}</span></span>
+<span id="cb154-2"><a href="#cb154-2"></a><span class="bn">WinePy = r.WineR</span></span>
+<span id="cb154-3"><a href="#cb154-3"></a><span class="bn">WinePy.head()</span></span>
+<span id="cb154-4"><a href="#cb154-4"></a><span class="bn">import matplotlib.pyplot as plt</span></span>
+<span id="cb154-5"><a href="#cb154-5"></a><span class="bn">import seaborn as sns</span></span>
+<span id="cb154-6"><a href="#cb154-6"></a><span class="bn">sns.set_style(&quot;darkgrid&quot;)</span></span>
+<span id="cb154-7"><a href="#cb154-7"></a><span class="bn">plt.figure(figsize = (20, 6))</span></span>
+<span id="cb154-8"><a href="#cb154-8"></a><span class="bn">plt.scatter(WinePy[&quot;Alcool&quot;],WinePy[&quot;Densite&quot;])</span></span>
+<span id="cb154-9"><a href="#cb154-9"></a><span class="bn">```</span></span></code></pre></div>
+</div>
+<div id="exemple-2" class="section level2">
+<h2>Exemple 2</h2>
+<div class="sourceCode" id="cb155"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb155-1"><a href="#cb155-1"></a><span class="bn">```{python}</span></span>
+<span id="cb155-2"><a href="#cb155-2"></a><span class="bn">import numpy as np</span></span>
+<span id="cb155-3"><a href="#cb155-3"></a><span class="bn">a = {i : np.random.randn() for i in range(10)}</span></span>
+<span id="cb155-4"><a href="#cb155-4"></a><span class="bn">a</span></span>
+<span id="cb155-5"><a href="#cb155-5"></a><span class="bn">```</span></span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb156-1"><a href="#cb156-1"></a><span class="bn">```{r}</span></span>
+<span id="cb156-2"><a href="#cb156-2"></a><span class="bn">print(as.data.frame(py$a))</span></span>
+<span id="cb156-3"><a href="#cb156-3"></a><span class="bn">```</span></span></code></pre></div>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p></p>
+<div id="refs" class="references">
+<div id="ref-ggplot2">
+<p>Wickham, H. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. springer.</p>
+</div>
+<div id="ref-RDataScience">
+<p>Wickham, H., and G. Grolemund. 2016. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. " O’Reilly Media, Inc.". <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.</p>
+</div>
+<div id="ref-wickham2014tidy">
+<p>Wickham, H., and others. 2014. “Tidy Data.” <em>Journal of Statistical Software</em> 59 (10): 1–23.</p>
+</div>
+<div id="ref-Rmarkdown">
+<p>Xie, Y., J. J. Allaire, and G. Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. CRC Press.</p>
+</div>
+</div>
+</div>
+</div>
+
+   
+   
+            
+      
+
+  <script>
+    $(document).ready(function () {
+
+			
+ 		
+		$('#content img:not(.no-lightbox)').addClass("image-lb");
+	$('#content').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+	    delegate: '.image-lb',
+	    gallery: {enabled: true },
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>

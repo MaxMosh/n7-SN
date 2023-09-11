@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Cathy Maugis-Rabusseau" />
+    
+        <meta name="date" content="2022-07-15" />
+    
+    <title>Démarrer avec R et découverte de RStudio</title>
+
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+    <script src="site_libs/navigation-1.1/tabsets.js"></script>
+    <script src="site_libs/navigation-1.1/codefolding.js"></script>
+    <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+    <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+    <link href="site_libs/readthedown-0.1/readthedown.css" rel="stylesheet" />
+    <link href="site_libs/readthedown-0.1/readthedown_fonts_embed.css" rel="stylesheet" />
+    <script src="site_libs/readthedown-0.1/readthedown.js"></script>
+    <script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+    
+    
+        <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode { white-space: pre; position: relative; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      code.sourceCode { white-space: pre-wrap; }
+      code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          background-color: #ffffff;
+          color: #a0a0a0;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+      div.sourceCode
+        { color: #1f1c1b; background-color: #ffffff; }
+      @media screen {
+      code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span. { color: #1f1c1b; } /* Normal */
+      code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+      code span.an { color: #ca60ca; } /* Annotation */
+      code span.at { color: #0057ae; } /* Attribute */
+      code span.bn { color: #b08000; } /* BaseN */
+      code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+      code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #924c9d; } /* Char */
+      code span.cn { color: #aa5500; } /* Constant */
+      code span.co { color: #898887; } /* Comment */
+      code span.cv { color: #0095ff; } /* CommentVar */
+      code span.do { color: #607880; } /* Documentation */
+      code span.dt { color: #0057ae; } /* DataType */
+      code span.dv { color: #b08000; } /* DecVal */
+      code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+      code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+      code span.fl { color: #b08000; } /* Float */
+      code span.fu { color: #644a9b; } /* Function */
+      code span.im { color: #ff5500; } /* Import */
+      code span.in { color: #b08000; } /* Information */
+      code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+      code span.op { color: #1f1c1b; } /* Operator */
+      code span.ot { color: #006e28; } /* Other */
+      code span.pp { color: #006e28; } /* Preprocessor */
+      code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+      code span.sc { color: #3daee9; } /* SpecialChar */
+      code span.ss { color: #ff5500; } /* SpecialString */
+      code span.st { color: #bf0303; } /* String */
+      code span.va { color: #0057ae; } /* Variable */
+      code span.vs { color: #bf0303; } /* VerbatimString */
+      code span.wa { color: #bf0303; } /* Warning */
+    </style>
+    
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+        <script>
+      $(document).ready(function () {
+	  	  	  window.initializeCodeFolding("show" === "show");
+	        });
+    </script>
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+            <!-- readthedown start -->   
+   <div id="content" data-toggle="wy-nav-shift">
+     <nav id="nav-top" role="navigation" aria-label="top navigation">
+       <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+     </nav>
+         
+      <div class="btn-group pull-right">
+     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+     <ul class="dropdown-menu" style="min-width: 50px;">
+	    	    <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+	    <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+	    	    	         </ul>
+   </div>
+   
+      
+   <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="index.html">Tutoriels R</a>
+       </div>
+       <div id="navbar" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav">
+           <li>
+     <a href="Part1-Intro.html">Partie 1 - Introduction</a>
+   </li>
+   <li>
+     <a href="Part2-InitR.html">Partie 2 - Bases de R</a>
+   </li>
+   <li>
+     <a href="Part3-StatR.html">Partie 3 - Stat. avec R</a>
+   </li>
+   <li>
+     <a href="Part4-Ravance.html">Partie 4 - Pour aller plus loin</a>
+   </li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           
+         </ul>
+       </div><!--/.nav-collapse -->
+     </div><!--/.container -->
+   </div><!--/.navbar -->
+        
+      <h1 class="title">Démarrer avec R et découverte de RStudio</h1>
+      
+         <!-- readthedown authors -->
+   <div id="sidebar">
+    <h2><a href="#content">Démarrer avec R et découverte de RStudio</a></h2>
+    <div id="toc">
+      <ul>
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#a-propos-de-r">A propos de R <img src="image/R_logo.png" id="id" class="class" style="width:10.0%" /></a></li>
+      <li><a href="#a-propos-de-rstudio">A propos de RStudio <img src="image/RStudio_Logo.png" id="id" class="class" style="width:20.0%" /></a><ul>
+      <li><a href="#description-des-fenêtres-de-rstudio">Description des fenêtres de RStudio</a></li>
+      <li><a href="#types-de-documents-avec-rstudio">Types de documents avec RStudio</a></li>
+      </ul></li>
+      <li><a href="#environnement">Environnement</a><ul>
+      <li><a href="#répertoire-de-travail">Répertoire de travail</a></li>
+      <li><a href="#laide-de-r">L’aide de R</a></li>
+      <li><a href="#sectLib">Les librairies pour R</a></li>
+      <li><a href="#exercice">Exercice</a><ul>
+      <li><a href="#enoncé">Enoncé</a></li>
+      <li><a href="#correction">Correction</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#references">References</a></li>
+      </ul>
+    </div>
+    <div id="postamble" data-toggle="wy-nav-shift" class="status">
+                  <p class="author"><span class="glyphicon glyphicon-user"></span> Cathy Maugis-Rabusseau</p>
+                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2022-07-15</p>
+          </div>
+   </div>
+   
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div id="main">
+<style type="text/css">
+.badCode {
+background-color: #FEF4F5;
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Ce tutoriel est composé de 4 parties :</p>
+<ul>
+<li>Partie 1 : présentation de R et de RStudio, gestion du répertoire de travail, des librairies, …</li>
+<li>Partie 2 : présentation des principaux objets en R, les premiers graphiques, la programmation, l’importation/exportation, …</li>
+<li>Partie 3 : présentation d’outils pour la manipulation des lois usuelles, de statistiques descriptives, …</li>
+<li>Partie 4 : présentation de <strong>tidyverse</strong> (en particulier de <strong>dplyr</strong>, <strong>stringr</strong>, <strong>ggplot2</strong>) et les essentiels de la rédaction de documents avec Rmarkdown.</li>
+</ul>
+<p>La rédaction de ces tutoriels s’appuie principalement sur :</p>
+<ul>
+<li>des supports développés avec/par des collègues de l’INSA Toulouse et de l’IMT (qu’ils en soient ici remerciés)</li>
+<li>les livres suivants :
+<ul>
+<li><em>R for data science: import, tidy, transform, visualize, and model data</em> de Wickham, H. and Grolemund, G. <span class="citation">(2016)</span></li>
+<li><em>Statistiques avec R</em> de Cornillon et al. <span class="citation">(2010)</span></li>
+<li><em>R markdown: The definitive guide</em> de Xie et al. <span class="citation">(2018)</span></li>
+<li><em>ggplot2: elegant graphics for data analysis</em> de Wickham <span class="citation">(2016)</span></li>
+</ul></li>
+<li>de plusieurs sites web qui seront mentionnés au fur et à mesure</li>
+</ul>
+</div>
+<div id="a-propos-de-r" class="section level1">
+<h1>A propos de R <img src="image/R_logo.png" id="id" class="class" style="width:10.0%" /></h1>
+<p>Le logiciel R est développé depuis les années 90 par un groupe de volontaires de différents pays et par une large communauté d’utilisateurs. C’est un logiciel libre, publié sous licence GNU GPL et multiplateforme (fonctionne sur systèmes Linux, Mac OS X ou Windows). Il est facile à installer à partir de la page du <a href="https://cran.r-project.org/index.html" target="_blank">CRAN</a> (ou d’un site miroir); le CRAN contient toutes les ressources nécessaires à l’utilisateur de R, débutant ou expérimenté : fichiers d’installation, mises à jour, librairies, FAQ, newsletter, documentation… R fait partie des logiciels les plus utilisés de la communauté statistique académique et aussi de plus en plus dans les services R&amp;D des entreprises en concurrence avec les logiciels commerciaux.</p>
+<p>Dans sa structure, R est un langage de programmation d’une syntaxe voisine à celle du langage C et capable de manipuler des objets complexes sous forme de matrice, scalaire, vecteur, liste, facteur et aussi data frame. Il dispose également d’une très riche librairie de quasiment toutes les procédures et méthodes statistiques de la littérature. Plus précisément, toutes les recherches récentes sont d’abord développées et diffusées à l’aide de ce logiciel par la communauté scientifique.</p>
+<p>Pour suivre cette série de tutoriels, vous devez commencer par installer R (version &gt; 4.0.1) sur votre ordinateur. Pour cela, rendez-vous sur l’une des pages suivantes et suivez les instructions :</p>
+<ul>
+<li><a href="https://cloud.r-project.org/bin/windows/base/" target="_blank">Installation de R sous Windows</a></li>
+<li><a href="https://cloud.r-project.org/bin/macosx/" target="_blank">Installation de R sous Mac</a></li>
+<li><a href="https://cloud.r-project.org/bin/linux/" target="_blank">Installation pour linux</a></li>
+</ul>
+</div>
+<div id="a-propos-de-rstudio" class="section level1">
+<h1>A propos de RStudio <img src="image/RStudio_Logo.png" id="id" class="class" style="width:20.0%" /></h1>
+<p><a href="https://rstudio.com/" target="_blank">RStudio</a> n’est pas qu’une interface graphique pour R, il s’agit d’un environnement de développement intégré, proposant des outils et facilite l’écriture de scripts et l’utilisation de R. La version gratuite de RStudio étant déjà très riche en fonctionnalités, elle est suffisante pour les enseignements.</p>
+<div id="description-des-fenêtres-de-rstudio" class="section level2">
+<h2>Description des fenêtres de RStudio</h2>
+<p>Une fois R et RStudio installés sur votre machine, vous pouvez démarrer RStudio.<br />
+Au lancement de RStudio, l’écran est découpé en trois grandes zones.<br />
+</p>
+<div class="figure" style="text-align: center">
+<img src="image/Rstudio-Fenetres.png" alt="3 zones à l'ouverture de RStudio" width="60%" />
+<p class="caption">
+3 zones à l’ouverture de RStudio
+</p>
+</div>
+<p>La zone de gauche s’appelle la <strong>Console</strong>, on peut y lire au lancement la version de R que RStudio a chargé. Après le texte d’entrée, la ligne commence par <code>&gt;</code> qui est l’invite de commande. RStudio est prêt à recevoir votre première commande. On peut se servir de R comme d’une calculatrice. Vous pouvez par exemple taper <code>&gt; 2+3</code> et taper <code>Entrée</code>. Le résultat apparait alors dans la console.</p>
+<p>En haut à droite, on peut voir dans <strong>Environnement</strong> la liste des objets et fonctions créés au fur et à mesure du travail. On a également accès à l’historique des commandes dans <strong>History</strong>.</p>
+<p>En bas à droite, on trouve plusieurs onglets :</p>
+<ul>
+<li><strong>Files</strong> : permet de voir le contenu du répertoire de travail</li>
+<li><strong>Plots</strong> : permet de visualiser les graphiques créés</li>
+<li><strong>Packages</strong> : liste les packages installés pour les charger, mettre à jour, en installer d’autres (voir <a href="#sectLib">la section dédiée</a>)</li>
+<li><strong>Help</strong> : permet d’accéder à l’aide en ligne</li>
+</ul>
+<p>Vous pouvez modifier la configuration des onglets de RStudio en allant dans <code>Preferences -&gt; Pane Layout</code>.</p>
+</div>
+<div id="types-de-documents-avec-rstudio" class="section level2">
+<h2>Types de documents avec RStudio</h2>
+<p>En allant dans <code>File -&gt; New File</code> ou en cliquant sur la flèche à côté de l’icone de <em>New File</em> (en haut à gauche), RStudio propose de nombreux types de document. Vous pouvez noter que l’on peut utiliser RStudio également pour faire du python, du C++, … Nous allons ici ne parler que de quelques types de fichiers que l’on utilisera par la suite. Lorsque l’on sélectionne un type de fichier, une quatrième fenêtre en haut à gauche de l’interface de RStudio s’ouvre.</p>
+<div class="figure" style="text-align: center">
+<img src="image/NewFiles.png" alt="Les types de fichiers disponibles avec RStudio" width="45%" />
+<p class="caption">
+Les types de fichiers disponibles avec RStudio
+</p>
+</div>
+<p>Pour créer un script R, il suffit de sélectionner <code>R Script</code>. Ce script peut être enregistré à tout moment dans un fichier avec l’extension " .R" <em>(ex. monScript.R)</em> dans le répertoire courant en cliquant sur l’icône de disquette ou par <code>File-&gt;Save</code>. Vous pouvez l’ouvrir à tout moment grâce au menu <code>File –&gt; Open file...</code>, à l’icône dossier ou en double cliquant sur le fichier <em>monScript.R</em>. Il est également possible d’executer un script directement depuis la console grâce à la commande <code>source("monScript.R")</code>.</p>
+<p>Vous pouvez créer un document (rapport, slides, …) à l’aide de RMarkdown en sélectionnant <code>R markdown ...</code>. En particulier, vous avez la possibilité d’éditer directement des documents au format pdf ou html (en incluant les commandes R, les sorties et les graphes). Le nouveau document créé sera sauvegardé avec l’extension " .Rmd". Lors de la création, il faut préciser le type de document final souhaité (document au format HTML ou PDF ou presentation, etc), ainsi que les informations du document (titre et auteur). On reviendra plus précisément sur les possibilités offertes par Rmarkdown et les commandes principales pour débuter la rédaction d’un rapport dans le tutoriel 4 de R avancé.</p>
+</div>
+</div>
+<div id="environnement" class="section level1">
+<h1>Environnement</h1>
+<div id="répertoire-de-travail" class="section level2">
+<h2>Répertoire de travail</h2>
+<p>Pour pouvoir récupérer des données, maîtriser la sauvegarde des scripts, des résultats, … il est important de connaitre le répertoire de travail c’est-à-dire le répertoire sous lequel les divers résultats seront sauvegardés par défaut. Ce dernier s’obtient à l’aide de la commande <code>getwd()</code>.</p>
+<p>Pour changer de répertoire de travail, on peut utiliser la commande <code>setwd()</code> dans la Console. A noter que R ne reconnaît que le caractère “/” pour spécifier le chemin d’accès d’un répertoire (même sous Windows). On peut aussi passer par <code>Session -&gt; Set Working Directory -&gt; Choose Directory</code>.</p>
+</div>
+<div id="laide-de-r" class="section level2">
+<h2>L’aide de R</h2>
+<p>Il est normal de ne pas savoir (ou d’avoir oublié) quels sont les arguments d’une fonction, ou comment ils se nomment. On peut à tout moment faire appel à l’aide intégrée de R. On peut accéder à l’aide pour une fonction (ex pour la fonction <em>plot</em>) en passant le nom de la fonction dans <code>help()</code> (ex <code>help(plot)</code>) ou en utilisant le raccourci <code>?plot</code>. Ces deux commandes permettent d’afficher une page de description (en anglais) de la fonction, ses paramètres, son résultat, d’exemples, … Ces pages d’aide contiennent de nombreuses informations mais elles ne sont pas toujours d’une lecture aisée. Dans RStudio, les pages d’aide en ligne s’ouvriront par défaut dans la zone en bas à droite, sous l’onglet <strong>Help</strong>. Un clic sur l’icône en forme de maison vous affichera la page d’accueil de l’aide. Vous pouvez aussi taper directement le nom de la fonction recherchée dans la zone de recherche dans l’onglet <strong>Help</strong>.</p>
+</div>
+<div id="sectLib" class="section level2">
+<h2>Les librairies pour R</h2>
+<p>R est un logiciel libre, il s’enrichit grâce au développement de packages par la communauté. La plupart des extensions sont développées et maintenues par la communauté des utilisateurs de R, et diffusées via un réseau de serveurs nommé <a href="https://cran.r-project.org/" target="_blank">CRAN (Comprehensive R Archive Network)</a>. On peut également trouver des packages R dédiés à l’étude des données génomiques à haut-débit sur <a href="https://www.bioconductor.org/" target="_blank">Bioconductor</a>, des packages déposés sur <a href="https://github.com/" target="_blank">github</a>, …</p>
+<p>Pour installer une librairie disponible sur le CRAN, vous avez plusieurs manières de le faire :</p>
+<ul>
+<li>passer par le menu <code>Tools-&gt; Install Packages ...</code> et sélectionner un site miroir du CRAN</li>
+<li>Aller dans l’onglet <em>Packages</em> dans la fenêtre en bas à droite et cliquer sur <em>Install</em>.</li>
+<li>utiliser la fonction <code>install.packages()</code> directement dans la console</li>
+<li>télécharger l’archive .zip correspondant au package et utiliser ensuite <code>Tools-&gt; Install Packages ...</code>, choisir <code>Package Archive File (.tar,.zip)</code> dans <em>Install form</em>.<br />
+</li>
+<li>installer directement dans un terminal (sans utiliser RStudio) avec la commande <code>R CMD INSTALL package-name.tar.gz</code>.</li>
+</ul>
+<p>Attention, vous devez posséder une version de R qui permette l’installation du package désiré et certains packages nécessitent l’installation préalable d’autres packages.</p>
+<p>Pour l’installation d’un package de Bioconductor, il faut d’abord installer <em>BiocManager</em> <code>install.packages("BiocManager")</code> puis on utilise la commande <code>BiocManager::install()</code>.</p>
+<p>Pour installer une librairie hébergée sur un dépot github, il faut d’abord installer le package <em>devtools</em> <code>install.packages("devtools")</code>, charger cette librairie <code>library(devtools)</code> puis utiliser la commande <code>install_github()</code>.</p>
+<p>Toutes les librairies ne sont pas chargées automatiquement au lancement de R. Pour charger une librairie, on utilise la commande <code>library()</code> et les commandes <code>search()</code> ou <code>searchpaths()</code> pour connaître la liste des librairies chargées. Vous pouvez utiliser la commande <code>.libPaths()</code> pour connaitre les chemins vers lesquels pointe R pour trouver des librairies installées. Il faut aussi parfois mettre à jour les librairies. Pour cela, vous pouvez aller dans l’onglet <strong>Packages</strong> dans la fenêtre en bas à droite et cliquer sur l’icône <strong>Update</strong>, ou en utilisant la commande <code>update.packages(...)</code>.</p>
+</div>
+<div id="exercice" class="section level2 tabset">
+<h2>Exercice</h2>
+<div id="enoncé" class="section level3">
+<h3>Enoncé</h3>
+<ol start="0" style="list-style-type: decimal">
+<li>Installer R (version &gt; 4.0.1) et RStudio</li>
+<li>Installer les packages suivants qui nous serviront par la suite : <em>tidyverse</em>, <em>FactoMineR</em>, <em>mixOmics</em>, <em>corrplot</em>, <em>gridExtra</em>, <em>plotly</em>, <em>questionr</em></li>
+<li>Charger la librairie <em>ggplot2</em>, la librairie <em>tidyverse</em>. Y-a-t-il un lien entre les deux ?<br />
+</li>
+<li>Accéder à la documentation de <em>tidyverse</em>, de la fonction <em>rnorm</em>.</li>
+</ol>
+</div>
+<div id="correction" class="section level3">
+<h3>Correction</h3>
+<p>Question 1 : Voici pour les trois premiers, faire de même pour les autres.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;FactoMineR&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;mixOmics&quot;</span>)</span></code></pre></div>
+<p>Question 2 :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<p>Le package <em>tidyverse</em> englobe plusieurs librairies dont <em>ggplot2</em>. On reviendra sur ce package <em>tidyverse</em> dans le tutoriel 4 de R avancé.</p>
+<p>Question 3 :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">help</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">`</span><span class="dt">?</span><span class="st">`</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">help</span>(rnorm)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="st">`</span><span class="dt">?</span><span class="st">`</span>(rnorm)</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-cornillon2010">
+<p>Cornillon, Pierre-André, François Husson, Nicolas Jégou, Eric Matzner-Lober, Julie Josse, Arnaud Guyader, Laurent Rouviére, and Maela Kloareg. 2010. <em>Statistiques Avec R</em>. Rennes (Presses universitaires de).</p>
+</div>
+<div id="ref-ggplot2">
+<p>Wickham, H. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. springer.</p>
+</div>
+<div id="ref-RDataScience">
+<p>Wickham, H., and G. Grolemund. 2016. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. " O’Reilly Media, Inc.". <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.</p>
+</div>
+<div id="ref-Rmarkdown">
+<p>Xie, Y., J. J. Allaire, and G. Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. CRC Press.</p>
+</div>
+</div>
+</div>
+</div>
+
+   
+   
+            
+      
+
+  <script>
+    $(document).ready(function () {
+
+			
+ 		
+		$('#content img:not(.no-lightbox)').addClass("image-lb");
+	$('#content').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+	    delegate: '.image-lb',
+	    gallery: {enabled: true },
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>

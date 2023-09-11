@@ -1,0 +1,720 @@
+---
+title: "TP2 - Statistique avec R"
+date : "ModIA - 4ème année - 2023-2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth : 4
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+```{r,echo=F, error=F,warning=F}
+library(corrplot)
+library(tidyverse)
+library(gridExtra)
+library(reshape2)
+```
+
+Ce TP se décompose en deux parties indépendantes : 
+
++ Partie 1 : elle est consacrée aux notions de statistiques descriptives uni- et bi-dimensionnelles. 
+
++ Partie 2 : elle est consacrée à l'illustration de notions de statistique inférentielle paramétrique revues dans les séances de remise à niveau. On n'abordera ici que le cas gaussien.
+
+*Remarque : pensez à enlever les "eval=F" au fur et à mesure de l'avancement dans le TP dans la partie 2 pour avoir les résultats dans votre compte-rendu final de TP.* 
+
+
+# Statistiques descriptives 
+
+On reprend dans cette section une grande partie du [tutoriel 3](https://cmaugis.github.io/TutorielsR/Part3-StatR.html). 
+Avant de commencer ce TP, vous devez lire la présentation de `ggplot2` du [tutoriel 4](https://cmaugis.github.io/TutorielsR/Part4-Ravance.html#visualisation-avec-ggplot2). 
+
+## Récupération du jeu de données 
+
+On va étudier le jeu de données **wine** disponible sur la page moodle du cours. Commencez par récupérer ce jeu de données et sauvegardez le fichier dans votre dossier de travail. 
+
+Le jeu de données **wine ** comprend des mesures physico-chimiques réalisées sur un échantillon de $600$ vins (rouges et blancs) du Portugal. Ces mesures sont complétées par une évaluation
+sensorielle de la qualité par un ensemble d’experts. Chaque vin est décrit par les variables suivantes :
+
++ *Qualite* : son évaluation sensorielle par les experts ("bad","medium","good"),
++ *Type* : son type (1 pour un vin rouge, 0 pour un vin blanc),
++ *AcidVol* : la teneur en acide volatile (en g/dm3 d’acide acétique),
++ *AcidCitr* : la teneur en acide citrique (en g/dm3),
++ *SO2lbr* : le dosage du dioxyde de soufre libre (en mg/dm3),
++ *SO2tot* : le dosage du dioxyde de soufre total (en mg/dm3),
++ *Densite* : la densité (en g/cm3),
++ *Alcool* : le degré d’alcool (en % Vol.).
+
+Dans un premier temps, commencez par charger le jeu de données à l'aide de la fonction `read.table()`. 
+
+```{r,echo=T}
+Data = read.table("wine.txt",header=TRUE)
+```
+
+Vous pouvez voir les premières lignes du jeu de données :
+
+```{r}
+head(Data)
+```
+
+Le jeu de données contient `r nrow(Data)` individus (correspondant aux `r nrow(Data)` lignes) décrits par `r ncol(Data)` variables (correspondant aux `r ncol(Data)` colonnes). 
+
+Remarquons que l'on peut obtenir les noms des variables grâce à la commande `names(Data)`. Plus largement, on peut utiliser la commande `attributes()` : 
+
+```{r}
+attributes(Data)
+```
+
+La commande `str()` affiche quand à elle d'autres informations concernant les données. En particulier, on retrouve le type (data.frame) et la dimension (nombres d'observations et de variables) des données. En outre, pour chaque variable, on peut lire son nom, son format (entier, numérique, caractère) ainsi que ses premières valeurs. 
+```{r str}
+str(Data)
+```
+
+On voit ici que les variables sont de différentes natures :  
+
++ Les variables *Qualite* et *Type* sont des variables *qualitatives* 
++ Les autres variables sont *quantitatives*
+
+Attention à bien préciser à R les variables qui doivent être considérées comme qualitatives. Ici, on change donc 
+la nature des variables *Qualite* et *Type*:
+
+```{r variables quali}
+Data$Qualite=as.factor(Data$Qualite)
+Data$Type=factor(Data$Type,labels=c("blanc","rouge"))
+head(Data)
+```
+
+On peut obtenir un résumé rapide du jeu de données à l'aide de la fonction `summary()`
+```{r}
+summary(Data)
+```
+
+##	Statistiques descriptives unidimensionnelles
+
+###	Variable qualitative 
+
+On considère ici une variable qualitative $X$ dont on observe $n$ réalisations $\underline{x}=(x_1,x_2,\ldots,x_n)$. Cette variable prend $K$ modalités $m_1,\ldots,m_K$. Si les modalités n'ont pas d'ordre naturel, on parle de variable qualitative nominale (ex. *Type*), sinon c'est une variable qualitative ordinale (ex. *Qualite*). 
+
+La variable *Type* contient $K=$ `r length(levels(Data$Type))` modalités qui sont `r levels(Data$Type)`. 
+```{r}
+levels(Data$Type)
+```
+
+On récupère l'effectif $n_k=\sum_{i=1}^n \mathbb{1}_{x_i=m_k}$ pour chaque modalité $m_k$ avec `summary()` ou `table()`.
+
+```{r}
+summary(Data$Type)
+EffType = as.vector(table(Data$Type))
+EffType
+```
+
+On utilise aussi les fréquences $f_k=\frac{n_k}{n}$ donc $\sum_{k=1}^K f_k=1$. 
+
+```{r}
+Freq = EffType/length(Data$Type)
+knitr::kable(data.frame(modalite=levels(Data$Type),Eff=EffType,Freq=Freq), caption = 'Description de la variable Type',booktabs = TRUE,digits=3)
+```
+
+Pour une variable qualitative ordinale, on utilise également les effectifs cumulés $N_k=\sum_{\ell=1}^k n_\ell$ et les fréquences cumulées $F_k=\sum_{\ell=1}^k f_\ell$.
+```{r,echo=F,eval=F}
+EffQual=as.vector(table(Data$Qualite))
+FreqQual= data.frame(Eff = EffQual, Freq = EffQual/length(Data$Qualite), FreqCumul=cumsum(EffQual)/length(Data$Qualite))
+rownames(FreqQual)=levels(Data$Qualite)
+
+knitr::kable(FreqQual, caption = 'Description de la variable Qualite',booktabs = TRUE,digits=3)
+```
+
+Pour une variable qualitative, on utilise la représentation par camembert (pie) ou diagramme en bâton (barplot)
+
+```{r}
+g1<-ggplot(Data, aes(x=Type))+ geom_bar()+ylab("")+ggtitle("Effectifs")
+g2<-ggplot(Data, aes(x = Type)) +  
+  geom_bar(aes(y = (..count..)/sum(..count..)))+ylab("")+ggtitle("Frequences")
+quan <- as.vector(table(Data$Type))/nrow(Data)
+df <- data.frame(group = levels(Data$Type),value = quan)
+g3<-ggplot(df, aes(x="", y=value, fill=group))+
+  geom_bar(width = 1, stat = "identity")+ coord_polar("y", start=0)+ theme(legend.position="bottom")
+grid.arrange(g3,g1,g2,ncol=3)
+```
+
+Pour une variable qualitative ordinale, on peut également tracer les fréquences cumulées : 
+
+```{r,echo=F}
+
+Qualite_rec <- fct_relevel(Data$Qualite, "bad", "medium", "good")
+df <- data.frame(Qualite = levels(Qualite_rec), value = table(Qualite_rec),
+    valuecumul = 100 * cumsum(prop.table(table(Qualite_rec))))
+df$Qualite <- fct_relevel(df$Qualite, "bad", "medium", "good")
+df <- df %>%
+    mutate(freq = value.Freq/nrow(Data))
+g1 <- ggplot(Data) + geom_bar(aes(x = Qualite_rec)) + ggtitle("Effectifs")+xlab("Qualite")
+g2 <- ggplot(Data) + geom_bar(aes(x = Qualite_rec, y = ..prop.., group = 1)) + ggtitle("Frequences")+xlab("Qualite")
+g3 <- ggplot(df, aes(x = Qualite, y = valuecumul)) + geom_bar(stat = "identity") +
+    ggtitle("Fréquences cumulées")
+g4 <- ggplot(df, aes(x = "", y = freq, fill = Qualite)) + geom_bar(width = 1, stat = "identity") +
+    coord_polar("y", start = 0)
+grid.arrange(g1, g2, g3, g4, ncol = 2)
+```
+
+###	Variable quantitative
+Nous allons ici nous intéresser à l'étude d'une variable quantitative $X$ dont on a $n$ observations $\underline{x}=(x_1,\ldots,x_n)$. On va illustrer cette section avec la variable *Alcool*. Vous pouvez reprendre l'étude pour les autres variables quantitatives du jeu de données.  
+
+####  Indices statistiques {.tabset}
+Nous rappelons les principaux indicateurs statistiques que l'on peut évaluer pour une série de mesures $\underline{x}$ : la moyenne, la médiane, la variance, l'écart-type ....
+
+##### Mean/var/sd
+
+La moyenne de $\underline{x}$ : $\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i$
+```{r}
+mean(Data$Alcool)
+```
+
+La variance $s_x^2 = \frac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^2$, la variance corrigée $var(\underline{x})=\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2$ et l'écart-type corrigé $\sqrt{var(\underline{x})}$. 
+Attention les fonctions `var()` et `sd()` renvoient les valeurs corrigées de la variance et de l'écart-type respectivement. 
+```{r}
+var(Data$Alcool)
+sd(Data$Alcool)
+```
+
+##### min/max/range
+La commande `range()` renvoie respectivement le minimum et le maximum. On peut aussi utiliser `min()`et `max()`
+
+```{r min max}
+range(Data$Alcool)
+min(Data$Alcool)
+max(Data$Alcool)
+```
+
+On peut alors récupérer l'étendue ($max(\underline{x}) - min(\underline{x})$ ) avec le code suivant :  
+```{r etendue}
+diff(range(Data$Alcool))
+```
+
+##### médiane / quartiles / quantiles {#secquartiles}
+
+La médiane est une valeur qui divise l’échantillon en deux sous-échantillons de même cardinal :
+$\sum_{i=1}^n \mathbb{1}_{x_i\geq m} \geq \frac{n}{2} \textrm{ et } \sum_{i=1}^n \mathbb{1}_{x_i\leq m} \geq \frac{n}{2}$
+```{r}
+median(Data$Alcool)
+sort(Data$Alcool)[296:305]
+```
+
+La médiane est le deuxième des trois quartiles : 
+
++ le premier quartile $q_{0.25}$ est une valeur qui sépare les 25$\%$ des valeurs inférieures de l'échantillon du reste
++ le deuxième quartile $q_{0.5}$ est la médiane
++ le troisième quartile $q_{O.75}$ est une valeur qui sépare les 25% des valeurs supérieures de l'échantillon du reste.
+On retrouve ces valeurs dans la représentation par boxplot (voir section (#secboxplot)). 
+
+Les quartiles sont des cas particuliers de la notion de quantile. Le $\alpha$-quantile empirique est défini par 
+$q_{\alpha} = x_{(i)}$ avec $\alpha\in]\frac{i-1}{n}, \frac{i}{n}]$ où $x_{(1)}\leq x_{(2)}\leq \ldots \leq x_{(n)}$ sont les valeurs ordonnées de la série statistique. 
+
+```{r}
+quantile(Data$Alcool)
+quantile(Data$Alcool,0.9)
+```
+
+Pour calculer l'écart interquantile, il suffit de faire la différence entre les troisième et premier quantiles, à savoir 
+```{r ecart inter q}
+q.Alc <- quantile(x = Data$Alcool, probs=c(.25,.75), names=FALSE)
+diff(q.Alc)
+```
+et les valeurs d'adjacence sont obtenues de la manière suivante : 
+```{r val adj}
+L=q.Alc + diff(q.Alc) * c(-1.5,1.5) ; L
+# valeur adjacente inférieure :
+min(Data$Alcool[Data$Alcool>=L[1]])
+# valeur adjacente supérieure :
+max(Data$Alcool[Data$Alcool<=L[2]])
+```
+
+Par ailleurs, toutes ces informations sont stockées dans la commande `summary()` : 
+```{r}
+summary(Data$Alcool)
+```
+où sont affichés respectivement le minimum, le premier quartile, la médiane, la moyenne, le troisième quartile et le maximum. 
+
+
+#### Représentations graphiques {.tabset}
+
+##### Histogramme 
+
+L'histogramme est une représentation graphique qui permet de visualiser la répartition d'une variable quantitative. Les valeurs sont regroupées en intervalles $]a_k,a_{k+1}[$ et la hauteur associée est $h_k=\frac{f_k}{a_{k+1} - a_k}$. 
+
+```{r hist}
+g1<-ggplot(Data,aes(x=Alcool))+geom_histogram(bins=15,color="black", fill="white")+
+  ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
+g2<-ggplot(Data,aes(x=Alcool))+geom_histogram(aes(y=..density..),bins=15,color="black", fill="white")+
+  ggtitle("Histo. des frequences")+ylab("Density")+xlab("Alcool")
+grid.arrange(g1,g2,ncol=2)
+```
+
+##### Fonction de répartition empirique 
+
+La fonction de répartition empirique est la fonction en escalier définie par
+$t\in\mathbb{R}\mapsto F_n(t) = \frac{1}{n} \sum_{i=1}^n \mathbb{1}_{x_i\leq t}$
+
+```{r}
+ggplot(Data, aes(Alcool)) + 
+  stat_ecdf(geom = "step")+xlab("Variable Alcool")+
+  ylab("")+ggtitle("Fonction de répartition empirique")+
+  geom_hline(yintercept=0, linetype="dashed")+geom_hline(yintercept=1, linetype="dashed")
+```
+
+##### Boîte à moustaches / boxplot {#secboxplot}
+
+La boîte à moustaches est un graphique qui résume la série statistique à partir de ses valeurs extrêmes et ses quartiles. En effet, on retrouve sur cette représentation 
+
++ les [quartiles](#secindicesstat) 
++ la valeur adjacente supérieure $v+$, qui est la plus grande valeur de l’échantillon inférieure ou égale à $L+ = q_{0.75} + 1.5 (q _{0.75} − q_{0.25})$
++ la valeur adjacente inférieure $v−$, qui est la plus petite valeur de l’échantillon supérieure ou égale à
+$L− = q_{0.25} − 1.5 (q_{0.75} − q_{0.25})$
++ les valeurs extrêmes (outliers) qui sont les valeurs de l’échantillon n’appartenant pas à l'intervalle $[v−, v+]$.
+
+Voici les boxplots pour les variables quantitatives de notre exemple. 
+
+```{r boxplot}
+library(reshape2)
+ggplot(melt(Data[,-c(1,2)]),aes(x=variable,y=value))+geom_boxplot()
+```
+
+Nous allons pour la suite nous concentrer sur la variable *SO2lbr*. 
+En plus du graphique, on peut récupérer de la fonction `boxplot()` différentes informations : 
+
+```{r boxplotNit}
+B <- boxplot(Data$SO2lbr,horizontal=TRUE)
+attributes(B)
+```
+
+Dans `B$stats`, on retrouve les quartiles, la médiane et les valeurs adjacentes : 
+```{r}
+B$stats
+median(Data$SO2lbr)
+q <- quantile(x = Data$SO2lbr, probs=c(.25,.75), names=FALSE)
+q
+L=q + diff(q) * c(-1.5,1.5) 
+min(Data$SO2lbr[Data$SO2lbr>=L[1]])
+max(Data$SO2lbr[Data$SO2lbr<=L[2]])
+```
+
+Dans `B$out` renvoie toutes les valeurs aberrantes (en dehors des barres inférieure et supérieure c'est à dire en dehors de l'intervalle $[v-,v+]$):
+
+```{r}
+B$out
+
+Data$SO2lbr[which(Data$SO2lbr<B$stats[1] | Data$SO2lbr>B$stats[5])]
+```
+
+##	Statistiques descriptives bidimensionnelles
+###	Entre 2 variables quantitatives
+
+Supposons dans cette partie que X et Y sont deux variables quantitatives et on observe une série de $n$ valeurs pour chacune : 
+$\underline{x}=(x_1,\ldots,x_n)$ et $\underline{y}=(y_1,\ldots,y_n)$. 
+
+On peut tout d'abord représenter le nuage de points de coordonnées $(x_i,y_i)$ : 
+
+```{r}
+ggplot(Data,aes(x=Alcool,y=Densite))+geom_point()
+```
+
+#### Corrélation {.tabset}
+
+On peut calculer la covariance (généralisaton bidimensionnelle de la variance) entre ces deux séries de mesure à l'aide de la commande `cov()`:
+$$
+Cov(\underline{x},\underline{y}) = \frac{1}{n} \sum_{i=1}^n (x_i-\bar{x}) (y_i -\bar{y}).
+$$
+Mais la covariance dépendant des unités de mesure des deux variables considérées, on calcule plutôt la corrélation linéaire (renormalisation de la covariance par les écarts-type) qui appartient à l'intervalle $[-1,1]$ à l'aide de `cor()`: 
+$$
+cor(\underline{x},\underline{y}) = \frac{Cov(\underline{x},\underline{y})}{\sqrt{s_x^2\ \ s_y^2}}
+$$
+ 
+A l'aide de la fonction *corrplot()* (issue du package du même nom) on représente ici la matrice des corrélations entre les variables quantitatives de notre jeu de données: 
+
+```{r}
+corrplot(cor(Data[,-c(1:2)]),method="ellipse")
+```
+
+#### Régression linéaire 
+
+Le coefficient de corrélation linéaire entre les variables *Densité* et *Alcool* vaut `r round(cor(Data$Densite,Data$Alcool),2)`. On peut vérifier que le nuage de points de ces deux variables s'aligner sur une droite de pente négative :
+
+```{r}
+ggplot(Data,aes(x=Alcool,y=Densite))+geom_point()+
+  geom_smooth(method=lm, se=FALSE)
+```
+
+### Entre une variable quantitative et une variable qualitative 
+
+Supposons dans cette partie que $X$ est une variable qualitative prenant $J$ modalités $m_1, \ldots, m_J$ et $Y$ une variable quantitative. On observe une série de $n$ valeurs pour chacune : 
+$\underline{x}=(x_1,\ldots,x_n)$ et $\underline{y}=(y_1,\ldots,y_n)$. 
+
+On note $C_j=\{i\in\{1,\ldots,n\}; x_i=m_j\}$ l'ensemble des individus prenant la modalité $m_j$ et $n_j$ son cardinal. 
+
+La moyenne de $\underline{y}$ peut alors se décomposer en une moyenne pondérée des moyennes de $y$ conditionnellement aux modalités de $X$ :
+$$
+\bar{y} = \frac{1}{n} \sum_{j=1}^J n_j\ \bar{y}_{[j]} \textrm{   avec   } \bar{y}_{[j]} = \frac{1}{n_j} \sum_{i\in C_j} y_i
+$$
+De même la variance se décompose en $s_y^2 = \underbrace{s_{y,E}^2}_{\textrm{variance inter-classe}} +  \underbrace{s_{y,R}^2}_{\textrm{variance intra-classe}}$ avec
+
+$$
+s_{y,E}^2 = \frac{1}{n} \sum_{j=1}^J n_j\ (\bar{y}_{[j]} - \bar{y})^2 
+$$
+et 
+$$
+s_{y,R}^2 = \frac{1}{n} \sum_{j=1}^J n_j\ s_{y,[j]}^2 \textrm{ avec } s^2_{y,[j]} = \frac{1}{n_j}\sum_{i\in C_j} (y_i - \bar{y}_{[j]})^2
+$$
+On peut alors définir le *rapport de corrélation* 
+$$
+\rho_{y|x} = \sqrt{\frac{s_{y,E}^2}{s_{y}^2}} = \sqrt{1 - \frac{s_{y,R}^2}{s_{y}^2}}\in[0,1].
+$$
+Plus $\rho_{y|x}$ est proche de $0$, plus $s_{y,E}^2$ est proche de 0 et donc moins la variable qualitative $X$ a d'influence sur la variable quantitative $Y$. 
+
+Graphiquement, on peut représenter la distribution de la variable quantitative conditionnellement aux modalités de la variable qualitative pour visualiser la liaison potentielle entre les deux variables. 
+
+
+```{r}
+g1<-ggplot(Data,aes(x=Qualite,y=Alcool))+geom_boxplot()
+g2<-ggplot(Data,aes(x=Type,y=Alcool))+geom_boxplot()
+grid.arrange(g1,g2,ncol=2)
+```
+
+
+### Entre deux variables qualitatives 
+
+Supposons dans cette partie que $X$ est une variable qualitative prenant $J$ modalités $m_1,\ldots,m_J$ et $Y$ est une vraiable qualitative prenant $K$ modalités $\ell_1,\ldots,\ell_K$. On observe une série de $n$ valeurs pour chacune : 
+$\underline{x}=(x_1,\ldots,x_n)$ et $\underline{y}=(y_1,\ldots,y_n)$. 
+Pour étudier l'influence de deux variables qualitatives entre elles, on se base sur la table de contingence qui est l'ensemble des effectifs conjoints
+$$
+n_{j,k} = \sum_{i=1}^n \mathrm{1}_{x_i = m_j\ \cap\ y_i=\ell_k},\ \ \forall j\in\{1,\ldots,J\},\ \forall k\in\{1,\ldots,K\}
+$$
+On définit les effectifs marginaux par 
+$$
+n_{j,.}=\sum_{k=1}^K n_{j,k}\ \ \ \textrm{   et   } \ \ \ n_{.,k}=\sum_{j=1}^J n_{j,k}
+$$
+```{r}
+table.cont = table(Data$Qualite,Data$Type)
+table.cont
+```
+
+
+
+Graphiquement, on peut représenter un mosaiplot qui correspond à la représentation des profils-lignes
+$$
+\left(\frac{n_{j,1}}{n_{j,.}},\ldots,\frac{n_{j,K}}{n_{j,.}}\right)\in [0,1]^K
+$$
+ou des profils-colonnes
+
+$$
+\left(\frac{n_{1,k}}{n_{.,k}},\ldots,\frac{n_{J,k}}{n_{.,k}}\right)\in [0,1]^J
+$$
+
+
+
+```{r}
+mosaicplot(table(Data$Qualite,Data$Type))
+mosaicplot(table(Data$Type,Data$Qualite))
+```
+
+
+#	Illustration de notions de statistique inférentielle paramétrique dans le cas gaussien
+
+On considère $\underline{X}=(X_1,\ldots,X_n)$ un $n$-échantillon de loi $\mathcal{N}(m,\sigma^2)$. 
+
+## Estimateurs pour $m$ et $\sigma^2$
+
+Pour plusieurs valeurs de $n$ : 
+
++ simulez un $n$-échantillon observé $\underline{x}$ de $\underline{X}$ de loi $\mathcal{N}(m,\sigma^2)$ avec $m=5$ et $\sigma^2=4$ à l'aide de la fonction `rnorm()`.
++ A partir de $\underline{x}$, donnez une estimation pour le paramètre de moyenne $m$ et pour le paramètre de variance $\sigma^2$. 
++ Que constatez-vous ?
+  
+```{r, eval=F}
+n=seq(100,10000,100)
+mest=NULL
+sigma2est=NULL
+for (i in 1:length(n)){
+  x =                     # echantillon à simuler
+  mest = c(mest, ....)    # estimation de m
+  sigma2est=c(sigma2est, ...)  # estimation de sigma2
+}
+```
+
+Valeurs obtenues pour l'estimation  de $m$ :
+
+```{r,eval=F}
+df=data.frame(n=n,mest=mest,sigma2est=sigma2est)
+ggplot(df,aes(x=n,y=mest))+
+  geom_point()+
+  geom_hline(yintercept=5, color="red")
+```
+
+Valeurs obtenues pour l'estimation de $\sigma^2$ : 
+
+```{r,eval=F}
+ggplot(df,aes(x=n,y=sigma2est))+
+  geom_point()+
+  geom_hline(yintercept=4, color="red")
+```
+
+## Intervalle de confiance pour la moyenne $m$
+
+### Cas de la variance connue
+
+Nous allons tout d'abord nous intéresser à la construction d'un intervalle de confiance pour $m$ lorsque la variance $\sigma^2$ est connue, dont la formule est rappelée ici
+$$
+IC_{1-\alpha}(m) = \left[\bar X_n \pm z_{1-\frac{\alpha}{2}} \sqrt{\frac{\sigma^2}{n}}\right]
+$$
+où $z_{1-\frac{\alpha}{2}}$ est le $1-\frac{\alpha}{2}$-quantile de la loi normale centrée réduite. 
+
+Reportez-vous aux slides de remise à niveau pour vous rappeler la construction. 
+
+1. Ecrivez une fonction `int.conf.moy1` calculant $IC$ au niveau de confiance *niv.conf* à partir d'un échantillon observé $\underline{x}$ et de la valeur de la variance *sigma2* 
+
+```{r,eval=F}
+# A COMPLETER
+
+int.conf.moy1 <- function(x,niv.conf,sigma2){
+  alpha = 1-niv.conf
+  IC = ... + c(-1,1) * qnorm(1-alpha/2) * ...
+  return(IC)
+}
+```
+
+2. Etudiez le comportement de l'intervalle de confiance en fonction de $n$ et du niveau de confiance sur données simulées. Pour cela, pour différentes valeurs de $n$ et *niv.conf*,
+
++ simulez un échantillon $x$ de taille $n$ de v.a. gaussiennes de moyenne $m=5$ et de variance $\sigma^2=4$ à l'aide de la fonction `rnorm()`
++ déduisez-en un intervalle de confiance pour $m$ au niveau de confiance *niv.conf* à l'aide de la fonction `int.conf.moy1` programmée précédemment
+
+```{r, eval=F}
+n= c(...)
+niv.conf = c(....)
+for (i in 1:length(n)){
+  for (j in 1:length(niv.conf)){
+    x= ...
+    IC=int.conf.moy1(....)
+    print(paste("n= ", n[i],", niv.conf= ",niv.conf[j]," : IC vaut [", round(IC[1],3),",",round(IC[2],3),"], il est de longueur",round(IC[2]-IC[1],3), sep=""))
+  }
+}
+```
+
+3. Nous allons ici illustrer le fait que la proportion moyenne de fois où le paramètre $m$ appartient à l'intervalle de confiance vaut *niv.conf*. 
+
+Pour cela, répétez $K$ fois l'expérience suivante
++ simulez un échantillon $x$ de taille $n=1000$ de v.a. gaussiennes de moyenne $m=5$ et de variance $\sigma^2=4$ à l'aide de la fonction `rnorm()`
++ déduisez-en un intervalle de confiance pour $m$ au niveau de confiance *niv.conf=0.95* à l'aide de la fonction `int.conf.moy1` programmée précédemment
++ comptabilisez si la vraie valeur de $m$ appartient à l'intervalle de confiance ou pas
+
+
+```{r, eval=F}
+propconf <- function(K,m){
+nb.app=0  
+for (k in 1:K){
+  x= ...
+  IC=int.conf.moy1(....)
+  nb.app = nb.app + (m>=IC[1]) * (m<=IC[2])
+}
+return(nb.app/K)
+}  
+```
+
+Evaluez plusieurs fois pour $K$ valant $100$ et $1000$. Qu'observez-vous ?
+
+Commentaire : .....
+
+### Cas de la variance inconnue
+
+Nous allons maintenant nous intéresser à la construction d'un intervalle de confiance pour $m$ lorsque la variance $\sigma^2$ est inconnue, dont la formule est rappelée ici
+$$
+IC_{1-\alpha}(m) = \left[\bar X_n \pm t_{1-\frac{\alpha}{2}} \sqrt{\frac{S^2}{n}}\right]
+$$
+où $t_{1-\frac{\alpha}{2}}$ est le $1-\frac{\alpha}{2}$-quantile de la loi de Student à $n-1$ degrés de liberté et $S^2$ est l'estimateur de la variance. 
+
+Reportez-vous aux slides de remise à niveau pour vous rappeler la construction. 
+
+1. Ecrivez une fonction `int.conf.moy2` calculant $IC$ au niveau de confiance *niv.conf* à partir d'un échantillon observé $\underline{x}$. 
+
+```{r,eval=F}
+# A COMPLETER
+int.conf.moy2 <- function(x,niv.conf){
+  alpha = 1-niv.conf
+  S2 =     # estimateur de la variance
+  IC = ... + c(-1,1) * qt(1-alpha/2,length(x)-1) * ...
+  return(IC)
+}
+```
+
+2. Etudiez le comportement de l'intervalle de confiance en fonction de $n$ et du niveau de confiance sur données simulées. Pour cela, pour différentes valeurs de $n$ et *niv.conf*,
+
++ simulez un échantillon $x$ de taille $n$ de v.a. gaussiennes de moyenne $m=5$ et de variance $\sigma^2=4$ à l'aide de la fonction `rnorm()`
++ déduisez-en un intervalle de confiance pour $m$ au niveau de confiance *niv.conf* à l'aide de la fonction `int.conf.moy2` programmée précédemment
+
+```{r, eval=F}
+n= c(...)
+niv.conf = c(....)
+for (i in 1:length(n)){
+  for (j in 1:length(niv.conf)){
+    x= ...
+    IC=int.conf.moy2(....)
+   print(paste("n= ", n[i],", niv.conf= ",niv.conf[j]," : IC vaut [", round(IC[1],3),",",round(IC[2],3),"], il est de longueur",round(IC[2]-IC[1],3), sep=""))
+  }
+}
+```
+
+3. Comparez sur données simulées les intervalles de confiance obtenus dans le cas de la variance connue (`int.conf.moy1`), le cas de la variance inconnue (`int.conf.moy2`) et avec la fonction `t.test()`de R. 
+
+```{r,eval=F}
+x = .... # Echantillon simulé
+int.conf.moy1(x,niv.conf=0.95,sigma2= )
+int.conf.moy2(x,niv.conf=0.95)
+t.test(x,conf.level=0.95)
+```
+
+
+## Test sur la moyenne
+
+Considérons $X_1,\ldots,X_n$ des variables aléatoires i.i.d. de loi $\mathcal{N}(m,\sigma^2)$ (où $m$ est inconnue) et soit $m_0 \in \mathbb{R}$ donnée. 
+
+### Cas de la variance connue
+
+1. Dans les trois tests suivants au niveau $\alpha$, 
+
+* Test 1 : $\mathcal{H}_0 : m=m_0 \quad \quad \mbox{contre} \quad \quad \mathcal{H}_1^+ : m> m_0$
+* Test 2 : $\mathcal{H}_0 : m=m_0 \quad \quad \mbox{contre} \quad \quad \mathcal{H}_1^{-} : m< m_0$
+* Test 3 : $\mathcal{H}_0 : m=m_0 \quad \quad \mbox{contre} \quad \quad \mathcal{H}_1 : m\neq  m_0$
+
+précisez 
+
++ la statistique de test et sa loi sous $\mathcal{H}_0$
++ la forme de la zone de rejet
++ l'expression de la pvaleur en fonction de $\phi$ qui désigne la fonction de répartition d'une $\mathcal{N}(0,1)$ 
+  
+2. Complétez la fonction suivante `test.moy1()` qui évalue la p-valeur du test $\mathcal{H}_0 : m=m_0$ contre l'alternative
+
++ `two.sided` pour le test bilatéral avec $\mathcal{H}_1 : m\neq m_0$
++ `greater`pour le test unilatéral avec $\mathcal{H}_1 : m> m_0$
++ `less`pour le test unilatéral avec $\mathcal{H}_1 : m < m_0$
+
+à partir d'un échantillon observé $\underline{x}$ (supposé gaussien) et la valeur de la variance $\sigma^2$. Vous pourrez vous aider de la fonction `pnorm()`. 
+
+```{r,eval=F}
+test.moy1 <- function(x,sigma2,m0,alternative="greater"){
+  Zn.obs = sqrt(length(x))*(mean(x)-m0)/sqrt(sigma2)
+  if(alternative=="two.sided"){      
+      pval = ... # A COMPLETER 
+  }else{
+      if(alternative=="greater"){      
+        pval = ... # A COMPLETER 
+      }else{
+        if(alternative=="less"){       
+          pval = ... # A COMPLETER 
+        }
+      }
+    }
+return(pval)
+}
+```
+
+3. Afin d'estimer la taille du test, complétez la fonction `estim.prop.test.moy1()` qui estime la proportion moyenne de fois où le test rejette l'hypothèse nulle $\mathcal{H_0}$. 
+Pour cela, répétez $K$ fois l'expérience suivante
++ simulez un échantillon $x$ de taille $n=1000$ de v.a. gaussiennes de moyenne $m=5$ et de variance $\sigma^2=4$ à l'aide de la fonction `rnorm()`
++ calculez la p-valeur obtenue avec la fonction `test.moy1` programmée précédemment pour le test $\mathcal{H}_0: m=5$ contre $\mathcal{H}_1^+: m>5$.  
++ comptabilisez si l'hypothèse nulle est rejetée au niveau $\alpha = 5\%$. 
+
+```{r, eval=F}
+estim.prop.test.moy1 <-function(n=1000,m=5,sigma2=4,m0=5,alpha=0.05,K=100,alternative="greater"){
+  nb.rejets=0
+  for(k in 1:K){
+      x = ... # echantillon simule
+      pval = ... # en utilisant test.moy1
+      nb.rejets = nb.rejets + ... # A COMPLETER 
+  }
+return(nb.rejets/K)
+}
+```
+
+Qu'observez-vous ? Répétez cette étape plusieurs fois pour $K=100$ et $K=1000$, que remarquez-vous ?
+
+4. Etude de la puissance du test $\mathcal{H}_0: m=m_0$ contre $\mathcal{H}_1^+: m>m_0$
+
++ Montrez que la puissance théorique du test est donnée par l'expression suivante 
+$$
+\Pi: \theta\in ]m_0,+\infty[ \mapsto 1 - \Phi\left(z_{1-\alpha} - \sqrt{n}\ \frac{\theta - m_0}{\sigma}\right)
+$$
+où $z_{1-\alpha}$ est le (1-\alpha)-quantile de la loi normale $\mathcal{N}(0,1)$ et $\Phi$ est la fonction de répartition de la loi normale $\mathcal{N}(0,1)$. 
+
+Créez une fonction `puiss.test.moy.1()` pour calculer cette fonction puissance.
+
+```{r,eval=F}
+puiss.test.moy.1 <- function(n=1000,sigma2=4,m0=5,alpha=0.05,mmax){
+  theta = seq(m0,mmax,0.01)
+  puiss = ....
+  return(puiss)
+}
+```
+
+A l'aide de la fonction `puiss.test.moy.1()`, tracez sur un même graphique la fonction puissance en faisant varier le niveau $\alpha$ du test ($1\%$, $5\%$, $10\%$) et commentez. 
+
+```{r}
+# A COMPLETER
+```
+
+
+A l'aide de la fonction `puiss.test.moy.1()`, tracez sur un même graphique la fonction puissance en faisant varier la taille de l'échantillon $n$ et commentez. 
+
+```{r}
+# A COMPLETER
+```
+
+
+### Cas de la variance inconnue
+
+On suppose maintenant que la variance $\sigma^2$ est inconnue et on s'intéresse uniquement au Test 1
+$$
+\mathcal{H}_0 : m=m_0 \quad \quad \mbox{contre} \quad \quad \mathcal{H}_1^+ : m> m_0
+$$
+1. Rappelez la statistique de test, la loi sous $\mathcal{H}_0$ et la forme de la zone de rejet pour le test 1 quand la variance est inconnue
+
+2. Construisez une fonction `test.moy2()` pour évaluer la pvaleur du test à partir d'un échantillon observé $\underline{x}$. Vous pourrez vous aider de la fonction `pt()` pour la fonction de répartiion d'une loi de Student. 
+
+```{r,eval=F}
+test.moy2 <- function(x,m0){
+  Tn_obs = # a completer
+  pval =  # a completer, utiliser pt()
+  return(pval)
+}
+```
+
+
+3. Comparez la pvaleur obtenue avec `test.moy2()` et la sortie de `t.test()` de R sur des données simulées. 
+
+```{r,eval=F}
+x = rnorm(n=1000,mean =5,sd=2)
+test.moy2(x,m0=5)
+t.test (....) # a completer
+```
+
+
+
+
+

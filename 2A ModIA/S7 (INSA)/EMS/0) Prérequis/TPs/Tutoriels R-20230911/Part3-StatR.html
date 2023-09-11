@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Cathy Maugis-Rabusseau" />
+    
+        <meta name="date" content="2022-07-15" />
+    
+    <title>Statistique avec R</title>
+
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+    <script src="site_libs/navigation-1.1/tabsets.js"></script>
+    <script src="site_libs/navigation-1.1/codefolding.js"></script>
+    <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+    <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+    <link href="site_libs/readthedown-0.1/readthedown.css" rel="stylesheet" />
+    <link href="site_libs/readthedown-0.1/readthedown_fonts_embed.css" rel="stylesheet" />
+    <script src="site_libs/readthedown-0.1/readthedown.js"></script>
+    <script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+    
+    
+        <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode { white-space: pre; position: relative; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      code.sourceCode { white-space: pre-wrap; }
+      code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          background-color: #ffffff;
+          color: #a0a0a0;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+      div.sourceCode
+        { color: #1f1c1b; background-color: #ffffff; }
+      @media screen {
+      code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span. { color: #1f1c1b; } /* Normal */
+      code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+      code span.an { color: #ca60ca; } /* Annotation */
+      code span.at { color: #0057ae; } /* Attribute */
+      code span.bn { color: #b08000; } /* BaseN */
+      code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+      code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #924c9d; } /* Char */
+      code span.cn { color: #aa5500; } /* Constant */
+      code span.co { color: #898887; } /* Comment */
+      code span.cv { color: #0095ff; } /* CommentVar */
+      code span.do { color: #607880; } /* Documentation */
+      code span.dt { color: #0057ae; } /* DataType */
+      code span.dv { color: #b08000; } /* DecVal */
+      code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+      code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+      code span.fl { color: #b08000; } /* Float */
+      code span.fu { color: #644a9b; } /* Function */
+      code span.im { color: #ff5500; } /* Import */
+      code span.in { color: #b08000; } /* Information */
+      code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+      code span.op { color: #1f1c1b; } /* Operator */
+      code span.ot { color: #006e28; } /* Other */
+      code span.pp { color: #006e28; } /* Preprocessor */
+      code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+      code span.sc { color: #3daee9; } /* SpecialChar */
+      code span.ss { color: #ff5500; } /* SpecialString */
+      code span.st { color: #bf0303; } /* String */
+      code span.va { color: #0057ae; } /* Variable */
+      code span.vs { color: #bf0303; } /* VerbatimString */
+      code span.wa { color: #bf0303; } /* Warning */
+    </style>
+    
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+        <script>
+      $(document).ready(function () {
+	  	  	  window.initializeCodeFolding("show" === "show");
+	        });
+    </script>
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+            <!-- readthedown start -->   
+   <div id="content" data-toggle="wy-nav-shift">
+     <nav id="nav-top" role="navigation" aria-label="top navigation">
+       <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+     </nav>
+         
+      <div class="btn-group pull-right">
+     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+     <ul class="dropdown-menu" style="min-width: 50px;">
+	    	    <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+	    <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+	    	    	         </ul>
+   </div>
+   
+      
+   <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="index.html">Tutoriels R</a>
+       </div>
+       <div id="navbar" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav">
+           <li>
+     <a href="Part1-Intro.html">Partie 1 - Introduction</a>
+   </li>
+   <li>
+     <a href="Part2-InitR.html">Partie 2 - Bases de R</a>
+   </li>
+   <li>
+     <a href="Part3-StatR.html">Partie 3 - Stat. avec R</a>
+   </li>
+   <li>
+     <a href="Part4-Ravance.html">Partie 4 - Pour aller plus loin</a>
+   </li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           
+         </ul>
+       </div><!--/.nav-collapse -->
+     </div><!--/.container -->
+   </div><!--/.navbar -->
+        
+      <h1 class="title">Statistique avec R</h1>
+      
+         <!-- readthedown authors -->
+   <div id="sidebar">
+    <h2><a href="#content">Statistique avec R</a></h2>
+    <div id="toc">
+      <ul>
+      <li><a href="#lois-usuelles-de-probabilité">Lois usuelles de probabilité</a><ul>
+      <li><a href="#exemple">Exemple</a></li>
+      <li><a href="#exercice-1">Exercice 1</a></li>
+      <li><a href="#exercice-2">Exercice 2</a></li>
+      <li><a href="#correction">Correction</a></li>
+      </ul></li>
+      <li><a href="#statistiques-descriptives">Statistiques descriptives</a><ul>
+      <li><a href="#contenu-du-jeu-de-données">Contenu du jeu de données</a></li>
+      <li><a href="#statistiques-descriptives-unidimensionnelles">Statistiques descriptives unidimensionnelles</a><ul>
+      <li><a href="#variable-qualitative">Variable qualitative</a></li>
+      <li><a href="#variable-quantitative">Variable quantitative</a></li>
+      </ul></li>
+      <li><a href="#statistiques-descriptives-bidimensionnelles">Statistiques descriptives bidimensionnelles</a><ul>
+      <li><a href="#entre-2-variables-quantitatives">Entre 2 variables quantitatives</a></li>
+      <li><a href="#entre-une-variable-quantitative-et-une-variable-qualitative">Entre une variable quantitative et une variable qualitative</a></li>
+      <li><a href="#entre-deux-variables-qualitatives">Entre deux variables qualitatives</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#pour-aller-plus-loin">Pour aller plus loin</a></li>
+      </ul>
+    </div>
+    <div id="postamble" data-toggle="wy-nav-shift" class="status">
+                  <p class="author"><span class="glyphicon glyphicon-user"></span> Cathy Maugis-Rabusseau</p>
+                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2022-07-15</p>
+          </div>
+   </div>
+   
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div id="main">
+<style type="text/css">
+.badCode {
+background-color: #FEF4F5;
+</style>
+<div id="lois-usuelles-de-probabilité" class="section level1 tabset">
+<h1>Lois usuelles de probabilité</h1>
+<!--
+Les disponibles avec densité, random, fdr, quantiles
+On peut en trouver des plus complexe dans des librairies spécifiques
+-->
+<p>De nombreuses distributions de probabilité sont disponibles sous R. En voici une liste non exhaustive :</p>
+<table>
+<caption>Table des lois usuelles sous R</caption>
+<thead>
+<tr class="header">
+<th align="left">Loi</th>
+<th align="left">NomR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Beta</td>
+<td align="left">beta</td>
+</tr>
+<tr class="even">
+<td align="left">Binomiale</td>
+<td align="left">binom</td>
+</tr>
+<tr class="odd">
+<td align="left">Cauchy</td>
+<td align="left">cauchy</td>
+</tr>
+<tr class="even">
+<td align="left">Khi-Deux</td>
+<td align="left">chisq</td>
+</tr>
+<tr class="odd">
+<td align="left">Exponentielle</td>
+<td align="left">exp</td>
+</tr>
+<tr class="even">
+<td align="left">Fisher</td>
+<td align="left">f</td>
+</tr>
+<tr class="odd">
+<td align="left">Gamma</td>
+<td align="left">gamma</td>
+</tr>
+<tr class="even">
+<td align="left">Géométrique</td>
+<td align="left">geom</td>
+</tr>
+<tr class="odd">
+<td align="left">Hypergéométrique</td>
+<td align="left">hyper</td>
+</tr>
+<tr class="even">
+<td align="left">Log-Normale</td>
+<td align="left">lnorm</td>
+</tr>
+<tr class="odd">
+<td align="left">Logistique</td>
+<td align="left">logis</td>
+</tr>
+<tr class="even">
+<td align="left">Normale</td>
+<td align="left">norm</td>
+</tr>
+<tr class="odd">
+<td align="left">Poisson</td>
+<td align="left">pois</td>
+</tr>
+<tr class="even">
+<td align="left">Student</td>
+<td align="left">t</td>
+</tr>
+<tr class="odd">
+<td align="left">Uniforme</td>
+<td align="left">unif</td>
+</tr>
+<tr class="even">
+<td align="left">Weibull</td>
+<td align="left">weibull</td>
+</tr>
+</tbody>
+</table>
+<p>Pour chaque distribution, quatre commandes préfixées par une des lettres <strong>d, p, q, r</strong> et suivi du nom de la distribution (<em>nomdist</em>) sont disponibles :<br />
+- d<em>nomdist</em> : fonction de densité <span class="math inline">\(f_X(.)\)</span> pour une loi continue ou fonction de probabilité <span class="math inline">\(\mathbb{P}(X = k)\)</span> pour une loi discrète<br />
+- p<em>nomdist</em> : fonction de répartition <span class="math inline">\(F_X(.) = \mathbb{P}(X\leq .)\)</span><br />
+- q<em>nomdist</em> : quantiles<br />
+- r<em>nomdist</em> : génère des réalisations aléatoires indépendantes de la distribution <em>nomdist</em>.</p>
+<p>Vous pouvez retrouver ces informations dans l’aide de R <code>?Distributions</code>.</p>
+<div id="exemple" class="section level2">
+<h2>Exemple</h2>
+<p>Exemple pour la loi normale <span class="math inline">\(\mathcal{N}(0,1)\)</span> :<br />
+Soit <span class="math inline">\(X\)</span> une variable alétoire de loi <span class="math inline">\(\mathcal{N}(0,1)\)</span>, alors<br />
+<code>dnorm(10)</code> évalue la valeur de la fonction densité en <span class="math inline">\(x=10\)</span> i.e <span class="math inline">\(f_X(10)\)</span><br />
+<code>pnorm(0)</code> évalue la valeur de la fonction de répartition en <span class="math inline">\(x=0\)</span> i.e <span class="math inline">\(F_X(0)=\mathbb{P}(X\leq 0)=\frac 1 2\)</span><br />
+<code>qnorm(0.95)</code> évalue le quantile à l’ordre <span class="math inline">\(0.95\)</span> de la loi normale <span class="math inline">\(\mathcal{N}(0,1)\)</span><br />
+<code>rnorm(10)</code> génère un un échantillon observé de taille <span class="math inline">\(10\)</span> pour la loi <span class="math inline">\(\mathcal{N}(0,1)\)</span><br />
+</p>
+</div>
+<div id="exercice-1" class="section level2">
+<h2>Exercice 1</h2>
+<ol style="list-style-type: decimal">
+<li>Simuler un échantillon de taille 1000 suivant une loi normale <span class="math inline">\(\mathcal{N}(0,1)\)</span>.<br />
+</li>
+<li>Sur un même graphique, superposer la répartition empirique (histogramme) et la densité de la loi <span class="math inline">\(\mathcal{N}(0,1)\)</span>.<br />
+</li>
+<li>Sur un même graphique, superposer la fonction de répartition empirique et la fonction de répartition de la loi <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</li>
+<li>Reprendre les questions précédentes avec d’autres lois de votre choix.</li>
+</ol>
+</div>
+<div id="exercice-2" class="section level2">
+<h2>Exercice 2</h2>
+<p>Illustration du Théorème de la limite centrale (TCL)</p>
+<ol style="list-style-type: decimal">
+<li>Générer <span class="math inline">\(N=10000\)</span> échantillons de taille <span class="math inline">\(n\)</span> (pour la loi de votre choix), pour différentes valeurs de <span class="math inline">\(n\)</span>.<br />
+</li>
+<li>A chaque fois, on prendra soin de faire apparaître sur un même graphique la répartition des <span class="math inline">\(N\)</span> moyennes empiriques (sous forme d’un histogramme) ainsi que la densité de la variable gaussienne limite associée.</li>
+</ol>
+</div>
+<div id="correction" class="section level2">
+<h2>Correction</h2>
+<p>Exercice 1 :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Question 1</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>Ech =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># Question 2</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">hist</span>(Ech, <span class="dt">breaks =</span> <span class="dv">50</span>, <span class="dt">freq =</span> F)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">points</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.01</span>), <span class="kw">dnorm</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.01</span>)), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">Ech =</span> Ech), <span class="kw">aes</span>(<span class="dt">x =</span> Ech)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..),</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="dt">bins =</span> <span class="dv">50</span>, <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> dnorm, <span class="kw">aes</span>(<span class="dt">x =</span> Ech),</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-4-2.png" width="768" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Question 3</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">plot</span>(<span class="kw">ecdf</span>(Ech))</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">points</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.01</span>), <span class="kw">pnorm</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.01</span>)), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-4-3.png" width="768" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">Ech =</span> Ech), <span class="kw">aes</span>(<span class="dt">x =</span> Ech)) <span class="op">+</span><span class="st"> </span><span class="kw">stat_ecdf</span>(<span class="dt">geom =</span> <span class="st">&quot;step&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> pnorm,</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="kw">aes</span>(<span class="dt">x =</span> Ech), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-4-4.png" width="768" /></p>
+<p>Exercice 2 :</p>
+<p>Enoncé du TLC : Soit <span class="math inline">\(X_1,\ldots,X_n\)</span> i.i.d d’espérance <span class="math inline">\(\mathbb{E}[X_1]&lt;+\infty\)</span> et variance <span class="math inline">\(Var(X_1)&lt;+\infty\)</span>. Alors <span class="math inline">\(\sqrt{n} \frac{\bar X_n - \mathbb{E}[X_1]}{\sqrt{Var(X_1)}} \underset{n\rightarrow +\infty}{\stackrel{\mathcal{L}}{\rightarrow}} \mathcal{N}(0,1).\)</span></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Illustration ici avec la loi de Bernoulli</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>p =<span class="st"> </span><span class="fl">0.4</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>n =<span class="st"> </span><span class="dv">1000</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>N =<span class="st"> </span><span class="dv">10000</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>X =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rbinom</span>(n <span class="op">*</span><span class="st"> </span>N, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> p), <span class="dt">nrow =</span> N, <span class="dt">ncol =</span> n)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>Xbar =<span class="st"> </span><span class="kw">apply</span>(X, <span class="dv">1</span>, mean)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>V =<span class="st"> </span><span class="kw">sqrt</span>(n) <span class="op">*</span><span class="st"> </span>(Xbar <span class="op">-</span><span class="st"> </span>p)<span class="op">/</span><span class="kw">sqrt</span>(p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p))</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="kw">hist</span>(V, <span class="dt">breaks =</span> <span class="dv">30</span>, <span class="dt">freq =</span> F)</span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="kw">points</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="fl">0.01</span>), <span class="kw">dnorm</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="fl">0.01</span>)), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">Ech =</span> V), <span class="kw">aes</span>(<span class="dt">x =</span> Ech)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..),</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="dt">bins =</span> <span class="dv">30</span>, <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> dnorm, <span class="kw">aes</span>(<span class="dt">x =</span> Ech),</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-5-2.png" width="768" /></p>
+</div>
+</div>
+<div id="statistiques-descriptives" class="section level1">
+<h1>Statistiques descriptives</h1>
+<p>On va illustrer toute cette section à l’aide du jeu de donnée <strong>wine</strong> disponible dans <em>Data/wine.txt</em>. Ce jeu de données comprend des mesures physico-chimiques réalisées sur un échantillon de <span class="math inline">\(600\)</span> vins (rouges et blancs) du Portugal. Ces mesures sont complétées par une évaluation sensorielle de la qualité par un ensemble d’experts. Chaque vin est décrit par les variables suivantes :</p>
+<ul>
+<li><em>Qualite</em> : son évaluation sensorielle par les experts (“bad”,“medium”,“good”),</li>
+<li><em>Type</em> : son type (1 pour un vin rouge, 0 pour un vin blanc),</li>
+<li><em>AcidVol</em> : la teneur en acide volatile (en g/dm3 d’acide acétique),</li>
+<li><em>AcidCitr</em> : la teneur en acide citrique (en g/dm3),</li>
+<li><em>SO2lbr</em> : le dosage du dioxyde de soufre libre (en mg/dm3),</li>
+<li><em>SO2tot</em> : le dosage du dioxyde de soufre total (en mg/dm3),</li>
+<li><em>Densite</em> : la densité (en g/cm3),</li>
+<li><em>Alcool</em> : le degré d’alcool (en % Vol.).</li>
+</ul>
+<p>Dans un premier temps, commencez par charger le jeu de données avec la commande suivante <code>Data = read.table("Data/wine.txt",header=T)</code>.</p>
+<p>Voici les premières lignes du jeu de données :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">head</span>(Data)</span></code></pre></div>
+<pre><code>     Qualite Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+1352  medium    1    0.62     0.01      8     46 0.99332   11.8
+5493  medium    0    0.34     0.10     17     63 0.99370    9.2
+5153  medium    0    0.22     0.22     39    110 0.99855    9.0
+5308  medium    0    0.35     0.46     61    183 0.99786    9.0
+3866  medium    0    0.42     0.32     20    167 0.99479   10.6
+694   medium    1    0.48     0.32     21    122 0.99840    9.4</code></pre>
+<p>Le jeu de données est donc maintenant stocké dans l’objet <em>Data</em> de type <em>data.frame</em> (<code>&gt;class(Data)</code> data.frame).</p>
+<div id="contenu-du-jeu-de-données" class="section level2">
+<h2>Contenu du jeu de données</h2>
+<p>On peut commencer par regarder les dimensions du jeu de données à étudier à l’aide des commandes <code>dim()</code>, <code>nrow()</code>et <code>ncol()</code> :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">dim</span>(Data)</span></code></pre></div>
+<pre><code>[1] 600   8</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">nrow</span>(Data)</span></code></pre></div>
+<pre><code>[1] 600</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">ncol</span>(Data)</span></code></pre></div>
+<pre><code>[1] 8</code></pre>
+<p>Ainsi le jeu de données contient 600 individus (correspondant aux 600 lignes) décrits par 8 variables (correspondant aux 8 colonnes). Remarquons que l’on peut obtenir les noms des variables grâce à la commande <code>names(Data)</code>. Plus largement, on peut utiliser la commande <code>attributes()</code> :</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">attributes</span>(Data)</span></code></pre></div>
+<pre><code>$names
+[1] &quot;Qualite&quot;  &quot;Type&quot;     &quot;AcidVol&quot;  &quot;AcidCitr&quot; &quot;SO2lbr&quot;   &quot;SO2tot&quot;   &quot;Densite&quot; 
+[8] &quot;Alcool&quot;  
+
+$class
+[1] &quot;data.frame&quot;
+
+$row.names
+ [1] &quot;1352&quot; &quot;5493&quot; &quot;5153&quot; &quot;5308&quot; &quot;3866&quot; &quot;694&quot;  &quot;5085&quot; &quot;2280&quot; &quot;5231&quot; &quot;4388&quot;
+[11] &quot;4172&quot; &quot;4763&quot; &quot;4001&quot; &quot;3244&quot; &quot;4663&quot; &quot;3256&quot; &quot;3444&quot; &quot;3867&quot; &quot;3161&quot; &quot;6420&quot;
+[21] &quot;1590&quot; &quot;2155&quot; &quot;2258&quot; &quot;209&quot;  &quot;4560&quot; &quot;1981&quot; &quot;2166&quot; &quot;5430&quot; &quot;6496&quot; &quot;346&quot; 
+[31] &quot;1288&quot; &quot;3615&quot; &quot;1837&quot; &quot;5637&quot; &quot;2520&quot; &quot;3046&quot; &quot;2983&quot; &quot;840&quot;  &quot;3185&quot; &quot;4690&quot;
+[41] &quot;6347&quot; &quot;728&quot;  &quot;240&quot;  &quot;6318&quot; &quot;2501&quot; &quot;3003&quot; &quot;4537&quot; &quot;4799&quot; &quot;141&quot;  &quot;3664&quot;
+[51] &quot;5167&quot; &quot;5291&quot; &quot;3383&quot; &quot;2712&quot; &quot;449&quot;  &quot;214&quot;  &quot;3216&quot; &quot;4917&quot; &quot;5005&quot; &quot;3501&quot;
+[61] &quot;1291&quot; &quot;3137&quot; &quot;998&quot;  &quot;1350&quot; &quot;6336&quot; &quot;492&quot;  &quot;3901&quot; &quot;4878&quot; &quot;5343&quot; &quot;5096&quot;
+[71] &quot;4516&quot; &quot;1118&quot; &quot;2680&quot; &quot;452&quot;  &quot;3937&quot;
+ [ reached getOption(&quot;max.print&quot;) -- omitted 525 entries ]</code></pre>
+<p>La commande <code>str()</code> affiche quand à elle d’autres informations concernant les données. En particulier, on retrouve le type (data.frame) et la dimension (nombres d’observations et de variables) des données. En outre, pour chaque variable, on peut lire son nom, son format (entier, numérique, caractère) ainsi que ses premières valeurs.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">str</span>(Data)</span></code></pre></div>
+<pre><code>&#39;data.frame&#39;:   600 obs. of  8 variables:
+ $ Qualite : chr  &quot;medium&quot; &quot;medium&quot; &quot;medium&quot; &quot;medium&quot; ...
+ $ Type    : int  1 0 0 0 0 1 0 0 0 0 ...
+ $ AcidVol : num  0.62 0.34 0.22 0.35 0.42 0.48 0.21 0.28 0.3 0.4 ...
+ $ AcidCitr: num  0.01 0.1 0.22 0.46 0.32 0.32 0.32 0.14 0.25 0.42 ...
+ $ SO2lbr  : num  8 17 39 61 20 21 39 64 21 41 ...
+ $ SO2tot  : int  46 63 110 183 167 122 113 159 124 176 ...
+ $ Densite : num  0.993 0.994 0.999 0.998 0.995 ...
+ $ Alcool  : num  11.8 9.2 9 9 10.6 9.4 10.2 10 10.8 9.4 ...</code></pre>
+<p>On voit ici que les variables sont de différentes natures :</p>
+<ul>
+<li>Les variables <em>Qualite</em> et <em>Type</em> sont des variables qualitatives</li>
+<li>Les autres variables sont quantitatives</li>
+</ul>
+<p>Attention à bien préciser à R les variables qui doivent être considérées comme qualitatives. Ici, on change donc la nature des variables <em>Qualite</em> et <em>Type</em>: <!--*Pays*, *Type* et *Nature*: --></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>Data<span class="op">$</span>Qualite =<span class="st"> </span><span class="kw">as.factor</span>(Data<span class="op">$</span>Qualite)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>Data<span class="op">$</span>Type =<span class="st"> </span><span class="kw">factor</span>(Data<span class="op">$</span>Type, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;blanc&quot;</span>, <span class="st">&quot;rouge&quot;</span>))</span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="kw">head</span>(Data)</span></code></pre></div>
+<pre><code>     Qualite  Type AcidVol AcidCitr SO2lbr SO2tot Densite Alcool
+1352  medium rouge    0.62     0.01      8     46 0.99332   11.8
+5493  medium blanc    0.34     0.10     17     63 0.99370    9.2
+5153  medium blanc    0.22     0.22     39    110 0.99855    9.0
+5308  medium blanc    0.35     0.46     61    183 0.99786    9.0
+3866  medium blanc    0.42     0.32     20    167 0.99479   10.6
+694   medium rouge    0.48     0.32     21    122 0.99840    9.4</code></pre>
+<p>On peut obtenir un résumé rapide du jeu de données à l’aide de la fonction <code>summary()</code></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">summary</span>(Data)</span></code></pre></div>
+<pre><code>   Qualite       Type        AcidVol          AcidCitr          SO2lbr      
+ bad   : 19   blanc:425   Min.   :0.1000   Min.   :0.0000   Min.   :  2.00  
+ good  :110   rouge:175   1st Qu.:0.2400   1st Qu.:0.2400   1st Qu.: 15.75  
+ medium:471               Median :0.3000   Median :0.3000   Median : 27.00  
+                          Mean   :0.3512   Mean   :0.3141   Mean   : 29.41  
+                          3rd Qu.:0.4300   3rd Qu.:0.3900   3rd Qu.: 41.00  
+                          Max.   :1.0400   Max.   :1.0000   Max.   :112.00  
+     SO2tot         Densite           Alcool     
+ Min.   :  7.0   Min.   :0.9875   Min.   : 8.00  
+ 1st Qu.: 68.0   1st Qu.:0.9925   1st Qu.: 9.50  
+ Median :114.5   Median :0.9949   Median :10.40  
+ Mean   :111.2   Mean   :0.9947   Mean   :10.49  
+ 3rd Qu.:154.0   3rd Qu.:0.9970   3rd Qu.:11.30  
+ Max.   :278.0   Max.   :1.0030   Max.   :14.00  </code></pre>
+</div>
+<div id="statistiques-descriptives-unidimensionnelles" class="section level2">
+<h2>Statistiques descriptives unidimensionnelles</h2>
+<div id="variable-qualitative" class="section level3">
+<h3>Variable qualitative</h3>
+<p>On considère ici une variable qualitative <span class="math inline">\(X\)</span> dont on observe <span class="math inline">\(n\)</span> réalisations <span class="math inline">\(\underline{x}=(x_1,x_2,\ldots,x_n)\)</span>. Cette variable prend <span class="math inline">\(K\)</span> modalités <span class="math inline">\(m_1,\ldots,m_K\)</span>. Si les modalités n’ont pas d’ordre naturel, on parle de variable qualitative nominale (ex. <em>Type</em>), sinon c’est une variable qualitative ordinale (ex. <em>Qualite</em>).</p>
+<p>La variable <em>Type</em> contient <span class="math inline">\(K=\)</span> 2 modalités qui sont blanc, rouge.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">levels</span>(Data<span class="op">$</span>Type)</span></code></pre></div>
+<pre><code>[1] &quot;blanc&quot; &quot;rouge&quot;</code></pre>
+<p>On récupère l’effectif <span class="math inline">\(n_k=\sum_{i=1}^n \mathbb{1}_{x_i=m_k}\)</span> pour chaque modalité <span class="math inline">\(m_k\)</span> avec <code>summary()</code>ou <code>table()</code>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">summary</span>(Data<span class="op">$</span>Type)</span></code></pre></div>
+<pre><code>blanc rouge 
+  425   175 </code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>EffType =<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">table</span>(Data<span class="op">$</span>Type))</span>
+<span id="cb27-2"><a href="#cb27-2"></a>EffType</span></code></pre></div>
+<pre><code>[1] 425 175</code></pre>
+<p>On utilise aussi les fréquences <span class="math inline">\(f_k=\frac{n_k}{n}\)</span> donc <span class="math inline">\(\sum_{k=1}^K f_k=1\)</span>. <!--Pour une variable ordinale, on utilise également les effectifs cumulées $N_k=\sum_{\ell=1}^k n_k$ et les fréquences cumulées $F_k=\sum_{\ell=1}^k f_k$. --></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>Freq =<span class="st"> </span>EffType<span class="op">/</span><span class="kw">length</span>(Data<span class="op">$</span>Type)</span></code></pre></div>
+<table>
+<caption>Description de la variable Type</caption>
+<thead>
+<tr class="header">
+<th align="left">modalite</th>
+<th align="right">Eff</th>
+<th align="right">Freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">blanc</td>
+<td align="right">425</td>
+<td align="right">0.708</td>
+</tr>
+<tr class="even">
+<td align="left">rouge</td>
+<td align="right">175</td>
+<td align="right">0.292</td>
+</tr>
+</tbody>
+</table>
+<p>Pour une variable qualitative ordinale, on utilise également les effectifs cumulés <span class="math inline">\(N_k=\sum_{\ell=1}^k n_\ell\)</span> et les fréquences cumulées <span class="math inline">\(F_k=\sum_{\ell=1}^k f_\ell\)</span>.</p>
+<div id="visualisation" class="section level4 tabset">
+<h4>Visualisation</h4>
+<div id="plot" class="section level5">
+<h5>plot</h5>
+<p>Pour une variable qualitative, on utilise la représentation par camembert (pie) ou diagramme en bâton (barplot)</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="kw">pie</span>(<span class="kw">table</span>(Data<span class="op">$</span>Type))</span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="kw">barplot</span>(<span class="kw">table</span>(Data<span class="op">$</span>Type), <span class="dt">main =</span> <span class="st">&quot;Effectifs&quot;</span>)</span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="kw">barplot</span>(<span class="kw">table</span>(Data<span class="op">$</span>Type)<span class="op">/</span><span class="kw">nrow</span>(Data), <span class="dt">main =</span> <span class="st">&quot;Frequences&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-15-1.png" width="768" /></p>
+<p>Pour une variable qualitative ordinale, on peut également tracer les fréquences cumulées :</p>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-16-1.png" width="768" /></p>
+</div>
+<div id="ggplot" class="section level5">
+<h5>ggplot</h5>
+<p>Pour la variable <em>Type</em> :</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>g1 =<span class="st"> </span><span class="kw">ggplot</span>(Data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Type)) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Effectifs&quot;</span>)</span>
+<span id="cb31-2"><a href="#cb31-2"></a>g2 =<span class="st"> </span><span class="kw">ggplot</span>(Data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Type, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Frequences&quot;</span>)</span>
+<span id="cb31-3"><a href="#cb31-3"></a>df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">levels</span>(Data<span class="op">$</span>Type), <span class="dt">value =</span> <span class="kw">as.vector</span>(Freq))</span>
+<span id="cb31-4"><a href="#cb31-4"></a>g3 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="st">&quot;&quot;</span>, <span class="dt">y =</span> value, <span class="dt">fill =</span> type)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">width =</span> <span class="dv">1</span>, <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)</span>
+<span id="cb31-5"><a href="#cb31-5"></a>g4 =<span class="st"> </span>g3 <span class="op">+</span><span class="st"> </span><span class="kw">coord_polar</span>(<span class="st">&quot;y&quot;</span>, <span class="dt">start =</span> <span class="dv">0</span>)</span>
+<span id="cb31-6"><a href="#cb31-6"></a></span>
+<span id="cb31-7"><a href="#cb31-7"></a><span class="kw">grid.arrange</span>(g1, g2, g3, g4, <span class="dt">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-17-1.png" width="768" /> Pour la variable Qualité :</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Qualite =</span> <span class="kw">levels</span>(Data<span class="op">$</span>Qualite), <span class="dt">value =</span> <span class="kw">table</span>(Data<span class="op">$</span>Qualite), <span class="dt">valuecumul =</span> <span class="dv">100</span> <span class="op">*</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="st">    </span><span class="kw">cumsum</span>(<span class="kw">prop.table</span>(<span class="kw">table</span>(Data<span class="op">$</span>Qualite))))</span>
+<span id="cb32-3"><a href="#cb32-3"></a>g1 =<span class="st"> </span><span class="kw">ggplot</span>(Data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite)) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Effectifs&quot;</span>)</span>
+<span id="cb32-4"><a href="#cb32-4"></a>g2 =<span class="st"> </span><span class="kw">ggplot</span>(Data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Frequences&quot;</span>)</span>
+<span id="cb32-5"><a href="#cb32-5"></a>g3 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> valuecumul)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Fréquences cumulées&quot;</span>)</span>
+<span id="cb32-7"><a href="#cb32-7"></a></span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="kw">grid.arrange</span>(g1, g2, g3, <span class="dt">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-18-1.png" width="768" /></p>
+<!-- https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/  -->
+<!--    ----------------------------------------------------------  -->
+</div>
+</div>
+</div>
+<div id="variable-quantitative" class="section level3">
+<h3>Variable quantitative</h3>
+<p>Nous allons ici nous intéresser à l’étude d’une variable quantitative <span class="math inline">\(X\)</span> dont on a <span class="math inline">\(n\)</span> observations <span class="math inline">\(\underline{x}=(x_1,\ldots,x_n)\)</span>. On va illustrer cette section avec la variable <em>Alcool</em>.</p>
+<div id="secindicesstat" class="section level4 tabset">
+<h4>Indices statistiques</h4>
+<p>Nous rappelons les principaux indicateurs statistiques que l’on peut évaluer pour une série de mesures <span class="math inline">\(\underline{x}\)</span>: la moyenne, la médiane, la variance, l’écart-type ….</p>
+<div id="meanvarsd" class="section level5">
+<h5>Mean/var/sd</h5>
+<p>La moyenne de <span class="math inline">\(\underline{x}\)</span> : <span class="math inline">\(\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i\)</span></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw">mean</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1] 10.48592</code></pre>
+<ul>
+<li><p>La variance <span class="math inline">\(s_x^2 = \frac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^2\)</span></p></li>
+<li><p>la variance corrigée <span class="math inline">\(var(\underline{x})=\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2\)</span></p></li>
+<li><p>l’écart-type corrigé <span class="math inline">\(\sqrt{var(\underline{x})}\)</span></p></li>
+</ul>
+<p>Attention les fonctions <code>var()</code> et <code>sd()</code> renvoient les valeurs corrigées de la variance et de l’écart-type respectivement.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">var</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1] 1.316059</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">sd</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1] 1.147196</code></pre>
+</div>
+<div id="minmaxrange" class="section level5">
+<h5>min/max/range</h5>
+<p>La commande <code>range()</code> renvoie respectivement le minimum et le maximum. On peut aussi utiliser <code>min()</code>et <code>max()</code></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw">range</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1]  8 14</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="kw">min</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1] 8</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw">max</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1] 14</code></pre>
+<p>On peut alors récupérer l’étendue (<span class="math inline">\(max(\underline{x}) - min(\underline{x})\)</span> ) avec le code suivant :</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">diff</span>(<span class="kw">range</span>(Data<span class="op">$</span>Alcool))</span></code></pre></div>
+<pre><code>[1] 6</code></pre>
+</div>
+<div id="secquartiles" class="section level5">
+<h5>médiane / quartiles / quantiles</h5>
+<p>La médiane est une valeur qui divise l’échantillon en deux sous-échantillons de même cardinal : <span class="math inline">\(\sum_{i=1}^n \mathbb{1}_{x_i\geq m} \geq \frac{n}{2} \textrm{ et } \sum_{i=1}^n \mathbb{1}_{x_i\leq m} \geq \frac{n}{2}\)</span></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="kw">median</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>[1] 10.4</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="kw">sort</span>(Data<span class="op">$</span>Alcool)[<span class="dv">296</span><span class="op">:</span><span class="dv">305</span>]</span></code></pre></div>
+<pre><code> [1] 10.3 10.3 10.3 10.3 10.4 10.4 10.4 10.4 10.4 10.4</code></pre>
+<p>La médiane est le deuxième des trois quartiles :</p>
+<ul>
+<li>le premier quartile <span class="math inline">\(q_{0.25}\)</span> est une valeur qui sépare les 25<span class="math inline">\(\%\)</span> des valeurs inférieures de l’échantillon du reste</li>
+<li>le deuxième quartile <span class="math inline">\(q_{0.5}\)</span> est la médiane</li>
+<li>le troisième quartile <span class="math inline">\(q_{O.75}\)</span> est une valeur qui sépare les 25% des valeurs supérieures de l’échantillon du reste. On retrouve ces valeurs dans la représentation par boxplot (voir la sous-section <a href="#secgraph">boxplot</a>).</li>
+</ul>
+<p>Les quartiles sont des cas particuliers de la notion de quantile. Le <span class="math inline">\(\alpha\)</span>-quantile empirique est défini par <span class="math inline">\(q_{\alpha} = x_{(i)}\)</span> avec <span class="math inline">\(\alpha\in]\frac{i-1}{n}, \frac{i}{n}]\)</span> où <span class="math inline">\(x_{(1)}\leq x_{(2)}\leq \ldots \leq x_{(n)}\)</span> sont les valeurs ordonnées de la série statistique.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="kw">quantile</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>  0%  25%  50%  75% 100% 
+ 8.0  9.5 10.4 11.3 14.0 </code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="kw">quantile</span>(Data<span class="op">$</span>Alcool, <span class="fl">0.9</span>)</span></code></pre></div>
+<pre><code> 90% 
+12.1 </code></pre>
+<p>Pour calculer l’écart interquantile, il suffit de faire la différence entre les troisième et premier quantiles, à savoir</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>q.Alc &lt;-<span class="st"> </span><span class="kw">quantile</span>(<span class="dt">x =</span> Data<span class="op">$</span>Alcool, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), <span class="dt">names =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb55-2"><a href="#cb55-2"></a><span class="kw">diff</span>(q.Alc)</span></code></pre></div>
+<pre><code>[1] 1.8</code></pre>
+<p>Les valeurs d’adjacence (cf définitions dans la sous-section <a href="#secgraph">boxplot</a>) sont obtenues de la manière suivante :</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>L =<span class="st"> </span>q.Alc <span class="op">+</span><span class="st"> </span><span class="kw">diff</span>(q.Alc) <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>)</span>
+<span id="cb57-2"><a href="#cb57-2"></a>L</span></code></pre></div>
+<pre><code>[1]  6.8 14.0</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="co"># valeur adjacente inférieure :</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a><span class="kw">min</span>(Data<span class="op">$</span>Alcool[Data<span class="op">$</span>Alcool <span class="op">&gt;=</span><span class="st"> </span>L[<span class="dv">1</span>]])</span></code></pre></div>
+<pre><code>[1] 8</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a><span class="co"># valeur adjacente supérieure :</span></span>
+<span id="cb61-2"><a href="#cb61-2"></a><span class="kw">max</span>(Data<span class="op">$</span>Alcool[Data<span class="op">$</span>Alcool <span class="op">&lt;=</span><span class="st"> </span>L[<span class="dv">2</span>]])</span></code></pre></div>
+<pre><code>[1] 14</code></pre>
+<p>Par ailleurs, toutes ces informations sont stockées dans la commande <code>summary()</code> :</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="kw">summary</span>(Data<span class="op">$</span>Alcool)</span></code></pre></div>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   8.00    9.50   10.40   10.49   11.30   14.00 </code></pre>
+<p>où sont affichés respectivement le minimum, le premier quartile, la médiane, la moyenne, le troisième quartile et le maximum.</p>
+</div>
+</div>
+<div id="secgraph" class="section level4 tabset">
+<h4>Représentations graphiques</h4>
+<div id="histogramme" class="section level5 tabset">
+<h5>Histogramme</h5>
+<p>L’histogramme est une représentation graphique qui permet de visualiser la répartition d’une variable quantitative. Les valeurs sont regroupées en intervalles <span class="math inline">\(]a_k,a_{k+1}[\)</span> et la hauteur associée est <span class="math inline">\(h_k=\frac{f_k}{a_{k+1} - a_k}\)</span>.</p>
+<div id="plot-1" class="section level6">
+<h6>plot</h6>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb65-2"><a href="#cb65-2"></a><span class="kw">hist</span>(Data<span class="op">$</span>Alcool, <span class="dt">main =</span> <span class="st">&quot;Histo. des effectifs&quot;</span>)</span>
+<span id="cb65-3"><a href="#cb65-3"></a><span class="kw">hist</span>(Data<span class="op">$</span>Alcool, <span class="dt">freq =</span> <span class="ot">FALSE</span>, <span class="dt">main =</span> <span class="st">&quot;Histo. des fréquences&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/hist-1.png" width="768" /> L’option <code>breaks="Sturges"</code> donne le choix par défaut de R pour le nombre de classes. D’autres options sont possibles (soit on précise les classes elles mêmes dans un vecteur, soit on précise un nombre arbitraire de classes, soit on lui précise l’algorithme pour calculer le nombre de classes parmi <code>"Sturges"</code>, <code>"Scott"</code> ou <code>"FD"</code> pour Freedman-Diaconis). On peut récupérer les informations de construction de l’histogramme en stockant le résultat de <code>hist()</code> dans une variable :</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>H &lt;-<span class="st"> </span><span class="kw">hist</span>(Data<span class="op">$</span>Alcool, <span class="dt">plot =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb66-2"><a href="#cb66-2"></a><span class="kw">attributes</span>(H)</span></code></pre></div>
+<pre><code>$names
+[1] &quot;breaks&quot;   &quot;counts&quot;   &quot;density&quot;  &quot;mids&quot;     &quot;xname&quot;    &quot;equidist&quot;
+
+$class
+[1] &quot;histogram&quot;</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>H<span class="op">$</span>breaks  <span class="co"># les (K+1) bordures des classes [a_k,a_{k+1}]</span></span>
+<span id="cb68-2"><a href="#cb68-2"></a>H<span class="op">$</span>counts  <span class="co"># le nombre de points dans chaque classe</span></span>
+<span id="cb68-3"><a href="#cb68-3"></a>H<span class="op">$</span>density  <span class="co"># la hauteur des K classes</span></span>
+<span id="cb68-4"><a href="#cb68-4"></a>H<span class="op">$</span>mids  <span class="co"># le milieu des K classes</span></span>
+<span id="cb68-5"><a href="#cb68-5"></a>H<span class="op">$</span>xname  <span class="co"># le nom de la variable</span></span>
+<span id="cb68-6"><a href="#cb68-6"></a>H<span class="op">$</span>equidist  <span class="co"># découpage régulier </span></span></code></pre></div>
+</div>
+<div id="ggplot-1" class="section level6">
+<h6>ggplot</h6>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>g1 =<span class="st"> </span><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb69-2"><a href="#cb69-2"></a>    <span class="dt">binwidth =</span> <span class="fl">0.5</span>)</span>
+<span id="cb69-3"><a href="#cb69-3"></a>g2 =<span class="st"> </span><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..), <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb69-4"><a href="#cb69-4"></a>    <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">binwidth =</span> <span class="fl">0.5</span>)</span>
+<span id="cb69-5"><a href="#cb69-5"></a><span class="kw">grid.arrange</span>(g1, g2, <span class="dt">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-25-1.png" width="768" /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..), <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb70-2"><a href="#cb70-2"></a>    <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">fill =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-26-1.png" width="768" /></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">color =</span> Type)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..),</span>
+<span id="cb71-2"><a href="#cb71-2"></a>    <span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
+</div>
+</div>
+<div id="fonction-de-répartition-empirique" class="section level5 tabset">
+<h5>Fonction de répartition empirique</h5>
+<p>La fonction de répartition empirique est la fonction en escalier définie par <span class="math inline">\(t\in\mathbb{R}\mapsto F_n(t) = \frac{1}{n} \sum_{i=1}^n \mathbb{1}_{x_i\leq t}\)</span></p>
+<div id="plot-2" class="section level6">
+<h6>plot</h6>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="kw">plot</span>(<span class="kw">ecdf</span>(Data<span class="op">$</span>Alcool), <span class="dt">xlab =</span> <span class="st">&quot;Variable Alcool&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Fonction de répartition empirique&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-28-1.png" width="768" /></p>
+</div>
+<div id="ggplot-2" class="section level6">
+<h6>ggplot</h6>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">stat_ecdf</span>(<span class="dt">geom =</span> <span class="st">&quot;step&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Variable Alcool&quot;</span>) <span class="op">+</span></span>
+<span id="cb73-2"><a href="#cb73-2"></a><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Fonction de répartition empirique&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-29-1.png" width="768" /></p>
+</div>
+</div>
+<div id="secboxplot" class="section level5 tabset">
+<h5>Boîte à moustaches / boxplot</h5>
+<p>La boîte à moustaches est un graphique qui résume la série statistique à partir de ses valeurs extrêmes et ses quartiles. En effet, on retrouve sur cette représentation</p>
+<ul>
+<li>les <a href="#secindicesstat">quartiles</a></li>
+<li>la valeur adjacente supérieure <span class="math inline">\(v+\)</span>, qui est la plus grande valeur de l’échantillon inférieure ou égale à <span class="math inline">\(L+ = q_{0.75} + 1.5 (q _{0.75} − q_{0.25})\)</span></li>
+<li>la valeur adjacente inférieure <span class="math inline">\(v−\)</span>, qui est la plus petite valeur de l’échantillon supérieure ou égale à <span class="math inline">\(L− = q_{0.25} − 1.5 (q_{0.75} − q_{0.25})\)</span></li>
+<li>les valeurs extrêmes (outliers) qui sont les valeurs de l’échantillon n’appartenant pas à l’intervalle <span class="math inline">\([v−, v+]\)</span>.</li>
+</ul>
+<div id="plot-3" class="section level6">
+<h6>plot</h6>
+<p>Voici les boxplots pour les variables quantitatives de notre exemple.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="kw">boxplot</span>(Data[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)])</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/boxplot-1.png" width="768" /></p>
+<p>Nous allons pour la suite nous concentrer sur la variable <em>SO2lbr</em>. En plus du graphique, on peut récupérer de la fonction <code>boxplot()</code> différentes informations :</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a>B &lt;-<span class="st"> </span><span class="kw">boxplot</span>(Data<span class="op">$</span>SO2lbr, <span class="dt">horizontal =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/boxplotNit-1.png" width="768" /></p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="kw">attributes</span>(B)</span></code></pre></div>
+<pre><code>$names
+[1] &quot;stats&quot; &quot;n&quot;     &quot;conf&quot;  &quot;out&quot;   &quot;group&quot; &quot;names&quot;</code></pre>
+<p>Dans <code>B$stats</code>, on retrouve les quartiles, la médiane et les valeurs adjacentes :</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a>B<span class="op">$</span>stats</span></code></pre></div>
+<pre><code>     [,1]
+[1,]  2.0
+[2,] 15.5
+[3,] 27.0
+[4,] 41.0
+[5,] 73.5</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="kw">median</span>(Data<span class="op">$</span>SO2lbr)</span></code></pre></div>
+<pre><code>[1] 27</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a>q &lt;-<span class="st"> </span><span class="kw">quantile</span>(<span class="dt">x =</span> Data<span class="op">$</span>SO2lbr, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), <span class="dt">names =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb82-2"><a href="#cb82-2"></a>q</span></code></pre></div>
+<pre><code>[1] 15.75 41.00</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>L =<span class="st"> </span>q <span class="op">+</span><span class="st"> </span><span class="kw">diff</span>(q) <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>)</span>
+<span id="cb84-2"><a href="#cb84-2"></a><span class="kw">min</span>(Data<span class="op">$</span>SO2lbr[Data<span class="op">$</span>SO2lbr <span class="op">&gt;=</span><span class="st"> </span>L[<span class="dv">1</span>]])</span></code></pre></div>
+<pre><code>[1] 2</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a><span class="kw">max</span>(Data<span class="op">$</span>SO2lbr[Data<span class="op">$</span>SO2lbr <span class="op">&lt;=</span><span class="st"> </span>L[<span class="dv">2</span>]])</span></code></pre></div>
+<pre><code>[1] 73.5</code></pre>
+<p><code>B$out</code> renvoie toutes les valeurs aberrantes (en dehors des barres inférieure et supérieure c’est à dire en dehors de l’intervalle <span class="math inline">\([v-,v+]\)</span>):</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a>B<span class="op">$</span>out</span></code></pre></div>
+<pre><code>[1]  89.0 105.0  85.0 112.0  79.5</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a>Data<span class="op">$</span>SO2lbr[<span class="kw">which</span>(Data<span class="op">$</span>SO2lbr <span class="op">&lt;</span><span class="st"> </span>B<span class="op">$</span>stats[<span class="dv">1</span>] <span class="op">|</span><span class="st"> </span>Data<span class="op">$</span>SO2lbr <span class="op">&gt;</span><span class="st"> </span>B<span class="op">$</span>stats[<span class="dv">5</span>])]</span></code></pre></div>
+<pre><code>[1]  89.0 105.0  85.0 112.0  79.5</code></pre>
+</div>
+<div id="ggplot-3" class="section level6">
+<h6>ggplot</h6>
+<p>Représentation des boxplot avec ggplot2 :</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a>g1 =<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;valeur&quot;</span>, Data[, <span class="kw">c</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>)])) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> variable,</span>
+<span id="cb92-2"><a href="#cb92-2"></a>    <span class="dt">y =</span> valeur))</span>
+<span id="cb92-3"><a href="#cb92-3"></a>g2 =<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;valeur&quot;</span>, Data[, <span class="kw">c</span>(<span class="dv">5</span><span class="op">:</span><span class="dv">6</span>)])) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> variable,</span>
+<span id="cb92-4"><a href="#cb92-4"></a>    <span class="dt">y =</span> valeur))</span>
+<span id="cb92-5"><a href="#cb92-5"></a><span class="kw">grid.arrange</span>(g1, g2, <span class="dt">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-32-1.png" width="768" /></p>
+<p>Représentation des violin plots :</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a>g1 =<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;valeur&quot;</span>, Data[, <span class="kw">c</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>)])) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>(<span class="kw">aes</span>(<span class="dt">x =</span> variable,</span>
+<span id="cb93-2"><a href="#cb93-2"></a>    <span class="dt">y =</span> valeur))</span>
+<span id="cb93-3"><a href="#cb93-3"></a>g2 =<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;valeur&quot;</span>, Data[, <span class="kw">c</span>(<span class="dv">5</span><span class="op">:</span><span class="dv">6</span>)])) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>(<span class="kw">aes</span>(<span class="dt">x =</span> variable,</span>
+<span id="cb93-4"><a href="#cb93-4"></a>    <span class="dt">y =</span> valeur))</span>
+<span id="cb93-5"><a href="#cb93-5"></a><span class="kw">grid.arrange</span>(g1, g2, <span class="dt">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-33-1.png" width="768" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="statistiques-descriptives-bidimensionnelles" class="section level2">
+<h2>Statistiques descriptives bidimensionnelles</h2>
+<div id="entre-2-variables-quantitatives" class="section level3">
+<h3>Entre 2 variables quantitatives</h3>
+<p>Supposons dans cette partie que X et Y sont deux variables quantitatives et on observe une série de <span class="math inline">\(n\)</span> valeurs pour chacune : <span class="math inline">\(\underline{x}=(x_1,\ldots,x_n)\)</span> et <span class="math inline">\(\underline{y}=(y_1,\ldots,y_n)\)</span>.</p>
+<p>On peut tout d’abord représenter le nuage de points de coordonnées <span class="math inline">\((x_i,y_i)\)</span> :</p>
+<div id="section" class="section level4 tabset">
+<h4></h4>
+<div id="plot-4" class="section level5">
+<h5>plot</h5>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a><span class="kw">plot</span>(Data<span class="op">$</span>Alcool, Data<span class="op">$</span>Densite, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">xlab =</span> <span class="st">&quot;Alcool&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Densite&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-34-1.png" width="768" /></p>
+</div>
+<div id="ggplot-4" class="section level5">
+<h5>ggplot</h5>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-35-1.png" width="768" /></p>
+</div>
+</div>
+<div id="corrélation" class="section level4 tabset">
+<h4>Corrélation</h4>
+<p>On peut calculer la covariance (généralisaton bidimensionnelle de la variance) entre ces deux séries de mesure à l’aide de la commande <code>cov()</code>: <span class="math display">\[
+Cov(\underline{x},\underline{y}) = \frac{1}{n} \sum_{i=1}^n (x_i-\bar{x}) (y_i -\bar{y}).
+\]</span> Mais la covariance dépendant des unités de mesure des deux variables considérées, on calcule plutôt la corrélation linéaire (renormalisation de la covariance par les écarts-type) qui appartient à l’intervalle <span class="math inline">\([-1,1]\)</span> à l’aide de <code>cor()</code>: <span class="math display">\[
+cor(\underline{x},\underline{y}) = \frac{Cov(\underline{x},\underline{y})}{\sqrt{s_x^2\ \ s_y^2}}
+\]</span></p>
+<div id="corrplot" class="section level5">
+<h5><code>corrplot()</code></h5>
+<p>A l’aide de la fonction <code>corrplot()</code> (issue du package du même nom) on représente ici la matrice des corrélations entre les variables quantitatives de notre jeu de données:</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a><span class="kw">corrplot</span>(<span class="kw">cor</span>(Data[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]), <span class="dt">method =</span> <span class="st">&quot;ellipse&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-36-1.png" width="768" /></p>
+</div>
+<div id="ggcorrplot" class="section level5">
+<h5><code>ggcorrplot()</code></h5>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a><span class="kw">ggcorrplot</span>(<span class="kw">cor</span>(Data[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]), <span class="dt">method =</span> <span class="st">&quot;circle&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-37-1.png" width="768" /></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a><span class="kw">ggcorrplot</span>(<span class="kw">cor</span>(Data[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]), <span class="dt">hc.order =</span> <span class="ot">TRUE</span>, <span class="dt">type =</span> <span class="st">&quot;lower&quot;</span>, <span class="dt">lab =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-38-1.png" width="768" /></p>
+</div>
+</div>
+<div id="régression-linéaire" class="section level4 tabset">
+<h4>Régression linéaire</h4>
+<p>Le coefficient de corrélation linéaire entre les variables <em>Densité</em> et <em>Alcool</em> vaut -0.68. On peut vérifier que le nuage de points de ces deux variables s’aligner sur une droite de pente négative :</p>
+<div id="plot-5" class="section level5">
+<h5>plot</h5>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a><span class="kw">plot</span>(Densite <span class="op">~</span><span class="st"> </span>Alcool, <span class="dt">data =</span> Data, <span class="dt">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb99-2"><a href="#cb99-2"></a><span class="kw">abline</span>(<span class="kw">lm</span>(Densite <span class="op">~</span><span class="st"> </span>Alcool, <span class="dt">data =</span> Data), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-39-1.png" width="768" /></p>
+</div>
+<div id="ggplot-5" class="section level5">
+<h5>ggplot</h5>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">y =</span> Densite)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> lm)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-40-1.png" width="768" /></p>
+</div>
+</div>
+</div>
+<div id="entre-une-variable-quantitative-et-une-variable-qualitative" class="section level3">
+<h3>Entre une variable quantitative et une variable qualitative</h3>
+<p>Supposons dans cette partie que <span class="math inline">\(X\)</span> est une variable qualitative prenant <span class="math inline">\(J\)</span> modalités <span class="math inline">\(m_1, \ldots, m_J\)</span> et <span class="math inline">\(Y\)</span> une variable quantitative. On observe une série de <span class="math inline">\(n\)</span> valeurs pour chacune : <span class="math inline">\(\underline{x}=(x_1,\ldots,x_n)\)</span> et <span class="math inline">\(\underline{y}=(y_1,\ldots,y_n)\)</span>.</p>
+<p>On note <span class="math inline">\(C_j=\{i\in\{1,\ldots,n\}; x_i=m_j\}\)</span> l’ensemble des individus prenant la modalité <span class="math inline">\(m_j\)</span> et <span class="math inline">\(n_j\)</span> son cardinal.</p>
+<p>La moyenne de <span class="math inline">\(\underline{y}\)</span> peut alors se décomposer en une moyenne pondérée des moyennes de <span class="math inline">\(y\)</span> conditionnellement aux modalités de <span class="math inline">\(X\)</span> : <span class="math display">\[
+\bar{y} = \frac{1}{n} \sum_{j=1}^J n_j\ \bar{y}_{[j]} \textrm{   avec   } \bar{y}_{[j]} = \frac{1}{n_j} \sum_{i\in C_j} y_i
+\]</span> De même la variance se décompose en <span class="math inline">\(s_y^2 = \underbrace{s_{y,E}^2}_{\textrm{variance inter-classe}} + \underbrace{s_{y,R}^2}_{\textrm{variance intra-classe}}\)</span> avec</p>
+<p><span class="math display">\[
+s_{y,E}^2 = \frac{1}{n} \sum_{j=1}^J n_j\ (\bar{y}_{[j]} - \bar{y})^2 
+\]</span> et <span class="math display">\[
+s_{y,R}^2 = \frac{1}{n} \sum_{j=1}^J n_j\ s_{y,[j]}^2 \textrm{ avec } s^2_{y,[j]} = \frac{1}{n_j}\sum_{i\in C_j} (y_i - \bar{y}_{[j]})^2
+\]</span> On peut alors définir le <em>rapport de corrélation</em> <span class="math display">\[
+\rho_{y|x} = \sqrt{\frac{s_{y,E}^2}{s_{y}^2}} = \sqrt{1 - \frac{s_{y,R}^2}{s_{y}^2}}\in[0,1].
+\]</span> Plus <span class="math inline">\(\rho_{y|x}\)</span> est proche de <span class="math inline">\(0\)</span>, plus <span class="math inline">\(s_{y,E}^2\)</span> est proche de 0 et donc moins la variable qualitative <span class="math inline">\(X\)</span> a d’influence sur la variable quantitative <span class="math inline">\(Y\)</span>.</p>
+<p>Graphiquement, on peut représenter la distribution de la variable quantitative conditionnellement aux modalités de la variable qualitative pour visualiser la liaison potentielle entre les deux variables.</p>
+<div id="section-1" class="section level4 tabset">
+<h4></h4>
+<div id="plot-6" class="section level5">
+<h5>plot</h5>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb101-2"><a href="#cb101-2"></a><span class="kw">boxplot</span>(Alcool <span class="op">~</span><span class="st"> </span>Qualite, <span class="dt">data =</span> Data)</span>
+<span id="cb101-3"><a href="#cb101-3"></a><span class="kw">boxplot</span>(Alcool <span class="op">~</span><span class="st"> </span>Type, <span class="dt">data =</span> Data)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-41-1.png" width="768" /></p>
+</div>
+<div id="ggplot-6" class="section level5">
+<h5>ggplot</h5>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>g1 =<span class="st"> </span><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</span>
+<span id="cb102-2"><a href="#cb102-2"></a>g2 =<span class="st"> </span><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Qualite, <span class="dt">y =</span> Alcool)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>()</span>
+<span id="cb102-3"><a href="#cb102-3"></a>g3 =<span class="st"> </span><span class="kw">ggplot</span>(Data, <span class="kw">aes</span>(<span class="dt">x =</span> Alcool, <span class="dt">fill =</span> Qualite)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>)</span>
+<span id="cb102-4"><a href="#cb102-4"></a><span class="kw">grid.arrange</span>(g1, g2, g3, <span class="dt">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-42-1.png" width="768" /></p>
+</div>
+</div>
+</div>
+<div id="entre-deux-variables-qualitatives" class="section level3">
+<h3>Entre deux variables qualitatives</h3>
+<p>Supposons dans cette partie que <span class="math inline">\(X\)</span> est une variable qualitative prenant <span class="math inline">\(J\)</span> modalités <span class="math inline">\(m_1,\ldots,m_J\)</span> et <span class="math inline">\(Y\)</span> est une vraiable qualitative prenant <span class="math inline">\(K\)</span> modalités <span class="math inline">\(\ell_1,\ldots,\ell_K\)</span>. On observe une série de <span class="math inline">\(n\)</span> valeurs pour chacune : <span class="math inline">\(\underline{x}=(x_1,\ldots,x_n)\)</span> et <span class="math inline">\(\underline{y}=(y_1,\ldots,y_n)\)</span>. Pour étudier l’influence de deux variables qualitatives entre elles, on se base sur la table de contingence qui est l’ensemble des effectifs conjoints <span class="math display">\[
+n_{j,k} = \sum_{i=1}^n \mathrm{1}_{x_i = m_j\ \cap\ y_i=\ell_k},\ \ \forall j\in\{1,\ldots,J\},\ \forall k\in\{1,\ldots,K\}
+\]</span> On définit les effectifs marginaux par <span class="math display">\[
+n_{j,.}=\sum_{k=1}^K n_{j,k}\ \ \ \textrm{   et   } \ \ \ n_{.,k}=\sum_{j=1}^J n_{j,k}
+\]</span></p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a>table.cont =<span class="st"> </span><span class="kw">table</span>(Data<span class="op">$</span>Qualite, Data<span class="op">$</span>Type)</span>
+<span id="cb103-2"><a href="#cb103-2"></a>table.cont</span></code></pre></div>
+<pre><code>        
+         blanc rouge
+  bad       17     2
+  good      89    21
+  medium   319   152</code></pre>
+<div id="section-2" class="section level4 tabset">
+<h4></h4>
+<p>Graphiquement, on peut représenter un mosaicplot qui correspond à la représentation des profils-lignes <span class="math display">\[
+\left(\frac{n_{j,1}}{n_{j,.}},\ldots,\frac{n_{j,K}}{n_{j,.}}\right)\in [0,1]^K
+\]</span> ou des profils-colonnes</p>
+<p><span class="math display">\[
+\left(\frac{n_{1,k}}{n_{.,k}},\ldots,\frac{n_{J,k}}{n_{.,k}}\right)\in [0,1]^J
+\]</span></p>
+<div id="plot-7" class="section level5">
+<h5>plot</h5>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1"></a><span class="kw">mosaicplot</span>(<span class="kw">table</span>(Data<span class="op">$</span>Qualite, Data<span class="op">$</span>Type))</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-44-1.png" width="768" /></p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a><span class="kw">mosaicplot</span>(<span class="kw">table</span>(Data<span class="op">$</span>Type, Data<span class="op">$</span>Qualite))</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-44-2.png" width="768" /></p>
+</div>
+<div id="ggplot-7" class="section level5">
+<h5>ggplot</h5>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1"></a><span class="kw">library</span>(ggmosaic)</span>
+<span id="cb107-2"><a href="#cb107-2"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_mosaic</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">product</span>(Type, Qualite), <span class="dt">fill =</span> Qualite),</span>
+<span id="cb107-3"><a href="#cb107-3"></a>    <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Qualite&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Type&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-45-1.png" width="768" /></p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r badCode"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> Data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_mosaic</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">product</span>(Qualite, Type)), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb108-2"><a href="#cb108-2"></a><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Type&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Qualite&quot;</span>)</span></code></pre></div>
+<p><img src="Part3-StatR_files/figure-html/unnamed-chunk-45-2.png" width="768" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="pour-aller-plus-loin" class="section level1">
+<h1>Pour aller plus loin</h1>
+<p>Dans la suite de votre cursus modIA, vous aborderez la mise en pratique d’algorithmes en R et python sur les thématiques suivantes :</p>
+<ul>
+<li>les statistiques descriptives multidimensionnelles dont l’ACP</li>
+<li>le modèle linéaire et modèle linéaire généralisé</li>
+<li>l’apprentissage supervisé</li>
+<li>l’apprentissage non supervisé</li>
+<li>…</li>
+</ul>
+</div>
+</div>
+
+   
+   
+            
+      
+
+  <script>
+    $(document).ready(function () {
+
+			
+ 		
+		$('#content img:not(.no-lightbox)').addClass("image-lb");
+	$('#content').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+	    delegate: '.image-lb',
+	    gallery: {enabled: true },
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>
