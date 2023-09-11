@@ -387,6 +387,31 @@ Question 3 :  À quoi sert la fonction `unique` ? Illustrer son fonctionnement s
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+# Exercice 1 :
+
+a <- seq(from = 2, to = 30, by = 2)
+
+v <- 5
+b <- c(v , 2*v, (1/3)*v, 3*v^2, sqrt(v), a[4])
+b
+
+c <- seq(5, 30, length = 6)
+
+d <- c(sum(c), length(b), rep(3, 5))
+
+
+# Exercice 2
+
+a[4]
+a[-4]
+a[a > 10]
+
+
+# Exercice 3
+# La fonction unique permet de supprimer les doublons au sein d'un vecteur
+d
+unique(d)
 ```
 
 
@@ -514,6 +539,25 @@ Multiplication par un scalaire
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+# Exercice 1 :
+A <- cbind(3:5, 3:5, 3:5)
+A
+
+A <- A + 2
+A
+
+B <- cbind(A, c(1,2,3))
+B <- rbind(B, rep(1,4))
+B
+
+dim(B)
+
+C <- B[(dim(B)-1):dim(B), 1:2]
+C
+t(C)
+det(C)
+solve(C)
 ```
 
 ##	Les tableaux (array) {.tabset}  
@@ -630,6 +674,18 @@ summary(y)
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+# Exercices 3 :
+
+listeDeNotes <- list(matieres = c("pc","svt","maths"), notes5Eleves = matrix(1:15, 5, 3), ages5Eleves = c(19:23), filiere5Eleves = c(rep(c("SN", "3EA"), 2), "MFEE"))
+
+listeDeNotes$notes5Eleves
+listeDeNotes$notes5Eleves[4,]
+
+listeDeNotes$notes5Eleves
+listeDeNotes$ages5Eleves
+matricNotesEtAges <- cbind(listeDeNotes$ages5Eleves, listeDeNotes$notes5Eleves)
+matricNotesEtAges
 ```
 
 ##	Data frames
@@ -703,6 +759,15 @@ On reprend le data.frame $H$ contruit dans la sous-section Exemple.
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+# Exercice :
+
+H
+H[H$taille > 160,]
+
+data.frame(masse = H[H$taille > 160,]$masse, sexe = H[H$taille > 160,]$sexe)
+
+H[H$masse < 80 & H$sexe == "M", -1]
 ```
 
 # Premiers graphiques
