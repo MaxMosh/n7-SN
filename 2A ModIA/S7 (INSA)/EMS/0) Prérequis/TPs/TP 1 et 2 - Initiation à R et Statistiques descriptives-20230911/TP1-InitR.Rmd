@@ -855,6 +855,20 @@ contour(x,y,z,add=T)
 3. Ajouter les points sur la courbe pour $x=-\pi$, $0$ et $\pi$ en vert
 4. Ajouter la tangente en zéro en pointillés rouge
 
+
+```{r}
+x = seq(-10, 10, l = 50)
+par(mfrow = c(1, 1))
+plot(x, atan(x), type = "l", col = 1, main = "Arctangente", ylim = c(-2,2))
+abline(h = pi/2, col = "blue", lwd = 2)
+abline(h = -pi/2, col = "blue", lwd = 2)
+points(-pi, atan(-pi), pch = "o", cex = 2, col = "green")
+points(0, atan(0), pch = "o", cex = 2, col = "green")
+points(pi, atan(pi), pch = "o", cex = 2, col = "green")
+abline(0, 1, col = "red", lwd = 2, lty = 3)
+```
+
+
 <!--
 ### Enoncé 2
 1. Charger les données "airquality" disponible sous R à l'aide de `data()`
