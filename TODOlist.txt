@@ -1,6 +1,5 @@
 À ajouter (ajouter rapport en plus des codes) :
 - codes mini projet PIM 1 (sur machines de l'école)
-- dernier code projet PIM (Samy)
 
 - codes modélisation (?)
 - codes architectures des ordinateurs (ce qu'il y a de fait correctement, notamment minicraps)

@@ -1,2 +1,2 @@
 Source : github de Samy (quelques suppressions de fichiers apportées)
-Travail réalisé en binôme avec lui
+Travail réalisé en binôme avec Samy
