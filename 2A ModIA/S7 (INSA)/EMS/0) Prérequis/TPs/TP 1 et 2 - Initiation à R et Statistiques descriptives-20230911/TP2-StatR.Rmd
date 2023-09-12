@@ -454,9 +454,9 @@ n=seq(100,10000,100)
 mest=NULL
 sigma2est=NULL
 for (i in 1:length(n)){
-  x =                     # echantillon à simuler
-  mest = c(mest, ....)    # estimation de m
-  sigma2est=c(sigma2est, ...)  # estimation de sigma2
+  x = (rnorm(n[i], mean = 5, sd = 2))      # echantillon à simuler
+  mest = c(mest, mean(x))    # estimation de m
+  sigma2est=c(sigma2est, var(x))  # estimation de sigma2
 }
 ```
 
@@ -496,7 +496,7 @@ Reportez-vous aux slides de remise à niveau pour vous rappeler la construction.
 
 int.conf.moy1 <- function(x,niv.conf,sigma2){
   alpha = 1-niv.conf
-  IC = ... + c(-1,1) * qnorm(1-alpha/2) * ...
+  IC = mean(x) + c(-1,1) * qnorm(1-alpha/2) * sqrt(sigma2/length(x))
   return(IC)
 }
 ```
@@ -507,12 +507,12 @@ int.conf.moy1 <- function(x,niv.conf,sigma2){
 + déduisez-en un intervalle de confiance pour $m$ au niveau de confiance *niv.conf* à l'aide de la fonction `int.conf.moy1` programmée précédemment
 
 ```{r, eval=F}
-n= c(...)
-niv.conf = c(....)
+n= c(10,100,1000)     # modifié
+niv.conf = c(0.9,0.95,0.975)      # modifié
 for (i in 1:length(n)){
   for (j in 1:length(niv.conf)){
-    x= ...
-    IC=int.conf.moy1(....)
+    x= rnorm(n[i], mean = 5, sd = 2)
+    IC=int.conf.moy1(x, niv.conf[j], sigma2 = 4)
     print(paste("n= ", n[i],", niv.conf= ",niv.conf[j]," : IC vaut [", round(IC[1],3),",",round(IC[2],3),"], il est de longueur",round(IC[2]-IC[1],3), sep=""))
   }
 }
@@ -530,12 +530,19 @@ Pour cela, répétez $K$ fois l'expérience suivante
 propconf <- function(K,m){
 nb.app=0  
 for (k in 1:K){
-  x= ...
-  IC=int.conf.moy1(....)
+  x = rnorm(n = 1000, mean = m, sd = 2)
+  IC=int.conf.moy1(x, niv.conf = 0.95, sigma2 = 4)
   nb.app = nb.app + (m>=IC[1]) * (m<=IC[2])
 }
 return(nb.app/K)
-}  
+} 
+
+
+K = seq(100,1000,100)
+m = 5
+
+propconf(K,m)
+
 ```
 
 Evaluez plusieurs fois pour $K$ valant $100$ et $1000$. Qu'observez-vous ?
@@ -558,8 +565,8 @@ Reportez-vous aux slides de remise à niveau pour vous rappeler la construction.
 # A COMPLETER
 int.conf.moy2 <- function(x,niv.conf){
   alpha = 1-niv.conf
-  S2 =     # estimateur de la variance
-  IC = ... + c(-1,1) * qt(1-alpha/2,length(x)-1) * ...
+  S2 =  var(x)   # estimateur de la variance
+  IC = mean(x) + c(-1,1) * qt(1-alpha/2,length(x)-1) * sqrt(S2/length(x))
   return(IC)
 }
 ```
@@ -570,12 +577,12 @@ int.conf.moy2 <- function(x,niv.conf){
 + déduisez-en un intervalle de confiance pour $m$ au niveau de confiance *niv.conf* à l'aide de la fonction `int.conf.moy2` programmée précédemment
 
 ```{r, eval=F}
-n= c(...)
-niv.conf = c(....)
+n= c(10, 100, 1000)
+niv.conf = c(0.9,0.95,0.975)
 for (i in 1:length(n)){
   for (j in 1:length(niv.conf)){
-    x= ...
-    IC=int.conf.moy2(....)
+    x= rnorm(n[i], mean = 5, sd = 2)
+    IC=int.conf.moy2(x, niv.conf[j])
    print(paste("n= ", n[i],", niv.conf= ",niv.conf[j]," : IC vaut [", round(IC[1],3),",",round(IC[2],3),"], il est de longueur",round(IC[2]-IC[1],3), sep=""))
   }
 }
@@ -584,8 +591,8 @@ for (i in 1:length(n)){
 3. Comparez sur données simulées les intervalles de confiance obtenus dans le cas de la variance connue (`int.conf.moy1`), le cas de la variance inconnue (`int.conf.moy2`) et avec la fonction `t.test()`de R. 
 
 ```{r,eval=F}
-x = .... # Echantillon simulé
-int.conf.moy1(x,niv.conf=0.95,sigma2= )
+x = rnorm(n = 1000, mean = 5, sd =2) # Echantillon simulé
+int.conf.moy1(x,niv.conf=0.95,sigma2= 4)
 int.conf.moy2(x,niv.conf=0.95)
 t.test(x,conf.level=0.95)
 ```
@@ -608,6 +615,20 @@ précisez
 + la statistique de test et sa loi sous $\mathcal{H}_0$
 + la forme de la zone de rejet
 + l'expression de la pvaleur en fonction de $\phi$ qui désigne la fonction de répartition d'une $\mathcal{N}(0,1)$ 
+  
+  Réponse :
+  
+  Sous $\mathcal{H}_0$, la statistique de test suit une loi normale $\mathcal{N}(m_0,\cfrac{\sigma^2}{n})$, d'où :
+  
+  $T := \sqrt{n}\cfrac{\bar X_n - m_0}{\sigma} \sim_{\mathcal{H_0}} \mathcal{N}(0,1)$
+  
+  Zone de rejet :
+  
+  $R_\alpha = \displaystyle\{\bar X_n - m_0 < a\}$ où $a$ tel que :
+  
+  $\mathbb{P}_{\mathcal{H}_0}\displaystyle(\bar X_n - m_0 < a) = \alpha$
+  
+  # a finir !!
   
 2. Complétez la fonction suivante `test.moy1()` qui évalue la p-valeur du test $\mathcal{H}_0 : m=m_0$ contre l'alternative
 

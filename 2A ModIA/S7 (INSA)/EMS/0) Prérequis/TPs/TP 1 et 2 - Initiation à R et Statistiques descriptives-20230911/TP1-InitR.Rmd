@@ -857,6 +857,10 @@ contour(x,y,z,add=T)
 
 
 ```{r}
+# Décommenter la ligne suivante et la ligne "dev.off()" pour rediriger la sortie graphique vers le fichier PDF (dans le dossier courant)
+
+#pdf("~/Documents/ENSEEIHT/Cours SN (général)/n7-SN/2A ModIA/S7 (INSA)/EMS/0) Prérequis/TPs/TP 1 et 2 - Initiation à R et Statistiques descriptives-20230911/Arctan.pdf")
+
 x = seq(-10, 10, l = 50)
 par(mfrow = c(1, 1))
 plot(x, atan(x), type = "l", col = 1, main = "Arctangente", ylim = c(-2,2))
@@ -866,6 +870,10 @@ points(-pi, atan(-pi), pch = "o", cex = 2, col = "green")
 points(0, atan(0), pch = "o", cex = 2, col = "green")
 points(pi, atan(pi), pch = "o", cex = 2, col = "green")
 abline(0, 1, col = "red", lwd = 2, lty = 3)
+
+# Sauvegarde du graphique 
+
+#dev.off()
 ```
 
 
@@ -954,6 +962,30 @@ res$surf
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+
+# Q1 :
+
+arrondiOpe1 = function(x, y) {
+  return(round(x^2 + y, digits = 3))
+}
+
+# Test de la fonction :
+
+resOpe1 = arrondiOpe1(3,1.234567)
+resOpe1
+
+
+# Q2 :
+
+densiteProbaLoiN = function(m, s, x){
+  return((1/(sqrt(2*pi)*s))*exp(-((x-m)/2*s^2)))
+}
+
+# Test de la fonction pour m = 0, s = 1 (loi normale centrée réduite) et en x = 0 :
+
+testdProbaLoiN = densiteProbaLoiN(0, 1, 0)
+testdProbaLoiN
 ```
 
 ##	Structures de contrôle et itérations
@@ -977,6 +1009,14 @@ Soit $X$ une variable aléatoire de loi de Poisson de paramètre 2. Écrire une 
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+probaPoisson2 = function(x){
+  return(ifelse(is.integer(x) & x >= 0, exp(-2)*(2^x/factorial(x)), "Le paramètre doit être entier naturel"))
+}
+
+probaPoisson2(integer(1))
+
+# A améliorer, on ne peut pas faire sans integer(x)
 ```
 
 ### Itérations
@@ -1053,6 +1093,45 @@ Comparer avec la fonction prédéfinie `var()`.
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+
+# Quesion 1 :
+
+ma.variance = function(x){
+  moyenneJeuX = mean(x)
+  return(mean((x - moyenneJeuX)^2))
+}
+
+
+# Comparation ma.variance et variance implantée :
+
+x = runif(100, 0, 10)
+
+ma.variance(x)
+var(x)
+
+
+# Quesion 2 :
+
+fibo = function(n){
+    res = c(0,1)    # u1 et u2 pour la suite de Fibonacci
+    if (n>=3) {
+      for (i in seq(3,n,1)){
+        res[i] = c[i-2] + c[i-1]
+      }
+    }
+    else {
+      NULL
+    }
+    return(ifelse(is.integer(n) & x >= 1, res[n], "Le paramètre doit être entier naturel strictement positif"))
+}
+
+# Test des valeurs de la suite
+
+fibo(integer(1))
+fibo(integer(2))
+fibo(integer(3))
+fibo(integer(9))
 ```
 
 
