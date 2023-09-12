@@ -15,5 +15,3 @@
 - dernier code projet CS (Samy)
 - dernier code projet AD (Samy)
 
-- derniers codes TPs Telecom (TP1 et TP2 Samy)
-
