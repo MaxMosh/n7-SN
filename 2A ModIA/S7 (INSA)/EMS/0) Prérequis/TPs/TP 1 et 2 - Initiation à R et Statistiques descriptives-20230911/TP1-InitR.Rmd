@@ -1011,12 +1011,10 @@ Soit $X$ une variable aléatoire de loi de Poisson de paramètre 2. Écrire une 
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
 
 probaPoisson2 = function(x){
-  return(ifelse(is.integer(x) & x >= 0, exp(-2)*(2^x/factorial(x)), "Le paramètre doit être entier naturel"))
+  return(ifelse((x %% 1) == 0 & x >= 0, exp(-2)*(2^x/factorial(x)), "Le paramètre doit être entier naturel"))
 }
 
-probaPoisson2(integer(1))
-
-# A améliorer, on ne peut pas faire sans integer(x)
+probaPoisson2(1)
 ```
 
 ### Itérations
@@ -1114,24 +1112,60 @@ var(x)
 # Quesion 2 :
 
 fibo = function(n){
+    class(n)
     res = c(0,1)    # u1 et u2 pour la suite de Fibonacci
     if (n>=3) {
       for (i in seq(3,n,1)){
-        res[i] = c[i-2] + c[i-1]
+        class(n)
+        res = c(res, res[i-2] + res[i-1])
+        #res[i] = c[i-2] + c[i-1]
       }
     }
     else {
       NULL
     }
-    return(ifelse(is.integer(n) & x >= 1, res[n], "Le paramètre doit être entier naturel strictement positif"))
+    return(ifelse((n %% 1) == 0 & n >= 1, res[n], "Le paramètre doit être un entier naturel strictement positif"))
 }
 
 # Test des valeurs de la suite
 
-fibo(integer(1))
-fibo(integer(2))
-fibo(integer(3))
-fibo(integer(9))
+fibo(1)
+fibo(2)
+fibo(3)
+fibo(9)
+fibo(0)
+
+
+# Question 3 :
+
+factoFor = function(k){
+  res = 1
+  for (i in seq(1,k)) {
+    res = res*i
+  }
+  return(res)
+}
+
+factoWhile = function(k){
+  res = 1
+  i = 0
+  while (i < k) {
+    i = i + 1
+    res = res*i
+  }
+  return(res)
+}
+
+# Test des fonctions factorielles
+
+factoFor(0)
+factoWhile(0)
+
+factoFor(1)
+factoWhile(1)
+
+factoFor(5)
+factoWhile(5)
 ```
 
 
@@ -1189,6 +1223,30 @@ Proposer une fonction équivalente sans aucune boucle.
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+# Exercice 1 :
+
+Exo1sb=function(M){
+  return(apply(M, 1, sum))
+}
+
+M=matrix(1:20,nrow=5,ncol=4)
+Exo1(M)
+Exo1sb(M)
+
+
+# Exercice 2 :
+
+# Q1
+gen100Normalem1 = function(m) {
+  return(rnorm(100, mean = m, sd = 1))
+}
+
+echant3moyennes = lapply(c(-2,0,2), gen100Normalem1)
+echant3moyennes
+
+# Q2
+sapply(echant3moyennes, mean) 
 ```
 
 #	Entrée / Sortie
@@ -1218,6 +1276,15 @@ Chargez à l'aide de la fonction `read.table()` les données *iris1.txt*, *iris2
 ```{r}
 #  A COMPLETER POUR REPONDRE A L'EXERCICE
 # AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+
+data1 <- read.table("DataAux/iris1.txt", header = TRUE, sep = ";")
+head(data)
+
+data2 <- read.table("DataAux/iris2.csv", header = TRUE)
+head(data2)
+
+data3 <- read.table("DataAux/iris3.txt", header = TRUE, sep = "*")
+head(data3)
 ```
 
 

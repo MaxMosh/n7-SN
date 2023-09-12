@@ -529,7 +529,7 @@ Pour cela, répétez $K$ fois l'expérience suivante
 ```{r, eval=F}
 propconf <- function(K,m){
 nb.app=0  
-for (k in 1:K){
+for (k in 1:K) {
   x = rnorm(n = 1000, mean = m, sd = 2)
   IC=int.conf.moy1(x, niv.conf = 0.95, sigma2 = 4)
   nb.app = nb.app + (m>=IC[1]) * (m<=IC[2])
@@ -538,11 +538,14 @@ return(nb.app/K)
 } 
 
 
-K = seq(100,1000,100)
 m = 5
+respropconf = NULL
+for (K in seq(100,1000,100)) {
+  respropconf = c(respropconf, propconf(K,m))
+}
+respropconf
 
-propconf(K,m)
-
+# Plus K est grand, plus la vraie valeur de m se trouve dans l'intervalle de confiance (à 95%)
 ```
 
 Evaluez plusieurs fois pour $K$ valant $100$ et $1000$. Qu'observez-vous ?
@@ -628,7 +631,7 @@ précisez
   
   $\mathbb{P}_{\mathcal{H}_0}\displaystyle(\bar X_n - m_0 < a) = \alpha$
   
-  # a finir !!
+  # TODO
   
 2. Complétez la fonction suivante `test.moy1()` qui évalue la p-valeur du test $\mathcal{H}_0 : m=m_0$ contre l'alternative
 
