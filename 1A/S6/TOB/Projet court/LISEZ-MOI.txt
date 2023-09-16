@@ -1,0 +1,70 @@
+Nom       : Moshfeghi
+Prénom    : Maxime
+Groupe TP : J
+
+Les « ... » indiquent les endroits à compléter.
+
+=====[ Temps passé ]============================================================
+
+Ces informations de temps sont demandées à titre indicatif et ne sont pas
+prises en compte dans la notation du projet.
+
+
+* Temps passé sur la V1 : 14 heures 30 minutes
+* Temps passé sur la V2 : 31 heures 00 minutes
+
+Pour la V2 on ne tiendra pas compte du temps passé sur la V1.
+
+
+=====[ Questions ]==============================================================
+
+--------------------------------------------------------------------------------
+Pourquoi l'exception OperationInterditeException ne peut pas être définie
+comme vérifiée par le compilateur ?
+--------------------------------------------------------------------------------
+
+L'exception OperationInterditeException ne peut pas être définie comme vérifiée 
+par le compilateur car celle-ci n'intervient qu'à l'exécution du
+programme.
+
+
+--------------------------------------------------------------------------------
+Expliquer ce qu'il faut faire pour ajouter un nouveau niveau de jeu, par
+exemple la stratégie lente (C13).  Pour plus de précision, on numérotera
+les étapes à faire.
+--------------------------------------------------------------------------------
+
+Il suffit de :
+1. Réaliser l'interface Strategie pour cette nouvelle stratégie.
+2. L'appeler dans le "Selon" de la méthode attribuerStrategie défini dans le
+fichier Jouer.java.
+3. Exécuter l'application avec l'un des joueurs de type
+"joueur@nouvellestrategie".
+
+
+--------------------------------------------------------------------------------
+Expliquer ce qui permet, dans votre conception, de changer dynamiquement
+(en cours d'exécution du programme) la stratégie d'un joueur (C14).
+--------------------------------------------------------------------------------
+
+Il suffirait de rajouter dans la stratégie humain un traitement de la chaine de
+caractères mise dans le scanner. Les stratégies étant définies comme la
+réalisation d'une interface Strategie, il serait alors assez simple de traiter
+la demande de changement de stratégie dans le programme principal, via l'appel
+de la fonction attribuerStartegie, qui appellerait elle même le constructeur de
+la stratégie que l'on veut donner au joueur courant.
+
+
+=====[ Explications ]===========================================================
+
+--------------------------------------------------------------------------------
+Donner ici les explications supplémentaires utiles à la compréhension du
+travail rendu.
+--------------------------------------------------------------------------------
+
+CAS PARTICULIER DE LA STRATEGIE HUMAIN :
+La stratégie humain dipose du nom du joueur en attribut, ainsi que d'une méthode
+permettant d'y accéder pour faciliter l'affichage d'un message d'erreur dans le
+cas où le joueur n'entre pas un entier (NumberFormatException).
+
+--------------------------------------------------------------------------------
