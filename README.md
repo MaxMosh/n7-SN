@@ -33,7 +33,8 @@
   	 		- langage C (tête de oim le C c'est le seul truc sur lequel je me sens chaud avec Télécom et TS vite fait)
 	 	  
 
-  ## Pour la 2A
+
+  ## Pour la 2A (ModIA)
     	### Pour le S7
       		#### Bien parti :
 			- EMS (on en est au prérequis)
