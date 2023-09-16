@@ -1,0 +1,25 @@
+\babel@toc {french}{}\relax 
+\babel@toc {french}{}\relax 
+\contentsline {part}{I\hspace {1em}Introduction}{2}{part.1}%
+\contentsline {part}{II\hspace {1em}Impact d'une erreur de phase porteuse}{4}{part.2}%
+\contentsline {chapter}{\numberline {1}Étude théorique}{5}{chapter.2.1}%
+\contentsline {section}{\numberline {1}Respect du critère de Nyquist}{5}{section.2.1.1}%
+\contentsline {section}{\numberline {2}Expression du signal en sortie d'échantillonneur}{6}{section.2.1.2}%
+\contentsline {section}{\numberline {3}Calcul du TEB théorique du signal avec erreur de phase}{6}{section.2.1.3}%
+\contentsline {section}{\numberline {4}Calcul de $\sigma _{I_w}^{~2}$}{7}{section.2.1.4}%
+\contentsline {section}{\numberline {5}Calcul de $E_s$}{7}{section.2.1.5}%
+\contentsline {section}{\numberline {6}Expression finale du $TEB$}{8}{section.2.1.6}%
+\contentsline {chapter}{\numberline {2}Implantation sous Matlab}{9}{chapter.2.2}%
+\contentsline {section}{\numberline {1}Implantation de la chaîne sans erreur de phase et sans bruit}{9}{section.2.2.1}%
+\contentsline {section}{\numberline {2}Implantation de la chaîne avec erreur de phase et sans bruit}{10}{section.2.2.2}%
+\contentsline {section}{\numberline {3}Implantation de la chaîne avec erreur de phase et avec bruit}{11}{section.2.2.3}%
+\contentsline {part}{III\hspace {1em}Estimation et correction de l’erreur de phase porteuse}{13}{part.3}%
+\contentsline {chapter}{\numberline {1}Implantation sous Matlab}{14}{chapter.3.1}%
+\contentsline {part}{IV\hspace {1em}Utilisation d’un codage par transition}{16}{part.4}%
+\contentsline {chapter}{\numberline {1}Étude théorique}{17}{chapter.4.1}%
+\contentsline {section}{\numberline {1}Affranchissment de l'ambiguïté de $\pi $}{17}{section.4.1.1}%
+\contentsline {section}{\numberline {2}TEB des symboles codés}{17}{section.4.1.2}%
+\contentsline {chapter}{\numberline {2}Implantation sous Matlab}{18}{chapter.4.2}%
+\contentsline {part}{V\hspace {1em}Conclusion}{20}{part.5}%
+\contentsline {section}{\numberline {1}Bilan}{21}{section.5.0.1}%
+\contentsline {chapter}{Bibliographie}{22}{chapter*.16}%
