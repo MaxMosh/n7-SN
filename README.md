@@ -5,7 +5,7 @@
   	 	  	- traitement du signal
   	 	  	- automatique (quand ça y sera lol)
   	 	  	- projet PIM (celui que j'ai fait avec Samy parce qu'il gère de fou)
-  	 	  (bon d'ailleurs tous les trucs que je mets sûrs à 100% c'est des trucs que j'ai fait avec        lui lol)
+  	 	  (bon d'ailleurs tous les trucs que je mets sûrs à 100% c'est des trucs que j'ai fait avec lui lol)
   	 	  
   		#### à 90% :
   	 	  	- statistiques (normalement les rendus sont ok++ j'avais eu une bonne note)
