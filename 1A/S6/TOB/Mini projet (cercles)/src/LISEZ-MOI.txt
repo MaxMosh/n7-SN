@@ -1,0 +1,38 @@
+Nom       : Moshfeghi
+Prénom    : Maxime
+Groupe TP : J
+
+
+Consigne :  Ci-dessous, répondre à la place des « ... ».
+
+
+=====[ Temps ]==================================================================
+
+Temps passé sur la V1 : 3 heures 0 minutes
+Temps passé sur la V2 : 2 heures 0 minutes
+Pour la V2 on ne tiendra pas compte du temps passé sur la V1.
+Bien sûr, les temps renseignés ici ne sont pas pris en compte dans la notation.
+
+
+=====[ Questions ]==============================================================
+
+Indiquer la relation UML entre Cercle et le Point centre du cercle.
+-------------------------------------------------------------------
+La relation UML entre Cercle et le Point centre du cercle est une relation de composition.
+
+
+Comment est réalisée l'exigence E18 ?
+-------------------------------------
+On définit le centre comme attribut privé de la classe cercle. Par exemple, le déplacement du point avec lequel on a construit un cercle ne doit pas provoquer le déplacement
+du centre du cercle.
+
+
+
+=====[ Explications ]===========================================================
+
+(Facultatif) Donner ici les explications supplémentaires utiles à la
+compréhension du travail rendu.
+
+...
+
+//MODIF POUR PUSH
