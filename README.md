@@ -16,6 +16,10 @@
   	 	  	- télécommunications
   	 	  	- calcul scientifique
   	 	  	- analyse de données (par contre TPs incomplets et dernière question du projet non traitée)
+  	 	  	- projet court TOB (allumettes)
+  	 	
+  	 	#### à 85% :
+  	 		- mini-projet TOB (cercles)
   	 	  
   	 	#### à 75% :
   	 	  	- internet (je parle du projet, honnêtement à part avoir mis trop de lignes dans le filtrage ce qui n'est même pas gênant en soi tout fonctionne mais bon parfois les encadrants qui évaluent sont vaches)
