@@ -9,6 +9,9 @@
   	 	  
   		#### à 90% :
   	 	  	- statistiques (normalement les rendus sont ok++ j'avais eu une bonne note)
+  	 	  	
+  	 	#### à 70% :
+  	 		- mini-projet 1 PIM (pour moi le raffinage est bon mais j'ai fait une erreur de compréhension pour le truc de la moyenne, genre j'ai mis la valeur exacte qui était écrite dans l'énoncé alors qu'il fallait l'estimer avec son programme, ce qui n'est en soit pas très compliqué)
   	 	  
   	 	  
 	### Pour le S6
