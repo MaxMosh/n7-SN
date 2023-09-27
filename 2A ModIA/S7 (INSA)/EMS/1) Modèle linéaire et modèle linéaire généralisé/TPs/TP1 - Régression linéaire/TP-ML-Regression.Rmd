@@ -1,0 +1,486 @@
+---
+title: "TP modèles linéaires - Partie 1"
+date: "4modIA - 2023-2024"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
+    number_sections: yes
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+L'objectif de ce TP est d'illustrer les notions abordées dans le chapitre de régression linéaire. 
+
+Les librairies R nécessaires pour ce TP : 
+
+```{r,echo=T, error=F,warning=F}
+library(ellipse)
+library(leaps)
+library(MASS)
+library(corrplot)
+library(glmnet)
+library(coefplot)
+library(ggplot2)  
+library(gridExtra)
+library(ggfortify)
+library(plotly)   
+library(reshape2)
+```
+
+
+
+# Introduction
+La pollution de l'air constitue actuellement une des préoccupations majeures de santé publique.
+De nombreuses études épidémiologiques ont permis de mettre en évidence l'influence sur la
+santé de certains composés chimiques comme le dioxyde souffre (SO2), le dioxyde d'azote
+(NO2), l'ozone (O3) ou des particules en suspension. Des associations de surveillance de la
+qualité de l'air (Air Breizh en Bretagne depuis 1994) existent sur tout le territoire métropolitain et mesurent la concentration des polluants. Elles enregistrent également les conditions
+météorologiques comme la température, la nébulosité, le vent, les chutes de pluie en relation avec
+les services de Météo France... L'une des missions de ces associations est de construire des
+modèles de prévision de la concentration en ozone du lendemain à partir des données disponibles
+du jour : observations et prévisions de Météo France. Plus précisément, il s'agit d'anticiper
+l'occurrence ou non d'un dépassement légal du pic d'ozone (180 $\mu$gr/m3) le lendemain afin
+d'aider les services préfectoraux à prendre les décisions nécessaires de prévention : confinement
+des personnes à risque, limitation du trafic routier. Plus modestement, l'objectif de cette étude est
+de mettre en évidence l'influence de certains paramètres sur la concentration d'ozone (en
+$\mu$gr/m3) et différentes variables observées ou leur prévision. Les 112 données étudiées ont
+été recueillies à Rennes durant l'été 2001. 
+
+Les 13 variables observées sont :
+
++ maxO3 : Maximum de concentration d'ozone observé sur la journée en $\mu$gr/m3
++ T9, T12, T15 : Température observée à 9, 12 et 15h
++ Ne9, Ne12, Ne15 : Nébulosité observée à 9, 12 et 15h
++ Vx9, Vx12, Vx15 : Composante E-O du vent à 9, 12 et 15h
++ maxO3v : Teneur maximum en ozone observée la veille
++ vent : orientation du vent à 12h
++ pluie : occurrence ou non de précipitations
+
+Les données sont disponibles sur la page moodle du cours. Pour les importer, vous pouvez utiliser la commande suivante :
+
+```{r}
+ozone = read.table("Ozone.txt")
+```
+
+Afin de vous familiariser avec les données, faites dans un premier temps une analyse de statistique descriptive. Vous pouvez utiliser les fonctions `summary()`, `boxplot()`, `pairs()`, `barplot()`, `corrplot()`, ....
+
+
+```{r}
+# A COMPLETER - Faire des stat descriptives des données
+ozone$vent = as.factor(ozone$vent)
+ozone$pluie = as.factor(ozone$pluie)
+summary(ozone)
+boxplot(ozone)
+pairs(ozone)
+barplot(cor(ozone[, 1:11]), method = "ellipse")    #?
+```
+
+```{r}
+corrplot
+
+# On remarque alors que les variables semblent pour certains blocs très corrélés. On verra donc si on peut peut-être exprimer un sous-modèle (ne prenant par exemple en variables qu'un seul T_i, Ne_i, Vx_i)
+```
+
+
+# Régression linéaire simple
+Dans cette section, nous souhaitons expliquer la concentration d'ozone maximale de la journée (maxO3) en fonction de la température à 12h (T12). 
+
+1. Représentez le nuage de points $(x_i,y_i)$ à l'aide de la fonction `plot()` (ou `geom_point()` de *ggplot2*).
+
+```{r}
+# A completer
+plot(ozone$T12, ozone$maxO3)
+
+#ggplot(ozone, aes(x = T12, y = max)) # A FINIR
+```
+
+<!--  version ggplot -->
+```{r,echo=F,eval=T}
+ggplot(ozone,aes(x=T12,y=maxO3))+
+  geom_point()
+```
+
+Question : Pensez-vous que l'ajustement d'un modèle de régression linéaire
+$y_i = \theta_0+\theta_1 x_i +\varepsilon_i$ est justifié graphiquement?
+
+Réponse : ...
+On remarque que les points semblent globalement distribués autour d'une droite, que l'on peut effectivement modéliser par $y_i = \theta_0+\theta_1 x_i +\varepsilon_i$.
+
+2. Effectuez la régression linéaire à l'aide de la fonction `lm()` et exploitez les résultats. 
+
+```{r, eval=T}
+reg.simple = lm(maxO3 ~ T12, data = ozone)  # COMPLETE
+summary(reg.simple)
+```
+
+Interprétation : .....
+17.57 est la $\sigma^{chapeau}^2$, $110 = n - 2$ ($k = 2$)
+On récupère bien de l'information au travers de T12, (on rejette $\mathcal{H_0}$).
+
+Que contiennent les sorties suivantes : 
+
+```{r, eval=T}
+reg.simple$coefficients  
+reg.simple$residuals
+```
+
+Réponse : ...
+Première commande : $\hat{\theta}^{obs}$
+Deuxième commande : $\hat{\varepsilon}_{i}^{obs}$
+On peut obtenur les $\hat{Y}_{i}^{obs}$ avec :
+
+```{r}
+reg.simple$fitted.values
+```
+
+3. A l'aide des commandes suivantes, tracez l'estimation de la droite de régression sur le nuage de points ainsi qu'un intervalle de confiance à $95\%$ de celle-ci :
+
+```{r}
+ggplot(ozone, aes(T12, maxO3))+
+    geom_point() +
+    geom_smooth(method=lm, se=TRUE)+
+    xlab("T12")+  ylab("maxO3")
+```
+
+<!--  Version plot -->
+
+```{r,echo=F,eval=T}
+plot(maxO3~T12,data=ozone,pch=20)
+abline(reg.simple)
+T12=seq(min(ozone[,"T12"]),max(ozone[,"T12"]),
+ length=100)
+grillex<-data.frame(T12)
+ICdte<-predict(reg.simple,new=grillex,
+              interval="confidence",level=0.95)
+matlines(grillex$T12,cbind(ICdte),lty=c(1,2,2),
+                           col="red")
+```
+REM : on a $IC_{1 - \alpha = 0,95}(X_0\theta) = [X_0\hat{\theta} + ou - t_{0,975}\sqrt{\hat{\sigma}^{2}X_0(X'X)^{-1}X_0'}]$
+
+
+Ce graphique permet visuellement de vérifier l'ajustement des données au modèle de régression linéaire. Que remarquez-vous?
+
+4. A l'aide de la commande suivante, étudiez les résidus 
+
+```{r,eval=T}
+autoplot(reg.simple,which=c(1,2,4),label.size=2)     
+```
+
+On prendra soin de comprendre les différents graphiques obtenus.
+
+REM :
+Sur le premier graphe qui représente les $\varepsilon^{chapeau}_i$ en fonction de ??, on observe que les erreurs sont globalement distribuées autour de 0. On voit aussi les numéro des individus sortant un peu trop de la tendance. Une idée pourrait donc de les supprimer et de refaire l'observation.
+
+Le deuxième graphe représentes les quantiles standardisés en fonctions des quantiles théoriques. L'allure linéaire de ce graphe nous permet de dire que le modèle gaussien semblent donc convenir.
+
+5. On s'intéresse maintenant à la qualité de prédiction du modèle. On va donc tracer un intervalle de confiance des prédictions à $95\%$ avec les commandes suivantes. Commentez. 
+
+```{r,eval=T}
+temp_var = predict(reg.simple, 
+                  interval="prediction")
+new_df = cbind(ozone, temp_var)
+ggplot(new_df, aes(T12, maxO3))+
+    geom_point() +
+    geom_line(aes(y=lwr), color = "red", 
+                       linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", 
+                       linetype = "dashed")+
+    geom_smooth(method=lm, se=TRUE)+
+    xlab("T12")+  
+    ylab("maxO3")
+```
+
+<!--  version en plot -->
+
+```{r,eval=T,echo=F}
+plot(maxO3~T12,data=ozone,pch=20)
+ICprev<-predict(reg.simple,new=grillex,
+                   interval="pred",level=0.95)
+matlines(grillex$T12,cbind(ICprev),lty=c(1,2,2),
+                          col="blue")
+```
+REM : Commentaires :
+On a : $IC_{1 - \alpha = 0,95}(X_0\theta) = [X_0\hat{\theta} + ou - t_{0,975}\sqrt{\sigma^{2}(1 + X_0(X'X)^{-1}X_0')}]$
+
+
+6. On va maintenant s'intéresser à la construction d'intervalles de confiance pour $\theta_0$ et $\theta_1$ à $95\%$.\
+A l'aide de la fonction `confint()`, construisez un intervalle de confiance pour chaque paramètre séparément. 
+
+
+Ici, A COMPLETER
+```{r}
+# A COMPLETER
+IC = confint(reg.simple)
+print(IC)
+```
+
+Pour tenir compte de la dépendance entre $\theta_0$ et $\theta_1$, on peut aussi construire une région de confiance pour le vecteur $\theta=(\theta_0,\theta_1)'$ grâce aux commandes suivantes. Comparez les résultats. 
+
+Ici, il faut suivre la construction d'une région de confiance pour $ C\theta$ avec $C=I_2$ ici.
+
+```{r, eval=T}
+df1 = as.data.frame(
+             rbind(coefficients(reg.simple),
+             ellipse(reg.simple,level=0.95)))
+colnames(df1) = c("intp", "slope")
+ggplot(data=df1[-1,],aes(x=intp, y=slope))+
+  geom_path()+
+  annotate("rect",xmin=IC[1,1],xmax=IC[1,2],
+  ymin=IC[2,1],ymax=IC[2,2],fill="red",alpha=0.1)+
+  geom_point(data=df1[1,], aes(x=intp, y=slope), 
+               pch=3)
+```
+
+# Régression linéaire multiple
+
+Dans cette partie, nous souhaitons analyser la relation entre le maximum journalier de la concentration d'ozone (maxO3) et 
+
++ la température à différentes heures de la journée (T9, T12, T15),
++ la nébulosité à différentes heures de la journée (Ne9, Ne12, Ne15),
++ la projection du vent sur l'axe Est-Ouest à différentes heures de la journée (Vx9, Vx12,Vx15), 
++ la concentration maximale d'ozone de la veille (maxO3v)
+
+On va donc utiliser le sous-jeu de données suivant 
+```{r}
+ozone1 = ozone[,1:11]
+```
+
+et mettre en place un modèle de régression linéaire multiple.
+
+1. Faites une analyse descriptive de ce jeu de données.
+```{r}
+# A COMPLETER
+```
+
+2. Rappelez l'écriture mathématique du modèle de régression linéaire multiple.
+$$
+Y_i = \theta_0 + \sum_{j=1}^{10}\theta_jx_i^{j} + \varepsilon_i ~ \text{avec} ~ \varepsilon_1,...,\varepsilon_n ~ \text{i.i.d} ~ \mathcal{N}(0,\sigma^2)
+$$
+avec $X \in \mathcal{M}_{n,k}(\mathbb{R})$, $\theta \in \mathcal{M}_{k,1}(\mathbb{R})$ (partie déterministe) et $\varepsilon \sim \mathcal{N}_n(0, \sigma^2)$
+
+
+3. Ajustez un modèle de régression linéaire multiple à l'aide de la commande `lm()` et commentez les résultats (on appelle reg.mul la sortie de R dans la suite).
+
+```{r,eval=T}
+reg.mul = lm( maxO3 ~ ., data = ozone1 ) # COMPLETE
+resume.mul = summary(reg.mul)
+summary(reg.mul)
+```
+
+4. Etudiez les résidus 
+
+```{r}
+# COMPLETER
+autoplot(reg.mul,which=c(1,2),label.size=2)
+```
+REM : Sur le premier graphe, on observe que la moyenne des $\hat{\varepsilon}_i$ est distribuée autour de 0 et que la variance est globalement toujours la même (les $\hat{\varepsilon}_i$ sont de même loi). Sur le deuxième graphique, on voit que les points suivent la bissectrice, on a donc bien des lois normales.
+
+
+# Sélection de variables
+
+Dans le `summary(reg.mul)`, un test est fait sur chaque coefficient. Il revient à tester que la variable n'apporte pas d'information supplémentaire sachant que toutes les autres variables sont dans le modèle. Il est donc préférable d'utiliser des procédures de choix de modèles pour sélectionner les variables significatives. On va ici comparer la sélection de variable obtenue par différents critères: BIC,  AIC, $R^2$ ajusté, Cp de Mallows. Pour cela, vous pouvez utiliser la fonction  `regsubsets()` de la librairie *leaps* et la fonction `stepAIC()` de la librairie *MASS*. 
+Commentez les résultats obtenus avec les différents critères, vous pourrez vous aider des commandes suivantes :
+
+```{r,eval=T}
+choix = regsubsets(maxO3 ~ ., data = ozone1, nbest = 1, nvmax = 11, method = "backward") # COMPLETE
+plot(choix, scale = "Cp")
+# A COMPLETER
+```
+```{r,eval=T}
+plot(choix, scale = "adjr2")
+```
+```{r,eval=T}
+plot(choix, scale = "bic")
+```
+```{r,eval=T}
+stepAIC(reg.mul)
+```
+
+Avec le critère BIC, nous retenons 4 variables : T12, Ne9, Vx9 et maxO3v. \
+A l'aide des commandes suivantes, testez le sous-modèle avec les 4 variables retenues par BIC contre le modèle complet. Commentez.
+
+```{r,eval=T}
+reg.fin=lm(maxO3~T12+Ne9+Vx9+maxO3v,data=ozone1)
+summary(reg.fin)
+```
+```{r,eval=T}
+anova(reg.fin,reg.mul)
+```
+On ne rejette pas $\mathcal{H_0}$ car la pvaleur vaut $\simeq 0,99$. On valide effectivement le sous-modèle avec un test de Ficher. On retrouve que $SSR = 20827$ et $SSR_0 = 20970$.
+
+$SSR_0 - SSR = 143,01$. On a $k = 11$ (donc $n - k = 112 - 11 = 101$) et $k_0 = 5$ (donc $n - k_0 = 112 - 5 = 107$), $k - k_0 = 11 - 5 = 6$. La pvaleur valant 0,99 ... pasfini
+
+# Régressions régularisées
+
+On commence par centrer et réduire les données avant de mettre en place et comparer des méthodes de régression régularisées. 
+
+```{r}
+tildeY=scale(ozone1[,1],center=T,scale=T)
+tildeX=scale(ozone1[,-1],center=T,scale=T)
+```
+
+
+## Régression Ridge
+
+1. A l'aide de la fonction `glmnet()`, ajustez une régression ridge en faisant varier $\lambda$ sur une grille. On stockera le résultat dans la variable `fitridge`. Explorez le contenu de `fitridge`.  
+
+```{r,eval=T}
+lambda_seq<-10^(seq(-4,4,0.01))
+fitridge <- glmnet(tildeX, tildeY, alpha = 0, lambda = lambda_seq, family = c("gaussian"), intercept = F) # COMPLETE
+summary(fitridge)
+```
+
+2. Tracez les chemins de régularisation de chaque variable et commentez. 
+
+```{r,eval=T}
+df=data.frame(lambda = rep(fitridge$lambda,ncol(tildeX)), theta=as.vector(t(fitridge$beta)),variable=rep(colnames(tildeX),each=length(fitridge$lambda)))
+g1 = ggplot(df,aes(x=lambda,y=theta,col=variable))+
+  geom_line()+
+  theme(legend.position="bottom")+
+  scale_x_log10()
+ggplotly(g1)
+```
+
+La régression Ridge a tendance à rassembler les variables fortement liées (on peut le voir en ne laissant apparaître que les courbes des Ne_i par exemple)
+
+3. A l'aide de la fonction `cv.glmnet()` mettez en place une validation croisée pour sélectionner le "meilleur" $\lambda$ par MSE.   
+
+```{r, eval=T}
+ridge_cv <- cv.glmnet(tildeX, tildeY, alpha = 0, lambda = lambda_seq, nfolds = 10, type.measure = c("mse"), intercept = F) # COMPLETE
+best_lambda <- ridge_cv$lambda.min
+```
+
+```{r,eval=T}
+df2=data.frame(lambda=ridge_cv$lambda,MSE=ridge_cv$cvm,cvup=ridge_cv$cvup,cvlo=ridge_cv$cvlo)
+gmse<-ggplot(df2)+
+  geom_line(aes(x=lambda,y=MSE))+
+  geom_vline(xintercept = ridge_cv$lambda.min,col="red",linetype="dotted")+
+  geom_line(aes(x=lambda,y=cvup),col="blue",linetype="dotted")+
+  geom_line(aes(x=lambda,y=cvlo),col="blue",linetype="dotted")+
+  #xlim(c(0,ridge_cv$lambda.min+0.5))+
+  scale_x_log10()
+ggplotly(gmse)
+```
+
+La valeur de $\lambda$ sélectionnée vaut .... $2,51 \times 10^{-1}$
+
+```{r,eval=T}
+g1=g1 + 
+  geom_vline(xintercept = best_lambda,linetype="dotted", color = "red")+
+  scale_x_log10()
+g1
+```
+
+## Régression Lasso
+
+1. A l'aide de la fonction `glmnet()`, ajustez une régression Lasso en faisant varier $\lambda$ sur une grille. On stockera le résultat dans la variable `fitlasso`. Explorez le contenu de `fitlasso`. 
+
+```{r,eval=T}
+fitlasso <- glmnet(tildeX, tildeY, alpha = 1, lambda = lambda_seq, nfolds = 10, type.measure = c("mse"), intercept = F) # A COMPLETER
+summary(fitlasso)
+```
+
+2. Tracez le chemin de régularisation de chacune des variables et commentez
+
+```{r,eval=T}
+df=data.frame(lambda = rep(fitlasso$lambda,ncol(tildeX)), theta=as.vector(t(fitlasso$beta)),variable=rep(colnames(tildeX),each=length(fitlasso$lambda)))
+g3 = ggplot(df,aes(x=lambda,y=theta,col=variable))+
+  geom_line()+
+  theme(legend.position="bottom")+
+  scale_x_log10()
+ggplotly(g3)
+```
+
+3. A l'aide de la fonction `cv.glmnet()` mettez en place une validation croisée pour sélectionner le "meilleur" $\lambda$ par MSE. En pratique, il est préconisé d'utilisé `lambda.1se` (la plus grande valeur de $\lambda$ telle que l'erreur standard se situe à moins de 1 de celle du minimum).  
+
+```{r,eval=T}
+lasso_cv <- cv.glmnet(tildeX, tildeY, alpha = 1, lambda = lambda_seq, nfolds = 10, type.measure = c("mse"), intercept = F) # COMPLETE
+best_lambda <-lasso_cv$lambda.min
+lambda1se <- lasso_cv$lambda.1se
+```
+
+La valeur de $\lambda$ sélectionnée vaut .... 
+
+```{r,eval=T}
+g3=g3 + 
+  geom_vline(xintercept = best_lambda,linetype="dotted", color = "red")+
+  geom_vline(xintercept = lambda1se,linetype="dotted", color = "blue")+
+  scale_x_log10()
+g3
+
+#AJOUT 
+
+```
+
+4. Quelle sélection de variables obtient-on alors ?
+
+Vous pouvez utiliser la fonction `extract.coef()` de la librairie `coefplot`
+
+```{r}
+# avec lambda.min
+extract.coef(lasso_cv, lambda = "lambda.min")   # COMPLETE
+```
+
+```{r}
+# avec lambda.lse
+extract.coef(lasso_cv, lambda = "lambda.1se")   # COMPLETE
+```
+
+## Régression Elastic Net
+
+1. Reprenez les questions précédentes pour ajuster une régression Elastic Net
+
+```{r,eval=T}
+fitEN <- glmnet(tildeX, tildeY, alpha = 0.5, lambda = lambda_seq, nfolds = 10, type.measure = c("mse"), intercept = F)
+df=data.frame(lambda = rep(fitEN$lambda,ncol(tildeX)), theta=as.vector(t(fitEN$beta)),variable=rep(c(colnames(tildeX)),each=length(fitEN$lambda)))
+g4 = ggplot(df,aes(x=lambda,y=theta,col=variable))+
+  geom_line()+
+  theme(legend.position="bottom")+
+  scale_x_log10()
+```
+
+```{r,eval=T}
+EN_cv <- cv.glmnet(tildeX, tildeY, alpha = 1, lambda = lambda_seq, nfolds = 10, type.measure = c("mse"), intercept = F) # A COMPLETER
+best_lambda <-EN_cv$lambda.min
+g4=g4 + geom_vline(xintercept = best_lambda,linetype="dotted", 
+                color = "red")
+ggplotly(g4)
+```
+
+
+2. Comparez les coefficients obtenus avec la régression linéaire, la régression ridge, la régression Lasso et la régression ElasticNet
+
+```{r ,eval=F,echo=F}
+regusuel=lm(...)  # A COMPLETER
+df4=data.frame(x=rep(colnames(tildeX),4),
+               coef=c(as.vector(regusuel$coefficients),as.vector(coef(ridge_cv,s=ridge_cv$lambda.min)[-1]),as.vector(coef(lasso_cv)[-1]),as.vector(coef(EN_cv)[-1])),
+               reg=c(rep("reg.lin",ncol(tildeX)),rep("ridge",ncol(tildeX)),rep("lasso",ncol(tildeX)),rep("ElasticNet",ncol(tildeX))))
+
+g5=ggplot(df4)+
+  geom_point(aes(x=x,y=coef,col=reg))
+g5
+```
