@@ -1,0 +1,239 @@
+---
+title: "Projet_EMS"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-09-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,echo=F, error=F,warning=F}
+library(corrplot)
+library(tidyverse)
+library(gridExtra)
+library(reshape2)
+library(ggplot2)
+library(FactoMineR)
+```
+# Statistiques descriptives
+
+Le jeu de données comprend $984$ mesures des emissions de polluants atmosphériques tous secteurs d’activités confondues des EPCI (Etablissements Publics de Coopération Intercommunale) de la région Occitanie de 2014 à 2019.
+
+Chaque mesure est décrite par les variables qualitatives suivantes :
++ *lib_epci* : son nom
++ *code_epci* : son code d’identification
++ *nomdepart* : son (ses) département(s) d’appartenance
++ *TypeEPCI* : CC (communauté de commune), CA (communauté d’agglomération), Métrople
+et CU (communauté urbaine)
++ *annee_inv* : l'année de mesure
+
+Et par les variables quantitatives suivantes : 
++ *nox_kg* : oxyde d’azote en kg
++ *so2_kg* : oxyde de soufre en kg
++ *pm10_kg* : particules en suspension dans l’air de diamètre inférieur à 10 µm
++ *pm25_kg* : particules en suspension dans l’air de diamètre inférieur à 2.5 µm
++ *co_kg* : monoxyde de carbone
++ *c6h6_kg* : benzène
++ *nh3_kg* : Ammoniac
++ *ges_teqco2* : gaz à effet de serre
++ *ch4_t* : méthane
++ *co2_t* : dioxyde de carbone
++ *n2o_t* : protoxyde d’azote
++ *latit* : sa latitude
++ *longit* : sa longitude
+
+```{r}
+Data = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
+```
+
+```{r}
+head(Data)
+```
+
+```{r, echo = FALSE}
+Data$TypeEPCI=as.factor(Data$TypeEPCI)
+Data$annee_inv=as.factor(Data$annee_inv)
+Data$nomdepart=as.factor(Data$nomdepart)
+Data$lib_epci=as.factor(Data$lib_epci)
+Data$Ardèche = as.factor(Data$Ardèche)
+Data$Ariège = as.factor(Data$Ariège)
+Data$Aude = as.factor(Data$Aude)
+Data$Aveyron = as.factor(Data$Aveyron)
+Data$Gard = as.factor(Data$Gard)
+Data$Haute.Garonne = as.factor(Data$Haute.Garonne)
+Data$Gers = as.factor(Data$Gers)
+Data$Hérault = as.factor(Data$Hérault)
+Data$Landes = as.factor(Data$Landes)
+Data$Lot = as.factor(Data$Lot)
+Data$Lot.et.Garonne = as.factor(Data$Lot.et.Garonne)
+Data$Lozère = as.factor(Data$Lozère)
+Data$Pyrénées.Atlantiques = as.factor(Data$Pyrénées.Atlantiques)
+Data$Hautes.Pyrénées = as.factor(Data$Hautes.Pyrénées)
+Data$Pyrénées.Orientales = as.factor(Data$Pyrénées.Orientales)
+Data$Tarn = as.factor(Data$Tarn)
+Data$Tarn.et.Garonne = as.factor(Data$Tarn.et.Garonne)
+Data$Vaucluse = as.factor(Data$Vaucluse)
+```
+
+```{r, echo = FALSE}
+summary(Data)
+```
+```{r}
+attributes(Data)
+```
+```{r str}
+str(Data)
+```
+## Analyse unidimentionnelle
+```{r}
+Datalog = log(Data[,4:14]) #à justifier
+head(Datalog)
+```
+
+###Quantitative
+```{r}
+library(reshape2)
+ggplot(melt(Datalog),aes(x=variable,y=value))+geom_boxplot()
+```
+
+
+###Qualitative
+```{r}
+barplot(table(Data$TypeEPCI))
+```
+
+
+
+```{r}
+barplot(table(Data$annee_inv))
+```
+```{r}
+plot(ecdf(Datalog$so2_kg)) #,xlim = c(320,400)
+```
+# PCA
+On fait une ACP. lol xD 
+```{r}
+Datalog = Data[1:16]
+Datalog[,4:14] = log(Datalog[,4:14])
+
+ACPpolluants <- PCA(Datalog, scale.unit = TRUE, ncp = 11, quali.sup = c(1,2,3,15,16), graph = FALSE)  # Utilisation de scale.unit = TRUE pour standardiser les données.
+
+plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.1, legends = NULL)  #
+
+#plot.PCA(ACPpolluants, invisible = "quali", habillage = 2, legends = c("ind"))
+
+#dist_to_center <- apply(ACPpolluants$ind$coord, 1, function(x) sum(x^2))
+
+# Identifier les individus considérés comme des outliers (par exemple, les individus au-delà du seuil de 95e percentile)
+#outlier_threshold <- quantile(dist_to_center, 1-12/985) #On garde les 12 valeurs abberantes on identifie 2 outliers
+#outliers <- which(dist_to_center > outlier_threshold)
+
+```
+
+```{r}
+layout(matrix(1:2,1,2))
+plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.1, legends = NULL) 
+plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 3, cex = 0.1, legends = NULL)  #
+
+```
+
+```{r}
+layout(matrix(1:2,1,2))
+barplot(ACPpolluants$eig[,"cumulative percentage of variance"],names.arg=paste("Dim",1:11,sep="."))
+abline(a = 90, b=0, col="red", lty=2, lwd=3)
+barplot(ACPpolluants$eig[,"percentage of variance"], names.arg=paste("Dim",1:11,sep="."))
+```
+
+
+
+```{r}
+Datalog = Data[1:16]
+Datalog[,4:14] = log(Datalog[,4:14])
+Data_final <- subset(Datalog, lib_epci != "Toulouse Métropole") #, "CC Pays de Nay"))
+Data_final <- subset(Data_final, lib_epci != "CC Pays de Nay")
+
+print(nrow(Data_final))
+```
+
+```{r}
+ggplot(melt(Data_final[4:14]),aes(x=variable,y=value))+geom_boxplot()
+```
+```{r}
+ACPpolluants <- PCA(Data_final, scale.unit = TRUE, ncp = 3, quali.sup = c(1,2,3,15,16), graph = FALSE)  # Utilisation de scale.unit = TRUE pour standardiser les données.
+# on degage la dimension 3
+plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.1, legends = NULL) 
+plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 3, cex = 0.1, legends = NULL) 
+
+plot(ACPpolluants, choix="var",invisible = "quali", habillage = 15, legends = NULL, axes =c(1,2)) 
+plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.3, legends = NULL, axes =c(1,3)) 
+
+
+
+```
+```{r}
+f1 = fviz_contrib(ACPpolluants, choice="var", axes=1, color = "black" ,fill="turquoise4")
+f2 = fviz_contrib(ACPpolluants, choice="var", axes=2, color ="black", fill = "#3EBB00")
+f3 = fviz_contrib(ACPpolluants, choice="var", axes=3, color ="black", fill = "#E6E600")
+plot_grid(f1,f2,f3)
+```
+
+
+```{r}
+
+```
+
+```{r}
+ACPpolluants$var
+```
+
+```{r}
+ggplot(Datalog,aes(x=annee_inv))+
+  geom_bar()
+```
+
+```{r}
+corrplot(cor(Data_final[4:14]), method="ellipse")
+```
+
+
+Test rien à voir avec le sujet
+```{r}
+plot(Data$nox_kg, type = "l")
+plot(log(Data$nox_kg), type = "l")
+```
+```{r}
+ggplot(Data, aes(nox_kg)) + 
+  stat_ecdf(geom = "step")+xlab("Variable Alcool")+
+  ylab("")+ggtitle("Fonction de répartition empirique")+
+  geom_hline(yintercept=0, linetype="dashed")+geom_hline(yintercept=1, linetype="dashed")
+
+ggplot(Datalog, aes(nox_kg)) + 
+  stat_ecdf(geom = "step")+xlab("Variable Alcool")+
+  ylab("")+ggtitle("Fonction de répartition empirique")+
+  geom_hline(yintercept=0, linetype="dashed")+geom_hline(yintercept=1, linetype="dashed")
+```
+```{r}
+g1<-ggplot(Data,aes(x=nox_kg))+geom_histogram(bins=15,color="black", fill="white")+
+  ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
+g2<-ggplot(Datalog,aes(x=nox_kg))+geom_histogram(bins=15,color="black", fill="white")+
+  ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
+grid.arrange(g1,g2,ncol=2)
+```
+
+
+Clustering
+
+```{r}
+Data_poll = Data[,4:14]
+
+Data_poll
+
+reskmeans<-kmeans(scale(Datalog[,4:14]), 7, nstart = 5)
+
+table(reskmeans$cluster)
+
+fviz_cluster(reskmeans,data=Datalog[,4:14],type="norm",labelsize=0)
+```
