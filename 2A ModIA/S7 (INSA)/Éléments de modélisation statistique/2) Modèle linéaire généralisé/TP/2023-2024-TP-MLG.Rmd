@@ -1,0 +1,551 @@
+---
+title: "TP modèles linéaires généralisés"
+date : "4modIA - 2023-2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth : 4
+    number_sections : true
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+Ce TP a pour but la révision des notions vues en modèle linéaire généralisé. Je vous invite à écrire les modèles, les tests, ... mis en oeuvre tout le long du TP. \
+Ce TP nécessite les librairies R suivantes : 
+
+```{r}
+library(bestglm)
+library(ggfortify)
+library(ggplot2)
+library(gridExtra)
+library(VGAM)
+library(pROC)
+library(MASS)
+```
+
+Pour pouvoir compiler votre travail en fichier .html, pensez à enlever au fur et à mesure les balises "eval=F". 
+
+# Régression logistique
+
+Dans cette section, nous allons nous intéresser au jeu de données `SAheart` disponible dans la librairie **bestglm**. On souhaite expliquer la présence/absence d'une maladie cardiovasculaire (*chd*) en fonction de 9 variables et on dispose pour cela d'un échantillon de $n=462$ individus. 
+
+```{r}
+data(SAheart)
+SAheart$chd<-as.factor(SAheart$chd)
+```
+
+##  Statistiques descriptives
+
+Dans un premier temps, lisez la description des données disponible dans l'aide de R (tapez `? SAheart` dans la console). Faites une étude de statistique descriptive pour vous familiariser avec le jeu de données. 
+
+```{r}
+# A COMPLETER
+head(SAheart)
+quantitatives_SAheart <- SAheart[sapply(SAheart,is.numeric)]
+boxplot(quantitatives_SAheart)
+# Ajouter des barplot pour les variables qualitatives
+```
+
+## Etude de *chd* en fonction de la variable *ldl* 
+
+**Question 1.** Proposez un modèle pour expliquer *chd* en fonction de *ldl* et programmez-le à l'aide de la fonction `glm()` 
+
+
+
+$chd_i \sim B(\pi_i)$
+$chd_1,...,chd_n ~ \text{indépendants}$
+$\text{logit}(\pi_i)=\ln(\cfrac{\pi_i}{1 - \pi_i})=\theta_0 + \theta_1 ldl_i$
+
+
+
+```{r,eval=F}
+chd_ldl = glm(formula = chd ~ ldl, data = SAheart, family = binomial(link = "logit")) # préciser "(link = "logit")" est apparemment inutile
+summary(chd_ldl)
+```
+
+**Question 2.** A l'aide des sorties de `chd_ldl`, calculez le pseudoR2 associé à ce modèle et commentez.  
+
+$\text{pseudoR}^2 = 1 - \cfrac{\mathcal{D}(M)}{\mathcal{D}(M_0)}$
+
+```{r,eval=F}
+pseudoR2 = 1 - chd_ldl$deviance/chd_ldl$null.deviance
+pseudoR2
+```
+
+**Question 3.** Testez la nullité de chacun des paramètres dans ce modèle par deux méthodes différentes et concluez à l'aide des sorties de R. Vous pouvez utiliser la fonction `anova()` avec l'option `test="Chisq"`. 
+
+```{r}
+# A COMPLETER
+anova(glm(chd ~ 1, data = SAheart, family="binomial"),chd_ldl, test="Chisq")
+```
+
+**Question 4.** Construisez un intervalle de confiance au niveau de confiance de $95\%$ pour les paramètres de ce modèle et 
+programmez-les à l'aide des fonctions `confint()` et `confint.default()`. 
+
+Intervalle de confiance par Wald : $\cfrac{(\hat{\theta_j} - \theta_j)}{\sqrt{[\mathcal{I_n}(\hat{\theta})}]_{jj}}$
+
+```{r}
+# A COMPLETER
+confint.default(chd_ldl)
+```
+
+**Question 5.** Interprétez le paramètre associé à la variable *ldl* à l'aide d'odds et/ou d'odds ratio.
+
+
+$\text{OR}(x,\tilde{x}) = \cfrac{\text{odds}(\text{ldl} +1)}{\text{odds}(\text{ldl})} = \cfrac{e^{\theta_0 + \theta_1[\text{ldl} + 1]}}{e^{\theta_0 + \theta_1\text{ldl}}} = e^{\theta_1} $
+
+A.N : $e^{\hat{\theta_1}^{\text{obs}}} $
+
+Le rapport de chance d'avoir un cancer pour un homme est multiplié par 1.3.
+
+**Question 6.** Que permettent d'obtenir les deux commandes suivantes ?
+
+```{r,eval=F}
+predict(chd_ldl,newdata=data.frame(ldl=4.75),type="response")
+predict(chd_ldl,newdata=data.frame(ldl=4.75),type="link")
+```
+
+\[
+\begin{cases}
+    \hat{\theta}  \text{ MV de } \theta \\
+    X_0 = \pmatrix{1 ~ , ~ 4.75}
+\end{cases}
+\]
+
+**Question 7.** Déterminez les valeurs ajustées à l'aide de la fonction `predict()`. Comparez les valeurs ajustées avec les vraies valeurs de *chd* par une table de contingence (vous pouvez utiliser la fonction `table()`).\ 
+
+Vous pouvez visualiser les résultats à l'aide des commandes suivantes :
+
+```{r,eval=F}
+pihat<-predict(chd_ldl,type="response")
+df1<-data.frame(ldl=SAheart$ldl,pihat=pihat,
+         Yihat= as.numeric(pihat > 0.5) ,
+         Yi=as.numeric(SAheart$chd)-1)
+
+ggplot(df1)+
+geom_point(aes(x=ldl,y=Yihat),col="blue")+
+geom_smooth(aes(x=ldl,y=pihat),col="black")+
+geom_point(aes(x=ldl,y=Yi),col="red",shape=0)+
+xlab("ldl")+
+ylab("pi / Yhat / Y")	
+```
+
+## Etude de *chd* en fonction de la variable *famhist*
+
+**Question 1.** Proposez un modèle pour expliquer *chd* en fonction de *famhist* et programmez-le à l'aide de la fonction `glm()`.
+
+```{r,eval=F}
+chd_famhist = glm(formula = chd ~ famhist, data = SAheart, family = binomial)
+summary(chd_famhist)
+```
+
+**Question 2.** Que remarquez-vous sur  l'estimation des paramètres ? Quel est l'impact sur les prédictions ? 
+
+
+$chd_i \sim B(\pi_i)$
+$chd_1,...,chd_n ~ \text{indépendants}$
+$\text{logit}(\pi_i)=\ln(\cfrac{\pi_i}{1 - \pi_i})=\theta_0 + \theta_1 \mathbf{1}_{\text{famhist}_i = "\text{Present}"} $
+
+voir photo pour la suite
+
+
+**Question 3.** Calculez l'odds ratio associé à la variable `famhist` et interprétez. 
+
+
+## Etude de *chd* en fonction de toutes les variables explicatives
+
+**Question 1.** Ajustez un modèle de régression logistique multiple additif à l'aide de la fonction `glm()`. 
+```{r,eval=F}
+modellogit=glm(chd ~ .,data = SAheart, family = "binomial")
+summary(modellogit)
+```
+
+
+**Question 2.** Comparez les différentes procédures de sélection de variables mises en place par le code suivant :
+
+```{r,eval=F}
+bestglm(SAheart,family=binomial,IC="AIC")
+bestglm(SAheart,family=binomial,IC="BIC")
+step.backward = step(modellogit)
+step.backward = step(modellogit, direction="backward",k=log(nrow(SAheart)))
+```
+
+**Question 3.** Ajustez le modèle retenu par les méthodes de la question précédente 
+
+```{r,eval=F}
+modelbest = glm(chd ~ ldl + typea + tobacco + famhist + age, data = SAheart, family = "binomial")
+```
+
+**Question 4.** Faites un test de sous-modèle entre *modelbest* et *modellogit* pour conforter l'étude de sélection de variables précédente à l'aide de la commande `anova()`.
+
+```{r,eval=F}
+anova(modelbest,modellogit, test = "Chisq")
+
+# On peut aussi mettre "test = "LRT"" mais cela donne la même sortie ici
+```
+
+**Question 5.** Comment s'interprètent les différents coefficients de *modelbest* ?
+
+```{r,eval=F}
+exp(modelbest$coefficients)
+```
+
+Pour l'interprétation des paramètres, il faut considérer des odds-ratio, attention entre variables qualitatives et quantitatives.
+	
+**Question 6.** Ajustez le modèle complet avec interaction
+
+```{r,eval=F}
+modellogitinter = glm(chd~(.)^2, data = SAheart, family= binomial(link = "logit"))
+summary(modellogitinter)
+```
+
+**Question 7.** Faites une sélection de variables pour déterminer un sous-modèle (appelé *modelbestinter* par la suite) à partir du modèle complet avec interaction.  
+```{r}
+# Procédures de sélection de variables
+# A COMPLETER
+modelbestinter = step(modellogitinter, trace = F)
+summary(modelbestinter)
+```
+
+```{r,eval=F}
+# Modèle retenu
+modelbestinter = glm(formula = chd ~ tobacco + ldl + adiposity + famhist + typea + 
+    obesity + alcohol + age + tobacco:typea + tobacco:alcohol + 
+    ldl:famhist + adiposity:famhist + adiposity:obesity + adiposity:alcohol + 
+    famhist:alcohol + famhist:age + typea:alcohol, family = binomial(link = "logit"), 
+    data = SAheart)
+summary(modelbestinter)
+```
+
+
+**Question 8.** Proposez plusieurs méthodes pour comparer les modèles *modellogit*, *modelbest*, *modelbestinter* et *modellogitinter*.
+
+```{r}
+# A COMPLETER
+anova(modellogit, modellogitinter, test = "Chisq")
+anova(modelbest, modellogitinter, test = "Chisq")
+anova(modelbest, modelbestinter, test = "Chisq") # Attention, faire attention ici que l'un est bien sous-modèle de l'autre, en regardant si les variables conservé par modelbest sont présentes dans modelbestinter
+```
+
+## Pouvoir de prédiction d'un modèle 
+
+Pour un modèle $M$ donné, on construit une règle de classification $\hat C_M: x\in\mathbb{R}^p \mapsto \{0,1\}$, qui à des valeurs pour les variables explicatives, associe une valeur pour la réponse (ici binaire). Un critère classique pour mesurer la performance de prédiction de $M$ est la probabilité d'erreur $L(\hat C_M)=\mathbb P(\hat C_M(X)\neq Y)$ qui est inconnue. Si on utilise l'échantillon complet $\mathcal D=(X_i,Y_i)_{i=1,\ldots,n}$ pour construire $\hat C_M$ et estimer $L(\hat C_M)$, on va avoir tendance à sous-estimer  $L(\hat C_M)$. Une solution est de découper l'échantillon $\mathcal D$ en un échantillon d'apprentissage $\mathcal D_A$ et un échantillon test $\mathcal D_T$. On utilise $\mathcal D_A$ pour construire $\hat C_M$ et on estime la probabilité d'erreur à l'aide de l'échantillon $\mathcal D_T$ par
+	$$
+	\frac{1}{card(\mathcal D_T)} \sum_{i\in\mathcal D_T} \mathbb{1}_{\hat C_M(X_i)\neq Y_i}.
+	$$
+Dans le cadre de la régression logistique, $\hat C_M(x)=1$ si $\hat \pi(x) > s$ et $0$ sinon, où $s$ est un seuil à choisir (classiquement $s=0.5$). 	
+
+**Question 1.** Le code suivant permet d'estimer la probabilité d'erreur pour le *modelbest* 
+
+```{r,eval=F}
+l<-300
+perm<-sample(nrow(SAheart))
+# Echantillon d'apprentissage
+dapp<-SAheart[perm[1:l],]
+# Echantillon test
+dtest<-SAheart[-perm[1:l],]
+
+# Estimation du modèle sur l'échantillon d'apprentissage
+modelapp1<-glm(chd~tobacco + ldl + famhist 
+   + typea + age,family=binomial,data=dapp)
+# Prédictions sur l'échantillon test
+prev1<-predict(modelapp1,newdata=dtest,
+                         type="response")
+# Calcul de la probabilité d'erreur
+mean(as.numeric(prev1>0.5)!=dtest$chd)
+```
+
+```{r,eval=F}
+# Estimation du modèle sur l'échantillon d'apprentissage
+modelapp2<-glm(chd~.,family=binomial,data=dapp)
+# Prédictions sur l'échantillon test
+prev2<-predict(modelapp2,newdata=dtest,
+                         type="response")
+# Calcul de la probabilité d'erreur
+mean(as.numeric(prev2>0.5)!=dtest$chd)
+```
+
+```{r,eval=F}
+# Estimation du modèle sur l'échantillon d'apprentissage
+modelapp3<-glm(chd~1,family=binomial,data=dapp)
+# Prédictions sur l'échantillon test
+prev3<-predict(modelapp3,newdata=dtest,
+                         type="response")
+# Calcul de la probabilité d'erreur
+mean(as.numeric(prev3>0.5)!=dtest$chd)
+```
+
+```{r,eval=F}
+# Estimation du modèle sur l'échantillon d'apprentissage
+modelapp4<-glm(chd~ tobacco + ldl + adiposity + famhist + typea + obesity +  alcohol + age + tobacco:typea + tobacco:alcohol + ldl:famhist + adiposity:famhist + adiposity:obesity + adiposity:alcohol + famhist:alcohol + famhist:age + typea:alcohol,family=binomial,data=dapp)
+# Prédictions sur l'échantillon test
+prev4<-predict(modelapp4,newdata=dtest,
+                         type="response")
+# Calcul de la probabilité d'erreur
+mean(as.numeric(prev4>0.5)!=dtest$chd)
+```
+
+En vous aidant de ce code, comparez les probabilités d'erreur pour le modèle complet, le modèle constant et *modelbest*.
+
+**Question 2.** La courbe ROC  
+
+Un autre indicateur classiquement utilisé pour comparer des modèles est la courbe ROC. Il est plus flexible car ne dépend pas du choix du seuil $s$. 
+A l'aide de l'échantillon d'apprentissage $\mathcal D_A$, on construit une fonction score $S(x)$. Pour un seuil $s\in[0,1]$, la règle de décision est 
+$$
+\hat Y_s = 1 \textrm{ si } S(x)>s,\ 0 \textrm{ sinon}.
+$$
+On peut alors construire la matrice de confusion pour les prédictions sur l'échantillon test $\mathcal D_T$ : \
+
+![](TableauSujetTP2.png)
+
+<!--
+\begin{tabular}{|c| c |c|}
+\hline
+   & $\widehat{positif}$ & $\widehat{negatif}$ \\
+\hline
+positif & Vrai Positif (VP)  & Faux Negatif (NF) \\
+négatif & Faux Positif (FP) & Vrai Négatif (VN)\\
+\hline
+\end{tabular}
+-->
+
+On définit alors deux quantités :
+
++ TPR(s) = taux de vrais positifs = VP(s) / Positifs
++ FPR(s) = taux de faux positifs = FP(s) / Négatifs
+
+Le principe de la courbe ROC est de faire varier le seuil $s$ et on trace TPR(s) en fonction de FPR(s). L'aire sous la courbe (AUC) indique donc la probabilité pour que la fonction score place un positif devant un négatif. Dans le meilleur des cas, AUC=1; pour un classement au hasard, AUC=0.5 (symbolisé par la diagonale sur le graphique). 
+
+En vous aidant du code suivant, comparez les courbes ROC pour le modèle complet, le modèle constant, *modelbest* et *modelbestinter*, et calculez les valeurs de l'AUC pour chacun.  
+
+```{r,eval=F}
+library(pROC)
+rocobj1 <- roc(dtest$chd, prev1)
+rocobj2 <- roc(dtest$chd, prev2)
+rocobj3 <- roc(dtest$chd, prev3)
+rocobj4 <- roc(dtest$chd, prev4)
+
+ggroc(list(modelbest=rocobj1, modellogit=rocobj2, modelbestinter=rocobj4, random=rocobj3))
+```
+
+
+```{r,eval=F}
+rmarkdown::paged_table(data.frame(modelbest = round(auc(dtest$chd, prev1),4),
+           modellogit = round(auc(dtest$chd, prev2),4),
+           modelinter = round(auc(dtest$chd, prev4),4),
+           random = round(auc(dtest$chd, prev3),4)))
+```
+
+
+
+# Régression loglinéaire
+
+Dans cette partie, on souhaite étudier la diversité des fourmis sur le site expérimental des Nourragues en Guyane Française. Les données, disponibles dans le fichier *Fourmis.txt*, sont issues du protocole expérimental suivant : des morceaux de 1$m^2$ de litière ont été récoltés. Ils ont été pesés (car le poids de litière est vu comme un indicateur de l'épaisseur de la litière) et le nombre d'espèces différentes présentes dans l’échantillon a été dénombré. 
+<!--50 points d’échantillonage distants d'au moins $10$ m ont été choisis. D'autre part, étant donnée la relative petite taille de la forêt d’Inselberg seuls 20 points d'échantillonnage ont été sélectionnés pour ce site. -->
+Enfin les conditions de recueil (humides ou sèches) ont été notées pour tester leur influence sur la présence des fourmis. L'objectif est de mettre en évidence les variables qui influencent potentiellement le nombre d'espèces de fourmis présentes dans le milieu. 
+
+**Question 1.** Chargez le jeu de données *Fourmis* et faites quelques statistiques descriptives pour vous familiariser avec le jeu de données. 
+
+```{r}
+# A completer
+Fourmis <- read.table("Fourmis.txt", sep = ",", header = T)
+summary(Fourmis)
+head(Fourmis)
+Fourmis$Site = as.factor(Fourmis$Site)
+Fourmis$Conditions = as.factor(Fourmis$Conditions)
+summary(Fourmis)
+quantitatives_Fourmis <- fourmis[sapply(Fourmis, is.numeric)]
+boxplot(quantitatives_Fourmis)
+
+ggplot(data = Fourmis, aes(x=Site, y=Effectifs, col=Conditions)) + geom_boxplot()
+```
+
+
+**Question 2.** Dans cette question, on cherche à expliquer le nombre de fourmis présentes dans un échantillon de sol en prenant en compte les conditions de recueil, le site et l'interaction entre ces deux facteurs.  
+
+**Question 2.a.** Ecrivez un modèle linéaire généralisé *modpois* adapté et programmez-le à l'aide de la fonction `glm()`. 
+
+```{r,eval=F}
+modpois = glm(Effectifs~Site*Conditions, data=Fourmis, family=poisson)
+summary(modpois)
+```
+
+**Question 2.b.** Etudiez si on peut simplifier le modèle *modpois*
+
+```{r}
+# A COMPLETER
+anova(glm(Effectifs~Site+Conditions, data = Fourmis, family=poisson), modpois, test="Chisq")
+```
+
+On rejette donc le modèle sans interactions au risque 5%.
+
+**Question 2.c.** Quel est le nombre moyen d'espèces de fourmis attendu sur un échantillon de terre aux différents sites pour les deux conditions ?
+
+```{r,eval=F}
+newx = data.frame(Site=rep(levels(Fourmis$Site),2),Conditions=rep(levels(Fourmis$Conditions),each=4))
+newx=data.frame(newx,lambdahat=predict(modpois,newdata=newx,type="response"))
+newx
+```
+
+**Question 3.** On souhaite maintenant étudier le nombre d'espèces de fourmis présentes dans une unité de volume, en fonction des caractéristiques du site.  Nous allons ici intégrer l'information du poids (*Weight*) qui est vu comme un indicateur de l'épaisseur de la litière. 
+
+**Question 3.a.** Ecrivez la relation entre les paramètres des lois de Poisson du nombre d'espèces
+présentes en un site et du nombre d'espèces présentes dans une unité de volume. Déduisez-en un modèle
+pour le nombre d'espèces par unité de volume et analysez le rôle de la variable *Weight*.
+On ajuste ce modèle à l'aide de l'option `"offset"` de la fonction `glm()`. 
+
+```{r,eval=F}
+glmInt = glm(Effectifs~Site*Conditions,offset=log(Weight),family="poisson", data=Fourmis )
+summary(glmInt)
+```
+
+**Question 3.b.** Quelle est la densité d'espèces de fourmis prédite pour les quatre forêts pour les deux conditions ?
+
+```{r}
+# A COMPLETER
+newx = data.frame(Site=rep(levels(Fourmis$Site),2),Conditions=rep(levels(Fourmis$Conditions),each=4),Weight=rep(1,8))
+newx=data.frame(newx,lambdahat=predict(glmInt,newdata=newx,type="response"))
+newx
+```
+
+
+**Question 3.c.** Quel est le nombre moyen d'espèces de fourmis attendu sur un échantillon de terre qui pèse 10kg aux
+différents sites pour les deux conditions ?
+
+```{r}
+# A Completer
+newx = data.frame(Site=rep(levels(Fourmis$Site),2),Conditions=rep(levels(Fourmis$Conditions),each=4),Weight=rep(10,8))
+newx=data.frame(newx,lambdahat=predict(glmInt,newdata=newx,type="response"))
+newx
+```
+
+**Question 4.** Est-ce-qu'une modélisation avec un modèle binomial négatif est plus appropriée ? 
+Ajustez un tel modèle avec la fonction `glm()` et l'option `family=quasipoisson(link="log")`. 
+
+```{r,eval=F}
+modbinneg=glm(Effectifs~Site*Conditions,offset=log(Weight),family=quasipoisson(link="log"), data=Fourmis )
+summary(modbinneg)
+```
+
+Vous pouvez aussi utiliser la fonction `glm.nb()` de la librairie `MASS` :
+
+```{r,eval=F}
+#modnb=glm.nb(Effectifs~Site*Conditions + offset(lnweight),data=FourmisBis,init.theta = 14.82825309, link = log)
+modnb=glm.nb(Effectifs~Site*Conditions, offset = log(Weight), data=Fourmis, link = log)
+summary(modnb)
+```
+
+# Exemple de régression polytomique
+
+L'objectif est d'expliquer l'hypertension artérielle des patients à partir de leurs
+caractéristiques physiologiques, cliniques et comportementales : le sexe, fumer ou pas, effectuer
+régulièrement des exercices physiques, etc. 
+La variable réponse est au départ la pression systolique (SYSTOLIC). Elle est découpée 
+en 4 niveaux :
+
++ 1 : tension normale si PA systolique < 140 mm hg
++ 2 : hypertension élevée si PA systolique $\in ]140, 160]$ mm hg
++ 3 : hypertension très élevée si PA systolique$\in ]160, 180]$ mm hg
++ 4 : hypertension sévère si PA systolique > 180 mm hg 
+
+
+**Question 1.** Récupérez les données dans le fichier *hypertension.txt* et faites quelques statistiques descriptives pour vous familiariser avec le jeu de données. 
+
+```{r}
+hypertension<-read.table("hypertension.txt",header=T,colClasses=rep("factor",10))
+summary(hypertension)
+
+# A COMPLETER
+head(hypertension)
+```
+
+
+**Question 2.** A l'aide de la commande suivante, on peut ajuster un modèle de **régression polytomique non ordonnée** dont la dernière modalité est prise comme référence : 
+
+```{r}
+modelnonord <-vglm(niveau ~ ., data = hypertension, family = multinomial)
+summary(modelnonord)
+```
+
+Le modèle s'écrit sous la forme 
+
+$$
+\ln\left(\frac{\pi_m(x_i)}{\pi_4(x_i)}\right)= x_i \theta^{(m)} 
+$$
+
+où $\pi_m$ dénote la probabilité de prendre la modalité $m$ pour les 4 niveaux de la pression systolique, $x_i$ est le vecteur des valeurs observées pour le $i$ème individu sur les variables explicatives et $\theta^{(m)}=(\theta_0^{(m)},\ldots,\theta_k^{(m)})'$. 
+
+
+Commentez les résultats. 
+
+**Question 3.** Comme les modalités de la pression systolique ont un ordre naturel, il est préférable de considérer un modèle reliant les $\pi_m$ pour deux modalités successives. On va donc ajuster un modèle de **régression polytomique ordonnée** sur les logits adjacents à l'aide de la commande suivante :  
+
+```{r}
+# transformation en variable ordinale
+hypertension$niveau = factor(hypertension$niveau, order = TRUE, levels = c("1", "2", "3","4"))
+# ajustement du modèle
+modelord <- vglm(niveau ~ ., data = hypertension, family = acat())
+
+summary(modelord)
+```
+
+Commentez. 
+
+**Question 4.** Dans cette question, on s'intéresse à l'interprétation des paramètres. On prend ici l'exemple de la valeur $0.923752$ dans le `summary(modelord)` pour la variable fumeur.  Reliez cette valeur à l'une interprétation en odds ratio. 
+
+**Question 5.** Sauf si c'est le but explicite de l'étude, évaluer les influences niveau par niveau est très difficile. On va considérer le modèle simplifié où les coefficients des variables explicatives sont les mêmes quelque soit le niveau étudié.
+
+```{r}
+modelordparal = vglm(niveau ~ ., data = hypertension,family = acat(parallel=TRUE))
+```
+
+Ecrivez ce modèle. Reprenez l'interprétation du coefficient associé à la variable fumeur dans ce modèle et reliez-le avec une interprétation en odds ratio. 
+
+**Question 6.** A l'aide de `modelordparal@fitted.values[13,]`, décrivez les résultats pour le 13ème individu. Quelle est la probabilité que cet individu soit hypertendu ?
+
+```{r,eval=F}
+# l'individu 13
+hypertension[13,]
+
+pi_indiv<-modelordparal@fitted.values[13,]
+print(pi_indiv)
+print(cumsum(rev(pi_indiv)))
+```
+
+**Question 7.** A l'aide de la fonction `lrtest()`, faites un test de sous-modèle pour comparer les modèles *modelord* et *modordparal*. 
+
+```{r,eval=F}
+lrtest(modelord, modelordparal)
+```
+
+
+**Question 8.** Dans cette question, la variable niveau est transformée en une variable binaire : 1 si hypertension (PA systolique > 140), 0 si tension normale. 
+
+```{r}
+hypertensionbis=hypertension
+hypertensionbis$niveau = (hypertension$niveau != 1)
+```
+
+Proposez un modèle pour expliquer la présence d'hypertension en fonction des autres variables. Peut-on simplifier ce modèle ? Etudiez la puissance d'ajustement de ce modèle, ...
+
+
