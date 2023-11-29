@@ -54,6 +54,8 @@ head(Data)
 ```
 
 ```{r, echo = FALSE}
+# TODO : pour moi ici les as.factor ne doivent être fait que sur les variables qualitatives
+
 Data$TypeEPCI=as.factor(Data$TypeEPCI)
 Data$annee_inv=as.factor(Data$annee_inv)
 Data$nomdepart=as.factor(Data$nomdepart)
@@ -156,6 +158,7 @@ Data_final <- subset(Datalog, lib_epci != "Toulouse Métropole") #, "CC Pays de 
 Data_final <- subset(Data_final, lib_epci != "CC Pays de Nay")
 
 print(nrow(Data_final))
+summary(Data_final)
 ```
 
 ```{r}
@@ -236,4 +239,65 @@ reskmeans<-kmeans(scale(Datalog[,4:14]), 7, nstart = 5)
 table(reskmeans$cluster)
 
 fviz_cluster(reskmeans,data=Datalog[,4:14],type="norm",labelsize=0)
+```
+
+
+# Modèle linéaire généralisé
+
+Dernier point : dernier tiret : Expliquez par un modèle linéaire ou modèle linéaire généralisé : le dépassement d’émission de méthane de 1000 t par an en fonction de l’ammoniac, le protoxyde
+d’azote, le type d’EPCI et l’année.
+
+```{r}
+library(bestglm)
+
+# TODO : à remettre en commun
+
+# Ici je refais la séléction des variables (je ne leur applique ni log ni scale)
+Data_mlg = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
+Data_mlg$code_epci = as.factor(Data_mlg$code_epci)
+Data_mlg$lib_epci = as.factor(Data_mlg$lib_epci)
+Data_mlg$annee_inv = as.factor(Data_mlg$annee_inv)
+Data_mlg$TypeEPCI = as.factor(Data_mlg$TypeEPCI)
+
+# Je retire les outliers
+Data_mlg <- subset(Data_mlg, lib_epci != "Toulouse Métropole") #, "CC Pays de Nay"))
+Data_mlg <- subset(Data_mlg, lib_epci != "CC Pays de Nay")
+
+summary(Data_mlg)
+
+# Je garde les variables qui m'intéresse
+Data_mlg <- Data_mlg[c(3,10,12,14,15)]
+
+summary(Data_mlg)
+
+# Je crée une nouvelle variable qualitative (celle qui traduit méthane > 1000t)
+Data_mlg$dep_met_1000 <- as.factor(Data_mlg$ch4_t>1000)
+
+summary(Data_mlg)
+
+# Je retire la varaible quantitative ch4_t
+Data_mlg <- Data_mlg[c(1,2,4,5,6)]
+
+summary(Data_mlg)
+head(Data_mlg)
+```
+
+```{r}
+modelcomplet = glm(dep_met_1000~. ,data=Data_mlg, family=binomial(link = "logit"))
+summary(modelcomplet)
+```
+
+```{r}
+pseudoR2 = 1 - modelcomplet$deviance/modelcomplet$null.deviance
+pseudoR2
+```
+
+```{r}
+# Les bestglm ne fonctionnent pas
+#bestglm(Data_mlg,family=binomial,IC="AIC")
+#bestglm(Data_mlg,family=binomial,IC="BIC")
+
+# Quelque chose semble ne pas fonctionner dans les step.backward
+step.backward = step(modelcomplet)
+step.backward = step(modelcomplet, direction="backward",k=log(nrow(Data_mlg)))
 ```
