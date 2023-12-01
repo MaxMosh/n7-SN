@@ -4,6 +4,9 @@ output:
   pdf_document: default
   html_document: default
 date: "2023-09-29"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -18,32 +21,28 @@ library(reshape2)
 library(ggplot2)
 library(FactoMineR)
 ```
+
 # Statistiques descriptives
 
-Le jeu de données comprend $984$ mesures des emissions de polluants atmosphériques tous secteurs d’activités confondues des EPCI (Etablissements Publics de Coopération Intercommunale) de la région Occitanie de 2014 à 2019.
+Le jeu de données comprend $984$ mesures des emissions de polluants
+atmosphériques tous secteurs d'activités confondues des EPCI
+(Etablissements Publics de Coopération Intercommunale) de la région
+Occitanie de 2014 à 2019.
 
-Chaque mesure est décrite par les variables qualitatives suivantes :
-+ *lib_epci* : son nom
-+ *code_epci* : son code d’identification
-+ *nomdepart* : son (ses) département(s) d’appartenance
-+ *TypeEPCI* : CC (communauté de commune), CA (communauté d’agglomération), Métrople
-et CU (communauté urbaine)
-+ *annee_inv* : l'année de mesure
+Chaque mesure est décrite par les variables qualitatives suivantes : +
+*lib_epci* : son nom + *code_epci* : son code d'identification +
+*nomdepart* : son (ses) département(s) d'appartenance + *TypeEPCI* : CC
+(communauté de commune), CA (communauté d'agglomération), Métrople et CU
+(communauté urbaine) + *annee_inv* : l'année de mesure
 
-Et par les variables quantitatives suivantes : 
-+ *nox_kg* : oxyde d’azote en kg
-+ *so2_kg* : oxyde de soufre en kg
-+ *pm10_kg* : particules en suspension dans l’air de diamètre inférieur à 10 µm
-+ *pm25_kg* : particules en suspension dans l’air de diamètre inférieur à 2.5 µm
-+ *co_kg* : monoxyde de carbone
-+ *c6h6_kg* : benzène
-+ *nh3_kg* : Ammoniac
-+ *ges_teqco2* : gaz à effet de serre
-+ *ch4_t* : méthane
-+ *co2_t* : dioxyde de carbone
-+ *n2o_t* : protoxyde d’azote
-+ *latit* : sa latitude
-+ *longit* : sa longitude
+Et par les variables quantitatives suivantes : + *nox_kg* : oxyde
+d'azote en kg + *so2_kg* : oxyde de soufre en kg + *pm10_kg* :
+particules en suspension dans l'air de diamètre inférieur à 10 µm +
+*pm25_kg* : particules en suspension dans l'air de diamètre inférieur à
+2.5 µm + *co_kg* : monoxyde de carbone + *c6h6_kg* : benzène + *nh3_kg*
+: Ammoniac + *ges_teqco2* : gaz à effet de serre + *ch4_t* : méthane +
+*co2_t* : dioxyde de carbone + *n2o_t* : protoxyde d'azote + *latit* :
+sa latitude + *longit* : sa longitude
 
 ```{r}
 Data = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
@@ -83,40 +82,47 @@ Data$Vaucluse = as.factor(Data$Vaucluse)
 ```{r, echo = FALSE}
 summary(Data)
 ```
+
 ```{r}
 attributes(Data)
 ```
+
 ```{r str}
 str(Data)
 ```
+
 ## Analyse unidimentionnelle
+
 ```{r}
 Datalog = log(Data[,4:14]) #à justifier
 head(Datalog)
 ```
 
 ###Quantitative
+
 ```{r}
 library(reshape2)
 ggplot(melt(Datalog),aes(x=variable,y=value))+geom_boxplot()
 ```
 
-
 ###Qualitative
+
 ```{r}
 barplot(table(Data$TypeEPCI))
 ```
 
-
-
 ```{r}
 barplot(table(Data$annee_inv))
 ```
+
 ```{r}
 plot(ecdf(Datalog$so2_kg)) #,xlim = c(320,400)
 ```
+
 # PCA
-On fait une ACP. lol xD 
+
+On fait une ACP. lol xD
+
 ```{r}
 Datalog = Data[1:16]
 Datalog[,4:14] = log(Datalog[,4:14])
@@ -149,8 +155,6 @@ abline(a = 90, b=0, col="red", lty=2, lwd=3)
 barplot(ACPpolluants$eig[,"percentage of variance"], names.arg=paste("Dim",1:11,sep="."))
 ```
 
-
-
 ```{r}
 Datalog = Data[1:16]
 Datalog[,4:14] = log(Datalog[,4:14])
@@ -164,6 +168,7 @@ summary(Data_final)
 ```{r}
 ggplot(melt(Data_final[4:14]),aes(x=variable,y=value))+geom_boxplot()
 ```
+
 ```{r}
 ACPpolluants <- PCA(Data_final, scale.unit = TRUE, ncp = 3, quali.sup = c(1,2,3,15,16), graph = FALSE)  # Utilisation de scale.unit = TRUE pour standardiser les données.
 # on degage la dimension 3
@@ -176,13 +181,13 @@ plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.3, l
 
 
 ```
+
 ```{r}
 f1 = fviz_contrib(ACPpolluants, choice="var", axes=1, color = "black" ,fill="turquoise4")
 f2 = fviz_contrib(ACPpolluants, choice="var", axes=2, color ="black", fill = "#3EBB00")
 f3 = fviz_contrib(ACPpolluants, choice="var", axes=3, color ="black", fill = "#E6E600")
 plot_grid(f1,f2,f3)
 ```
-
 
 ```{r}
 
@@ -201,12 +206,13 @@ ggplot(Datalog,aes(x=annee_inv))+
 corrplot(cor(Data_final[4:14]), method="ellipse")
 ```
 
-
 Test rien à voir avec le sujet
+
 ```{r}
 plot(Data$nox_kg, type = "l")
 plot(log(Data$nox_kg), type = "l")
 ```
+
 ```{r}
 ggplot(Data, aes(nox_kg)) + 
   stat_ecdf(geom = "step")+xlab("Variable Alcool")+
@@ -218,6 +224,7 @@ ggplot(Datalog, aes(nox_kg)) +
   ylab("")+ggtitle("Fonction de répartition empirique")+
   geom_hline(yintercept=0, linetype="dashed")+geom_hline(yintercept=1, linetype="dashed")
 ```
+
 ```{r}
 g1<-ggplot(Data,aes(x=nox_kg))+geom_histogram(bins=15,color="black", fill="white")+
   ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
@@ -225,7 +232,6 @@ g2<-ggplot(Datalog,aes(x=nox_kg))+geom_histogram(bins=15,color="black", fill="wh
   ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
 grid.arrange(g1,g2,ncol=2)
 ```
-
 
 Clustering
 
@@ -242,22 +248,126 @@ fviz_cluster(reskmeans,data=Datalog[,4:14],type="norm",labelsize=0)
 ```
 
 
-# Modèle linéaire généralisé
 
-Dernier point : dernier tiret : Expliquez par un modèle linéaire ou modèle linéaire généralisé : le dépassement d’émission de méthane de 1000 t par an en fonction de l’ammoniac, le protoxyde
-d’azote, le type d’EPCI et l’année.
+
+
+## LDA
+### Exploration et prédiction du dépassement d'émission de méthane de 1000 t par an
+
+On veut prédire si la variable ch4_t dépasse le seuil de 1000 t par an. Nous allons alors créer une nouvelle variable y avec deux levels : 'above' si ch4_t > 1000 et 'below' sinon.
 
 ```{r}
+y = as.factor(Data$ch4_t < 1000)
+levels(y) = c('above','below')
+```
+
+Pour la suite, nous remplaçons la colonne ch4_t, dans les données modifiées, par y.
+
+```{r}
+DataLDA = Datalog[,4:14]
+DataLDA$ch4_t = y
+```
+
+```{r}
+DataLDA
+```
+Pour préciser ce que LDA vise à faire, nous nous mettons d'accord que LDA est une PCA appliquée sur les classes des centroides, avec le métrique Mahalanobis (i.e. les données sont tout d'abord sphérées). La LDA appliquée sur 2 nouveaux individus (les 2 centroides des 2 classes : 'above' et 'below') dans un espace de 11 variables.
+Nous cherchons à visualiser les 2 classes avec une PCA représentation pour les données log-modifiées.
+```{r}
+ACPLDA <- PCA(DataLDA, scale.unit = TRUE, quali.sup = c(9), graph=FALSE)
+summary(ACPLDA)
+plot(ACPLDA, choix="ind", invisible="quali", habillage=9, label="none")
+```
+Nous nous rappelons que l'hypothèse qui se pose pour une LDA est que les individus d'une même classe sont tirées depuis un Gaussien commun avec une même matrice de covariance. En regardant les 2 nuages des points sur le PCA plot, elles sont de la forme assez éllipsoide et uniforme, qui permet de dire que les individus sont bien d'un même Gaussien. De plus, la deuxième dimension est expliquée ci-dessus proportionnelle à l'émission en ch4, donc quand on observe les 2 nuages, celle représentante la classe 'above' est au-dessus (i.e. supérieure) de la 'below', totalement cohérent à ce qu'on a trouvé dans la PCA.  
+De plus, on se rend compte que la projection des individus dans le sous-espace 2D explique à peu près 90% de la variance donc on ne perd pas beaucoup d'informations.
+
+Pour la prédiction, nous divisons le jeu de données en deux : un train set de 70% des données et un test set de 30% des données.
+
+```{r}
+train =  
+test =
+```
+
+## ANOVA à 2 facteurs
+Analyser la relation entre l'émission des gas à effets de serrre et le type EPCI et l'année.  
+L'émission des gas à effet de serre pour chaque modalité croisée du typeEPCI et l'année.
+```{r}
+table(Data$TypeEPCI,Data$annee_inv)
+Data %>%
+  group_by(TypeEPCI,annee_inv) %>%
+  rstatix::get_summary_stats(ges_teqco2, type="mean_sd")
+```
+
+```{r}
+ggplot(Data,aes(x=annee_inv,y=ges_teqco2,fill=TypeEPCI)) + geom_boxplot()
+ggplot(Data,aes(x=TypeEPCI,y=ges_teqco2,fill=annee_inv)) + geom_boxplot()
+```
+
+Interaction plot
+```{r}
+#interaction.plot(Data$TypeEPCI, Data$annee_inv, Data$ges_teqco2,
+ #                main="interaction plot", xlab="TypeEPCI", ylab="ges_teqco2",
+  #               trace.label ="annee_inv")
+interaction.plot(Data$annee_inv, Data$TypeEPCI, Data$ges_teqco2,
+                 main="interaction plot", ylab="TypeEPCI", xlab="ges_teqco2",
+                 trace.label ="annee_inv")
+```
+Les droites du plot de l'intéraction sont parallèles donc on peut dire qu'il n'y a pas d'effet d'intéraction.
+
+```{r}
+anova.complet = lm(ges_teqco2~TypeEPCI * annee_inv, data=Data)
+summary(anova.complet)
+```
+Commentaire :
+Le coefficient de détermination R² est à 0.67, l'ajustement n'est pas mal mais pas trop bon.
+On accepte la nullité de tous les paramètres de l'effet différentiel de l'année et de l'effet d'intéraction. On peut dire que les différentes années jouent le même rôle
+
+```{r}
+anova.additif= lm(ges_teqco2~TypeEPCI + annee_inv, data=Data)
+anova(anova.additif, anova.complet)
+```
+
+```{r}
+anova(lm(ges_teqco2~annee_inv, data=Data), anova.additif)
+anova(lm(ges_teqco2~TypeEPCI, data=Data), anova.additif)
+```
+
+```{r}
+anova(lm(ges_teqco2~TypeEPCI, data=Data), anova.complet)
+```
+
+```{r}
+anova(lm(ges_teqco2~1, data=Data), lm(ges_teqco2~TypeEPCI, data=Data))
+```
+
+
+
+
+
+
+
+## Modèle linéaire généralisé
+
+Nous allons dans cette section tenter d'expliquer le dépassement
+d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le
+protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire
+généralisé.
+
+```{r, echo=F, eval=F}
 library(bestglm)
 
 # TODO : à remettre en commun
 
-# Ici je refais la séléction des variables (je ne leur applique ni log ni scale)
+# Ici je refais la sélection des variables (je ne leur applique ni log ni scale)
 Data_mlg = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
 Data_mlg$code_epci = as.factor(Data_mlg$code_epci)
 Data_mlg$lib_epci = as.factor(Data_mlg$lib_epci)
 Data_mlg$annee_inv = as.factor(Data_mlg$annee_inv)
 Data_mlg$TypeEPCI = as.factor(Data_mlg$TypeEPCI)
+
+# On prend les données quantitatives log
+Data_mlg$nh3_kg = log(Data_mlg$nh3_kg)
+Data_mlg$n2o_t = log(Data_mlg$n2o_t)
 
 # Je retire les outliers
 Data_mlg <- subset(Data_mlg, lib_epci != "Toulouse Métropole") #, "CC Pays de Nay"))
@@ -269,35 +379,110 @@ summary(Data_mlg)
 Data_mlg <- Data_mlg[c(3,10,12,14,15)]
 
 summary(Data_mlg)
+```
 
+On crée la nouvelle variable booléenne, valant 1 si le taux de méthane
+(\code{ch4_t}) est supérieur à $1000t$, 0 sinon.
+
+```{r, echo=T, eval=T}
 # Je crée une nouvelle variable qualitative (celle qui traduit méthane > 1000t)
-Data_mlg$dep_met_1000 <- as.factor(Data_mlg$ch4_t>1000)
+Data_mlg$dep_met_1000 <- as.factor(as.numeric(Data_mlg$ch4_t>1000))
 
 summary(Data_mlg)
 
-# Je retire la varaible quantitative ch4_t
+# Je retire la variable quantitative ch4_t
 Data_mlg <- Data_mlg[c(1,2,4,5,6)]
 
 summary(Data_mlg)
 head(Data_mlg)
 ```
 
-```{r}
-modelcomplet = glm(dep_met_1000~. ,data=Data_mlg, family=binomial(link = "logit"))
-summary(modelcomplet)
+La variable \code{dep_met_1000} étant binaire, nous allons utiliser la
+régression logistique.
+
+Dans un premier temps on crée le modèle complet avec interaction, modèle
+que l'on note $(\mathcal{M}_{GL_{1}})$.
+
+```{r, echo=T, eval=T}
+modelcompletinter = glm(dep_met_1000~(.)^2 ,data=Data_mlg, family=binomial(link = "logit"))
+summary(modelcompletinter)
 ```
 
-```{r}
-pseudoR2 = 1 - modelcomplet$deviance/modelcomplet$null.deviance
+On voit que beaucoup de variables ont une pvaleur > 0.05. On va alors s'intéresser à la simplification du modèle.
+
+```{r, echo=T, eval=T}
+pseudoR2 = 1 - modelcompletinter$deviance/modelcompletinter$null.deviance
 pseudoR2
 ```
 
-```{r}
+Le $\text{pseudoR}^2$ vaut 0.73, ce qui est une valeur correcte.
+
+```{r, echo = T, eval = F}
 # Les bestglm ne fonctionnent pas
 #bestglm(Data_mlg,family=binomial,IC="AIC")
 #bestglm(Data_mlg,family=binomial,IC="BIC")
+```
 
+Ici, les fonctions \code{bestglm} ne fonctionnent pas, nous n'avons donc
+pas reporté les sorties dans le rapport.
+
+```{r, echo = T, eval = T}
 # Quelque chose semble ne pas fonctionner dans les step.backward
-step.backward = step(modelcomplet)
-step.backward = step(modelcomplet, direction="backward",k=log(nrow(Data_mlg)))
+step.backward = step(modelcompletinter) # AIC
+step.backward = step(modelcompletinter, direction="backward",k=log(nrow(Data_mlg))) # BIC
+```
+
+Le critère $AIC$ conserve le modèle sans l'interaction annee_inv:TypeEPCI, modèle que l'on note $(\mathcal{M}_{GL_{2}})$.
+Le critère $BIC$ conserve le modèle avec les variables nh3_kg, n2o_t, TypeEPCI, nh3_kg:n2o_t, modèle que l'on note $(\mathcal{M}_{GL_{3}})$.
+
+Au passage, on remarque que $(\mathcal{M}_{GL_{3}})$ est sous_modèle de $(\mathcal{M}_{GL_{2}})$.
+
+```{r, echo = T, eval = T}
+# Modèle 2
+model2 = glm(dep_met_1000~annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_kg + 
+    annee_inv:n2o_t + nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI ,data=Data_mlg, family=binomial(link = "logit"))
+summary(model2)
+```
+
+On teste le sous-modèle $(\mathcal{M}_{GL_{2}})$ par rapport au modèle
+complet avec interactions $(\mathcal{M}_{GL_{1}})$.
+
+```{r, echo = T, eval = T}
+anova(model2, modelcompletinter, test="Chisq")
+```
+
+La pvaleur est \>\>0.05, on peut donc conserver le modèle
+$(\mathcal{M}_{GL_{2}})$ au risque 5%.
+
+```{r, echo = T, eval = T}
+pseudoR2 = 1 - modelinterred$deviance/modelinterred$null.deviance
+pseudoR2
+```
+
+Le $\text{pseudoR}^2$ vaut 0.72, ce qui reste une valeur correcte (très
+légèrement en dessous du $\text{pseudoR}^2$ du modèle complet avec
+interaction).
+
+```{r, echo = T, eval = T}
+# Modèle 3
+model3 = glm(dep_met_1000 ~ nh3_kg + n2o_t + TypeEPCI + nh3_kg:n2o_t,data=Data_mlg, family=binomial(link = "logit"))
+summary(model3)
+```
+
+```{r, echo = T, eval = T}
+anova(model3, modelcompletinter, test="Chisq")
+```
+
+Cependant, le test du sous-modèle $(\mathcal{M}_{GL_{3}})$ vis-à-vis du modèle complet $(\mathcal{M}_{GL_{1}})$ renvoie une pvaleur << 0.05.
+On rejette donc le modèle $(\mathcal{M}_{GL_{3}})$ au risque $5\%$.
+
+```{r, echo=T, eval=T}
+modelcompletadd = glm(dep_met_1000~. ,data=Data_mlg, family=binomial(link = "logit"))
+summary(modelcompletinter)
+```
+
+```{r, echo = T, eval = T}
+# Quelque chose semble ne pas fonctionner dans les step.backward
+step.backward = step(modelcompletadd) # AIC
+step.backward = step(modelcompletadd, direction="backward",k=log(nrow(Data_mlg))) # BIC
 ```

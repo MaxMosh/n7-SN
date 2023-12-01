@@ -1,0 +1,371 @@
+---
+title: "TP Clustering"
+subtitle: "Partie 3 : Classification hiérarchique"
+date : "4modIA / 2023-2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth : 4
+    number_sections : true
+header-includes:
+  - \usepackage{comment}
+params:
+  soln: TRUE   
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #cfdefc; 
+}
+
+.corrO { background-color: rgb(255,238,237); }
+.corrS { background-color: pink; color: black; border: 1px solid red; }
+```
+
+```{r setup, echo=FALSE, cache=TRUE, message=FALSE,warning=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+L'objectif de ce TP est d'illustrer les notions abordées pour  classification hiérarchique. 
+Les librairies R nécessaires pour ce TP : 
+
+```{r,echo=T, error=F,warning=F,message=F}
+library(mclust)
+library(clusterSim)
+library(factoextra)
+library(FactoMineR)
+library(ggplot2)
+library(reshape2)
+library(circlize)
+library(viridis)
+```
+
+# Clustering des données de vin par CAH
+
+On reprend dans ce TP les données `wine` disponibles sur la page moodle du cours. On charge ici les données.  
+
+```{r,eval=F}
+wine<-read.table("wine.txt",header=T)
+wine$Qualite = as.factor(wine$Qualite)
+wine$Type = factor(wine$Type, labels = c("blanc", "rouge"))
+wineinit<-wine
+wine[,-c(1,2)]<-scale(wine[,-c(1,2)],center=T,scale=T)
+head(wine)
+```
+
+On fait une ACP pour la visualisation des résultats dans la suite
+
+```{r,eval=F}
+resacp<-PCA(wine,quali.sup=c(1,2), scale.unit = TRUE,graph=FALSE)
+fviz_pca_ind(resacp,geom=c("point"),habillage=2)
+```
+
+
+
+**Question **: A l'aide de la fonction `hclust`, faites une classification hiérarchique des données de vins avec les mesures d'agrégation `single`, `complete` et `average` respectivement. Comparez visuellement les dendrogrammes associés. Commentez. 
+
+```{r,eval=F}
+# A COMPLETER : FAIT
+d <- dist(wine, method = "euclidean")
+hclustsingle<-hclust(d, method = "single",members = NULL)
+hclustcomplete<-hclust(d, method = "complete",members = NULL)
+hclustaverage<-hclust(d, method = "average",members = NULL)
+
+# Dendrogramme
+plot(hclustsingle,hang=-1,labels=FALSE)
+plot(hclustcomplete,hang=-1,labels=FALSE)
+plot(hclustaverage,hang=-1,labels=FALSE)
+
+fviz_dend(hclustsingle,show_labels=FALSE)
+fviz_dend(hclustcomplete,show_labels=FALSE)
+fviz_dend(hclustaverage,show_labels=FALSE)
+
+```
+Méthode single : on remarque un chaînage.
+
+
+
+**Question :** Déduisez du dendrogramme avec la mesure d'agrégation `complete` une classification en 3 classes. Vous pouvez utiliser la fonction `cutree()`. Comparez-la avec les variables *Qualité* et *Type*. Commentez.  
+
+```{r,eval=F}
+# A COMPLETER
+ClassK3 = cutree(hclustcomplete, k = 3)
+fviz_dend(hclustcomplete, k = 3)
+```
+
+
+
+
+**Question : ** Tracez la distribution des variables quantitatives de `wine` en fonction de la classification en 3 classes de la question précédente. Commentez. 
+
+```{r,eval=F}
+df<-data.frame(wine[,-c(1,2)],Class=as.factor(ClassK3))
+df<-melt(df,id="Class")
+ggplot(df,aes(x=variable,y=value))+geom_violin(aes(fill=Class))
+```
+
+
+
+
+**Question :** Dans cette question et pour les suivantes, on se focalise sur la mesure d'agrégation de Ward. Ajustez une classification hiérarchique avec la mesure de Ward. Que représentent les hauteurs du dendrogramme dans ce cas ? 
+
+```{r,eval=F}
+# A COMPLETER : FAIT
+dward <- dist(wine, method = "euclidean")
+hward<-hclust(dward, method = "ward.D2",members = NULL)
+fviz_dend(hward,show_labels=FALSE)
+```
+
+
+
+
+**Question : ** Déterminez le nombre de classes à retenir avec l'indice de Calinski-Harabasz. Vous pouvez vous aider de la fonction `ìndex.G1()` de la librairie `clusterSim`. Tracez la classification obtenue sur le dendrogramme et sur le premier plan factoriel de l'ACP. 
+
+```{r,eval=F}
+# A completer : FAIT
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.G1(wine[, -c(1,2)],cutree(hward,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()
+```
+
+
+
+```{r,eval=F}
+ClustCH<-cutree(hward,which.max(CH)+1)
+fviz_dend(hward,show_labels = FALSE,k=which.max(CH)+1)
+```
+
+```{r,eval=F}
+fviz_pca_ind(resacp,geom = c("point"),habillage=as.factor(ClustCH))
+fviz_pca_ind(resacp,geom = c("point"),habillage=as.factor(ClustCH), axes = c(1,3))
+```
+
+
+**Question : ** Déterminez le nombre de classes à retenir avec le critère Silhouette. Vous pouvez vous aider de la fonction `ìndex.S()`  de la librairie `clusterSim`. Comparez avec la classification de la question précédente. 
+
+```{r,eval=F}
+# A completer : FAIT
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.S(dward,cutree(hward,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()
+```
+
+```{r,eval=F}
+# A completer : FAIT
+str(hward)
+hward$merge
+```
+```{r,eval=F}
+daux1 <- data.frame(NbClust=1:Kmax,Intra=rev(hward$height[tail(1:nrow(wine),Kmax)-1]))
+```
+
+
+```{r,eval=F}
+Silhou<-NULL
+for (k in 2:Kmax){
+   Silhou<-c(Silhou,index.S(dward,cutree(hward,k)))
+}
+
+daux <- data.frame(NbClust=2:Kmax,Silhouette = Silhou)
+ggplot(daux,aes(x=NbClust,y=Silhouette))+
+  geom_point()+
+  geom_line()
+```
+
+
+
+**Question :** Comparez la classification obtenue avec la méthode des Kmeans dans le TP 1 et celle obtenue à la question précédente. 
+
+```{r,eval=F}
+# ICI IL FAUT FAIRE Kmeans
+```
+
+```{r,eval=F}
+# A COMPLETER
+library(circlize)
+clust1<-paste("C1Km-",reskmeans$cluster,sep="")
+clust2<-paste("C1CAH-",cutree(hward,4),sep="")
+
+library(viridis)
+mycolor<-viridis(8, alpha = 1, begin = 0, end = 1, option = "H")
+#PAS FINI
+```
+
+
+
+
+# Clustering des données Zoo par CAH
+
+## Lecture des données et fonctions auxiliaires
+
+On reprend dans cette partie le jeu de données zoo ainsi que les fonctions auxiliaires comme dans le TP1. On refait une analyse en composantes multiples pour la suite. 
+
+```{r,eval=F}
+zoo<-read.table("zoo-dataTP.txt",header=T,stringsAsFactors = TRUE)
+for (j in 1:ncol(zoo))
+  zoo[,j]<-as.factor(zoo[,j])
+summary(zoo)
+library("FactoMineR")
+library("factoextra")
+res.mca<- MCA(zoo,ncp = 5, graph = FALSE)
+
+fviz_screeplot(res.mca)
+plot(res.mca, invisible = c("quali.sup", "ind"), cex=1, col.var = "darkblue", cex.main=2, col.main= "darkblue")
+
+fviz_mca_ind(res.mca)
+```
+
+Pour la suite du TP, on pourra utiliser les fonctions auxiliaires suivantes. La fonction `barplotClus()` permet de tracer la répartition des modalités de variables qualitatives pour chaque classe d'un clustering donné. 
+
+```{r,eval=F}
+# J indice des variables
+# Data = jeu de données
+# clust = clustering étudié
+# output : graphe par variable dans J donnant la répartition des modalités de J par classe de clust
+
+barplotClus <- function(clust, Data, J) {
+    aux.long.p <- heatm(clust, Data, J)$freq
+    # ux<-unique(aux.long.p$variable)
+    for (j in J) {
+        p <- ggplot(aux.long.p[which(aux.long.p$variable == colnames(Data)[j]), ],
+            aes(x = clust, y = perc, fill = value)) + geom_bar(stat = "identity")+
+            labs(fill = colnames(Data)[j])
+        print(p)
+    }
+}
+
+heatm <- function(clust, Data, J) {
+    library(dplyr)
+    Dataaux <- data.frame(id.s = c(1:nrow(Data)), Data)
+    aux <- cbind(Dataaux, clust)
+    aux.long <- melt(data.frame(lapply(aux, as.character)), stringsAsFactors = FALSE,
+        id = c("id.s", "clust"), factorsAsStrings = T)
+    # Effectifs
+    aux.long.q <- aux.long %>%
+        group_by(clust, variable, value) %>%
+        mutate(count = n_distinct(id.s)) %>%
+        distinct(clust, variable, value, count)
+    # avec fréquences
+    aux.long.p <- aux.long.q %>%
+        group_by(clust, variable) %>%
+        mutate(perc = count/sum(count)) %>%
+        arrange(clust)
+
+    Lev <- NULL
+    for (j in 1:ncol(Data)) Lev <- c(Lev, levels(Data[, j]))
+
+    Jaux <- NULL
+    for (j in 1:length(J)) {
+        Jaux <- c(Jaux, which(aux.long.p$variable == colnames(Data)[J[j]]))
+    }
+
+    gaux <- ggplot(aux.long.p[Jaux, ], aes(x = clust, y = value)) + geom_tile(aes(fill = perc)) +
+        scale_fill_gradient2(low = "white", mid = "blue", high = "red") + theme_minimal()
+
+    return(list(gaux = gaux, eff = aux.long.q, freq = aux.long.p))
+}
+
+```
+
+## CAH directe sur variables qualitatives
+
+
+**Question :** Quelle classification par CAH pouvez-vous mettre en place pour traiter des données qualitatives ? Mettez en application votre proposition avec R et étudiez la classification retenue. Vous pourrez vous aider des fonctions `daisy()` de la librairie `cluster`, de la fonction `hclust()`, ...
+
+```{r,eval=F}
+# A COMPLETER
+gower.dist<-daisy(zoo, metric = c("gower"))
+aggl<-hclust(gower.dist, method = "complete")
+ggplot(data.frame(K=1:20,Height=sort(aggl$height,decreasing = T)[1:20]), aes(x=K,y=Height))+
+  geom_line()+
+  geom_point()
+```
+
+```{r,eval=F}
+fviz_dend(aggl, show_labels = TRUE, k=9)
+```
+```{r,eval=F}
+clustaggl<-cutree(aggl,9)
+fviz_mca_ind(res.mca,geom.ind=c("point","text"),habillage=as.factor(clustaggl))
+```
+
+```{r,eval=F}
+table(clustaggl)
+```
+
+```{r,eval=F}
+# On n'a pas créé ClustIntra donc marche pas
+table(ClustIntra,clustaggl)
+```
+
+```{r,eval=F}
+adjustedRandIndex(ClustIntra,clustaggl)
+```
+
+
+
+
+
+## CAH sur les coordonnées de MCA
+
+**Question :** Mettez en place une classification des animaux à partir des coordonnées de l'analyse en composantes multiples. Comparez avec la classification obtenue dans la section précédente. 
+
+
+```{r,eval=F}
+# A COMPLETER : FAIT
+summary(res.mca)
+dmcazoo <- dist(res.mca$ind$coord, method = "euclidean")
+hwardzoo<-hclust(dmcazoo, method = "ward.D2")
+fviz_dend(hwardzoo,show_labels = F,k = 4)
+clustMCA = cutree(hwardzoo,4)
+```
+
+
+```{r,eval=F}
+# A completer : FAIT
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.G1(res.mca$ind$coord,cutree(hwardzoo,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()
+```
+
+
+
+```{r,eval=F}
+ClustCH<-cutree(hwardzoo,which.max(CH)+1)
+fviz_dend(hwardzoo,show_labels = FALSE,k=which.max(CH)+1)
+```
+
+```{r,eval=F}
+# A completer : FAIT
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.S(dmcazoo,cutree(hwardzoo,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()
+```
