@@ -348,10 +348,7 @@ anova(lm(ges_teqco2~1, data=Data), lm(ges_teqco2~TypeEPCI, data=Data))
 
 ## Modèle linéaire généralisé
 
-Nous allons dans cette section tenter d'expliquer le dépassement
-d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le
-protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire
-généralisé.
+Nous allons dans cette section tenter d'expliquer le dépassement d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire généralisé.
 
 ```{r, echo=F, eval=F}
 library(bestglm)
@@ -381,8 +378,7 @@ Data_mlg <- Data_mlg[c(3,10,12,14,15)]
 summary(Data_mlg)
 ```
 
-On crée la nouvelle variable booléenne, valant 1 si le taux de méthane
-(\code{ch4_t}) est supérieur à $1000t$, 0 sinon.
+On crée la nouvelle variable booléenne, valant 1 si le taux de méthane (\code{ch4_t}) est supérieur à $1000t$, 0 sinon.
 
 ```{r, echo=T, eval=T}
 # Je crée une nouvelle variable qualitative (celle qui traduit méthane > 1000t)
@@ -397,14 +393,31 @@ summary(Data_mlg)
 head(Data_mlg)
 ```
 
-La variable \code{dep_met_1000} étant binaire, nous allons utiliser la
-régression logistique.
+La variable \code{dep_met_1000} étant binaire, nous allons utiliser la régression logistique.
 
-Dans un premier temps on crée le modèle complet avec interaction, modèle
-que l'on note $(\mathcal{M}_{GL_{1}})$.
+Dans un premier temps on crée le modèle complet avec interaction, modèle que l'on note $(\mathcal{M}_{GL_{1}})$ :
+
+$$
+\begin{equation*}
+(\text{M}_{GL_{1}}) : 
+
+\begin{cases}
+\text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
+
+\\
+
+\text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
+  + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
+  + \sum_{k=1}^5 (\delta_{1k}  +  \delta_{2k}\cdot\text{nh3_kg}_i ~ + \delta_{3k}\cdot\text{n2o_t}_i + \delta_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{annee}_i = 2014 + k} \\
+  + \sum_{k=1}^5 (\kappa_{1k}  +  \kappa_{2k}\cdot\text{nh3_kg}_i ~ + \kappa_{3k}\cdot\text{n2o_t}_i + \kappa_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i)\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}}\cdot\mathbb{1}_{\text{annee}_i = 2014 + k} \\
+
+\end{cases}
+
+\end{equation*}
+$$
 
 ```{r, echo=T, eval=T}
-modelcompletinter = glm(dep_met_1000~(.)^2 ,data=Data_mlg, family=binomial(link = "logit"))
+modelcompletinter = glm(dep_met_1000~(.)^2, data=Data_mlg, family=binomial(link = "logit"))
 summary(modelcompletinter)
 ```
 
@@ -423,8 +436,7 @@ Le $\text{pseudoR}^2$ vaut 0.73, ce qui est une valeur correcte.
 #bestglm(Data_mlg,family=binomial,IC="BIC")
 ```
 
-Ici, les fonctions \code{bestglm} ne fonctionnent pas, nous n'avons donc
-pas reporté les sorties dans le rapport.
+Ici, les fonctions \code{bestglm} ne fonctionnent pas, nous n'avons donc pas reporté leurs sorties dans le rapport.
 
 ```{r, echo = T, eval = T}
 # Quelque chose semble ne pas fonctionner dans les step.backward
@@ -432,10 +444,47 @@ step.backward = step(modelcompletinter) # AIC
 step.backward = step(modelcompletinter, direction="backward",k=log(nrow(Data_mlg))) # BIC
 ```
 
-Le critère $AIC$ conserve le modèle sans l'interaction annee_inv:TypeEPCI, modèle que l'on note $(\mathcal{M}_{GL_{2}})$.
-Le critère $BIC$ conserve le modèle avec les variables nh3_kg, n2o_t, TypeEPCI, nh3_kg:n2o_t, modèle que l'on note $(\mathcal{M}_{GL_{3}})$.
+Le critère $AIC$ conserve le modèle sans l'interaction annee_inv:TypeEPCI, modèle que l'on note $(\text{M}_{GL_{2}})$.
+Le critère $BIC$ conserve le modèle avec les variables nh3_kg, n2o_t, TypeEPCI, nh3_kg:n2o_t, modèle que l'on note $(\text{M}_{GL_{3}})$.
 
-Au passage, on remarque que $(\mathcal{M}_{GL_{3}})$ est sous_modèle de $(\mathcal{M}_{GL_{2}})$.
+
+$$
+\begin{equation*}
+(\text{M}_{GL_{2}}) : 
+
+\begin{cases}
+\text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
+
+\\
+
+\text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
+  + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i  + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
+  + \sum_{k=1}^5 (\delta_{1k}  +  \delta_{2k}\cdot\text{nh3_kg}_i ~ + \delta_{3k}\cdot\text{n2o_t}_i + \delta_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{annee}_i = 2014 + k} \\
+
+\end{cases}
+
+\end{equation*}
+$$
+
+
+$$
+\begin{equation*}
+(\text{M}_{GL_{3}}) : 
+
+\begin{cases}
+\text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
+
+\\
+
+\text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
+  + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
+
+\end{cases}
+
+\end{equation*}
+
+$$
+
 
 ```{r, echo = T, eval = T}
 # Modèle 2
@@ -444,24 +493,20 @@ model2 = glm(dep_met_1000~annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_
 summary(model2)
 ```
 
-On teste le sous-modèle $(\mathcal{M}_{GL_{2}})$ par rapport au modèle
-complet avec interactions $(\mathcal{M}_{GL_{1}})$.
+On teste le sous-modèle $(\text{M}_{GL_{2}})$ par rapport au modèle complet avec interactions $(\text{M}_{GL_{1}})$.
 
 ```{r, echo = T, eval = T}
 anova(model2, modelcompletinter, test="Chisq")
 ```
 
-La pvaleur est \>\>0.05, on peut donc conserver le modèle
-$(\mathcal{M}_{GL_{2}})$ au risque 5%.
+La pvaleur est >>0.05, on peut donc conserver le modèle $(\text{M}_{GL_{2}})$ au risque 5%.
 
 ```{r, echo = T, eval = T}
 pseudoR2 = 1 - modelinterred$deviance/modelinterred$null.deviance
 pseudoR2
 ```
 
-Le $\text{pseudoR}^2$ vaut 0.72, ce qui reste une valeur correcte (très
-légèrement en dessous du $\text{pseudoR}^2$ du modèle complet avec
-interaction).
+Le $\text{pseudoR}^2$ vaut 0.72, ce qui reste une valeur correcte (très légèrement en dessous du $\text{pseudoR}^2$ du modèle complet avec interaction).
 
 ```{r, echo = T, eval = T}
 # Modèle 3
@@ -473,16 +518,17 @@ summary(model3)
 anova(model3, modelcompletinter, test="Chisq")
 ```
 
-Cependant, le test du sous-modèle $(\mathcal{M}_{GL_{3}})$ vis-à-vis du modèle complet $(\mathcal{M}_{GL_{1}})$ renvoie une pvaleur << 0.05.
-On rejette donc le modèle $(\mathcal{M}_{GL_{3}})$ au risque $5\%$.
+Cependant, le test du sous-modèle $(\text{M}_{GL_{3}})$ vis-à-vis du modèle complet $(\text{M}_{GL_{1}})$ renvoie une pvaleur << 0.05.
+On rejette donc le modèle $(\text{M}_{GL_{3}})$ au risque $5\%$.
 
-```{r, echo=T, eval=T}
+```{r, echo=F, eval=F}
+# A VOIR SI L'ETUDE DU MODELE ADDITIF EST PERTINENTE, JE METS POUR L'INSTANT CETTE SECTION DE CODE AINSI QUE LA SUICANTE EN "echo=F, eval=F"
+
 modelcompletadd = glm(dep_met_1000~. ,data=Data_mlg, family=binomial(link = "logit"))
 summary(modelcompletinter)
 ```
 
-```{r, echo = T, eval = T}
-# Quelque chose semble ne pas fonctionner dans les step.backward
+```{r, echo=F, eval=F}
 step.backward = step(modelcompletadd) # AIC
 step.backward = step(modelcompletadd, direction="backward",k=log(nrow(Data_mlg))) # BIC
 ```
