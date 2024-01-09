@@ -448,45 +448,23 @@ $$
 
 Nous allons dans cette section tenter d'expliquer le dépassement d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire généralisé.
 
-<!-- TODO : malheureusement, j'ai pas pu mettre en commun parce que mon RStudio réussissait pas à ouvrir le fichier .csv
-Dans un monde à peut près idéal, remplacer le bout de code R suivant par un Data_mlg = Data_log devrait suffir. 
--->
+<!-- TODO (rien à faire a priori) : normalement, la fusion de nos codes devrait fonctionner -->
 ```{r, echo=F, eval=F}
-library(bestglm)
+#library(bestglm)
 # TODO : voir si la libraire est vraiment nécessaire
-
-# TODO : à remettre en commun
-
-# Ici je refais la sélection des variables (je ne leur applique ni log ni scale)
-Data_mlg = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
-Data_mlg$code_epci = as.factor(Data_mlg$code_epci)
-Data_mlg$lib_epci = as.factor(Data_mlg$lib_epci)
-Data_mlg$annee_inv = as.factor(Data_mlg$annee_inv)
-Data_mlg$TypeEPCI = as.factor(Data_mlg$TypeEPCI)
-
-# On prend les données quantitatives log
-Data_mlg$nh3_kg = log(Data_mlg$nh3_kg)
-Data_mlg$n2o_t = log(Data_mlg$n2o_t)
-
-# Je retire les outliers
-Data_mlg <- subset(Data_mlg, lib_epci != "Toulouse Métropole") #, "CC Pays de Nay"))
-Data_mlg <- subset(Data_mlg, lib_epci != "CC Pays de Nay")
-
-summary(Data_mlg)
-
-# Je garde les variables qui m'intéressent
-Data_mlg <- Data_mlg[c(3,10,12,14,15)]
-
-summary(Data_mlg)
 ```
 
 On crée la nouvelle variable booléenne, valant 1 si le taux de méthane (\code{ch4_t}) est supérieur à $1000t$, 0 sinon.
 <!-- TODO : normaliser la notation des variables (choisir entre $$ ou \code{}) -->
 
-<!-- TODO : passer en echo = T (sûrement) -->
+<!-- TODO : passer en echo = F (sûrement) -->
 ```{r, echo=T, eval=T}
+# Tentative de mise en correspondance des codes
+
+Data_mlg = Data_final[c(3,10,12,14,15)]
+
 # Je crée une nouvelle variable qualitative (celle qui traduit méthane > 1000t)
-Data_mlg$dep_met_1000 <- as.factor(as.numeric(Data_mlg$ch4_t>1000))
+Data_mlg$dep_met_1000 <- as.factor(as.numeric(Data_mlg$ch4_t>log(1000)))
 
 summary(Data_mlg)
 
@@ -534,7 +512,7 @@ pseudoR2
 ```
 
 Le $\text{pseudoR}^2$ vaut 0.73, ce qui est une valeur correcte.
-<!-- TODO : je sais pas si on peut apporter plus de choses à cette remarque -->
+<!-- TODO : je sais pas si on peut apporter plus de choses à cette remarque + la valeur du pseudoR2 a changé avec la fusion des TypeEPCI -->
 
 ```{r, echo = T, eval = F}
 # Les bestglm ne fonctionnent pas
