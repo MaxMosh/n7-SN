@@ -1,12 +1,9 @@
 ---
-title: "Projet_EMS"
+title: "Projet d'étude : Analyse de données & Éléments de modélisation statistique"
 output:
   pdf_document: default
   html_document: default
 date: "2023-09-29"
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r,echo=F, error=F,warning=F}
 library(corrplot)
-library(tidyverse)
+#library(tidyverse)
 library(gridExtra)
 library(reshape2)
 library(ggplot2)
@@ -24,37 +21,41 @@ library(FactoMineR)
 
 # Statistiques descriptives
 
-Le jeu de données comprend $984$ mesures des emissions de polluants
-atmosphériques tous secteurs d'activités confondues des EPCI
-(Etablissements Publics de Coopération Intercommunale) de la région
-Occitanie de 2014 à 2019.
+Le jeu de données comprend $984$ mesures des émissions de polluants atmosphériques tous secteurs d’activités confondues des EPCI (Etablissements Publics de Coopération Intercommunale) de la région Occitanie de 2014 à 2019.
 
-Chaque mesure est décrite par les variables qualitatives suivantes : +
-*lib_epci* : son nom + *code_epci* : son code d'identification +
-*nomdepart* : son (ses) département(s) d'appartenance + *TypeEPCI* : CC
-(communauté de commune), CA (communauté d'agglomération), Métrople et CU
-(communauté urbaine) + *annee_inv* : l'année de mesure
+Chaque mesure est décrite par les variables qualitatives suivantes :
++ *lib_epci* : son nom
++ *code_epci* : son code d’identification
++ *nomdepart* : son (ses) département(s) d’appartenance
++ *TypeEPCI* : CC (communauté de commune), CA (communauté d’agglomération), Métrople et CU (communauté urbaine)
++ *annee_inv* : l'année de mesure
 
-Et par les variables quantitatives suivantes : + *nox_kg* : oxyde
-d'azote en kg + *so2_kg* : oxyde de soufre en kg + *pm10_kg* :
-particules en suspension dans l'air de diamètre inférieur à 10 µm +
-*pm25_kg* : particules en suspension dans l'air de diamètre inférieur à
-2.5 µm + *co_kg* : monoxyde de carbone + *c6h6_kg* : benzène + *nh3_kg*
-: Ammoniac + *ges_teqco2* : gaz à effet de serre + *ch4_t* : méthane +
-*co2_t* : dioxyde de carbone + *n2o_t* : protoxyde d'azote + *latit* :
-sa latitude + *longit* : sa longitude
+Et par les variables quantitatives suivantes : 
++ *nox_kg* : oxyde d’azote en kg
++ *so2_kg* : oxyde de soufre en kg
++ *pm10_kg* : particules en suspension dans l’air de diamètre inférieur à 10 µm
++ *pm25_kg* : particules en suspension dans l’air de diamètre inférieur à 2.5 µm
++ *co_kg* : monoxyde de carbone
++ *c6h6_kg* : benzène
++ *nh3_kg* : ammoniac
++ *ges_teqco2* : gaz à effet de serre
++ *ch4_t* : méthane
++ *co2_t* : dioxyde de carbone
++ *n2o_t* : protoxyde d’azote
++ *latit* : sa latitude
++ *longit* : sa longitude
 
-```{r}
+Dans la suite de ce rapport, nous utilisons la notation $\Delta$ pour faire référence à des plots qui sont disponibles dans le Rmd mais que nous avons décidé de ne pas inclure dans le rapport. 
+
+```{r, echo=False}
 Data = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
 ```
 
-```{r}
+```{r, echo=False}
 head(Data)
 ```
 
 ```{r, echo = FALSE}
-# TODO : pour moi ici les as.factor ne doivent être fait que sur les variables qualitatives
-
 Data$TypeEPCI=as.factor(Data$TypeEPCI)
 Data$annee_inv=as.factor(Data$annee_inv)
 Data$nomdepart=as.factor(Data$nomdepart)
@@ -79,279 +80,380 @@ Data$Tarn.et.Garonne = as.factor(Data$Tarn.et.Garonne)
 Data$Vaucluse = as.factor(Data$Vaucluse)
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include = FALSE}
 summary(Data)
 ```
-
-```{r}
-attributes(Data)
-```
-
-```{r str}
+```{r str, include = FALSE}
 str(Data)
 ```
 
 ## Analyse unidimentionnelle
 
-```{r}
-Datalog = log(Data[,4:14]) #à justifier
-head(Datalog)
+### Analyse des variables quantitatives
+
+Nous observons avec ce boxplot que nos variables n'ont pas les mêmes échelles de valeur (MODIF : ordres de grandeur), cela va biaiser nos analyses de variances. Nous appliquons donc une transformation logarithmique aux valeurs quantitatives.
+
+```{r, echo = FALSE}
+ggplot(melt(Data[4:14]),aes(x=variable,y=value))+geom_boxplot()
 ```
 
-###Quantitative
+<!-- TODO : mettre graphe cote à cote --> 
+Nous stockons le dataset avec les variables quantitatives transformées dans la variable $Datalog$. <!-- MODIF : j'ai changé un peu la phrase --> 
+
+```{r, echo = FALSE}
+Datalog = Data
+Datalog[,4:14] = log(Datalog[,4:14])
+```
+
+Nous remarquons que la transformation logarithme suffit à mieux visualiser nos données. Nous utiliserons ce jeu de données par la suite.
+
+```{r, echo = FALSE}
+ggplot(melt(Datalog[,4:14]),aes(x=variable,y=value))+geom_boxplot()
+```
+
+<!-- MODIF (à faire) : est-ce qu'on supprime le bout de code R qui suit ? --> 
+```{r, echo = FALSE}
+#ggplot(Datalog) + # plot fonction densité
+ # aes(x = nox_kg) +
+#  geom_density() +
+ # ggtitle("Nombre") +
+  #xlab("Heures") +
+  #ylab("Densité")
+```
+
+Nous affichons maintenant la fonction de répartition de la concentration d'oxyde d'azote. 
+
+$(\Delta)$ D'autres graphes similaires sont disponibles dans le Rmd. <!-- MODIF : j'ai modifié un peu l'approche avec le delta --> 
+
+```{r, echo = FALSE}
+ggplot(Datalog) +
+  aes(x = nox_kg) +
+  stat_ecdf() +
+  ylab(" ") +
+  ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
+```
+
+Les données sont uniformément réparties. Cela confirme que nous n'avons pas besoin d'appliquer d'autres transformations aux variables quantitatives.
+<!-- MODIF (proposition) : peut-être qu'on peut changer la deuxième phrase en :
+"Nous utiliserons donc ce dataset pour la suite de notre étude."
+Peut-être qu'on pourrait nous reprocher que de manière générale, ça ne suffit pas à confirmer qu'on a rien besoin d'appliquer d'autres aux données. --> 
+
+```{r, echo = FALSE, include = False}
+ggplot(Datalog) +
+  aes(x = so2_kg) +
+  stat_ecdf() +
+  ylab(" ") +
+  ggtitle("Fonction de répartition de la concentration d'oxyde de soufre en kg")
+```
+
+```{r, echo = FALSE, include = False}
+ggplot(Datalog) +
+  aes(x = co_kg) +
+  stat_ecdf() +
+  ylab(" ") +
+  ggtitle("Fonction de répartition de la concentration de monoxyde de carbone")
+```
+```{r, echo = FALSE, include = False}
+ggplot(Datalog) +
+  aes(x = pm25_kg) +
+  stat_ecdf() +
+  ylab(" ") +
+  ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
+```
+```{r, echo = FALSE, include = False}
+ggplot(Datalog) +
+  aes(x = pm25_kg) +
+  stat_ecdf() +
+  ylab(" ") +
+  ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
+```
+```{r, echo = FALSE, include = False}
+ggplot(Datalog) +
+  aes(x = pm25_kg) +
+  stat_ecdf() +
+  ylab(" ") +
+  ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
+```
+
+### Analyse des variables qualitatives
+
+Nous nous intéressons maintenant aux variables qualitatives : $TypeEPCI$ & $annee_inv$.
+$(\Delta)$ Nous remarquons que nous avons le même nombre de prises de mesure pour chaque année, donc aucunes données ne semblent manquer.
+
+```{r, echo = FALSE, include = False}
+ggplot(Data) + aes(annee_inv) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction des années")
+```
+
+Nous affichons la répartition des mesures en fonction de $TypeEPCI$. Nous remarquons que les catégories CA, CU et Metropole ne comprennent pas beaucoup de valeurs par rapport au type CC. Nous choissisons donc de combiner les trois catégories pour avoir un nombre suffisant de valeurs pour chacun de nos différents niveaux.
+
+```{r, echo = FALSE}
+ggplot(Data) + aes(TypeEPCI) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction du Type EPCI (avant)")
+```
+
+<!-- TODO : mettre graphe cote à cote --> 
+
+```{r,  echo = FALSE}
+Datalog_ = Datalog
+levels(Datalog_[c(3,10,12, 14,15)]$TypeEPCI) <- c("CA/CU/Métropole", "CC", "CA/CU/Métropole", "CA/CU/Métropole")
+ggplot(Datalog_) + aes(TypeEPCI) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction du Type EPCI (après)")
+```
+
+
+## Analyse bidementionnelle
+
+En affichant le corrplot, nous observons que tout les polluants sont corrélés positivement les uns aux autres sauf nh3_kg, ch4_t et n2o_t. En effet, ces derniers semblents être corrélés seulement qu'entre eux.
+
+<!-- MODIF (proposition) : je modifierais les deux phrases du dessus de la manière suivante :
+"En affichant la matrice de corrélation des variables de notre Dataset, nous observons que la plupart des polluants sont corrélés positivement les uns avec les autres à l'exception de nh3_kg, ch4_t et n2o_t qui ne semblent être corrélés à aucune autre variable."
+--> 
 
 ```{r}
+corrplot(cor(Datalog_[4:14]), method="ellipse")
+```
+
+<!-- TODO : subplot --> 
+
+```{r}
+boxplot(Datalog$pm10_kg~Datalog$TypeEPCI)
+```
+
+
+# ACP
+<!-- TODO : faut qu'on modifie ce titre, je te propose "Visualisation des individus" (comme dans le sujet un peu lol) --> 
+
+```{r}
+library(mclust)
+library(cluster)
+library(factoextra)
+library(FactoMineR)
+library(ppclust)
+library(reticulate)
+library(ggplot2)
+library(reshape)
+library(corrplot)
+library(gridExtra)
+library(circlize)
+library(viridis)
 library(reshape2)
-ggplot(melt(Datalog),aes(x=variable,y=value))+geom_boxplot()
+library(klaR)
 ```
 
-###Qualitative
+Nous réalisons une ACP pour visualiser nos données dans un espace de dimension inférieure.
 
-```{r}
-barplot(table(Data$TypeEPCI))
+```{r,  echo = FALSE}
+ACPpolluants <- PCA(Datalog_[,1:16], scale.unit = TRUE, ncp = 11, quali.sup = c(1,2,3,15,16), graph = FALSE)
 ```
 
-```{r}
-barplot(table(Data$annee_inv))
+Nous remarquons avec les graphes ci-dessous que les deux premières dimensions constituent 90% de la variance. Nous allons poursuivre les analyses par ces deux dimensions.
+
+```{r,  echo = FALSE}
+ggplot(data.frame(ACPpolluants$eig)) + aes(x = 1:11, y =ACPpolluants$eig[,"percentage of variance"]) + geom_col() + xlab("Dimension") + ylab("%") + ggtitle("Pourcentage de variance par dimension")
+ggplot(data.frame(ACPpolluants$eig)) + aes(x = 1:11, y =ACPpolluants$eig[,"cumulative percentage of variance"]) + geom_col() + xlab("Dimension") + ylab("%") + ggtitle("Pourcentage de variance cumulée")
 ```
 
-```{r}
-plot(ecdf(Datalog$so2_kg)) #,xlim = c(320,400)
+<!-- TODO : mettre droite -->
+
+Nous affichons le cercle des corrélations. La première dimension est consituée de la majorité des polluants sauf ch4_t, nh3_kg et n2o_t qui constituent la deuxième dimension. 
+
+<!-- MODIF (proposition) : je te propose (c'est le verbe constituer qui me gêne un peu)
+"La première dimension décrit toutes les variables sauf ch4_t, nh3_kg et n2o_t qui décrivent la deuxième dimension."
+--> 
+
+<!-- TODO : mettre lien avec l'autre corrplot -->
+
+```{r,  echo = FALSE}
+fviz_pca_var(ACPpolluants,axes =c(1,2))
 ```
 
-# PCA
+Nous affichons également le graphe des individus colorés en fonction du Type EPCI. Nous remarquons que les types CA/CU/Metropole ont tendance à avoir en plus grandes quantité les polluants de la première dimension.   <!-- MODIF : j'ai modifié un peu la tournure de la phrase --> 
+Nous remarquons aussi deux groupements extrêmes. Un groupement très peu pollué et un autre plus pollué. Après identification, il s'agit de Toulouse Métropole et de CC Pays de Nay. Nous décidons d'enlever ces deux groupements car ils ne représentent pas la tendance général ; ce sont des outliers qui créeront une grande disparité.    <!-- MODIF : j'ai modifié un peu la tournure de la phrase --> 
 
-On fait une ACP. lol xD
-
-```{r}
-Datalog = Data[1:16]
-Datalog[,4:14] = log(Datalog[,4:14])
-
-ACPpolluants <- PCA(Datalog, scale.unit = TRUE, ncp = 11, quali.sup = c(1,2,3,15,16), graph = FALSE)  # Utilisation de scale.unit = TRUE pour standardiser les données.
-
-plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.1, legends = NULL)  #
-
-#plot.PCA(ACPpolluants, invisible = "quali", habillage = 2, legends = c("ind"))
-
-#dist_to_center <- apply(ACPpolluants$ind$coord, 1, function(x) sum(x^2))
-
-# Identifier les individus considérés comme des outliers (par exemple, les individus au-delà du seuil de 95e percentile)
-#outlier_threshold <- quantile(dist_to_center, 1-12/985) #On garde les 12 valeurs abberantes on identifie 2 outliers
-#outliers <- which(dist_to_center > outlier_threshold)
-
+```{r,  echo = FALSE}
+fviz_pca_ind(ACPpolluants,col.ind=as.factor(Datalog_$TypeEPCI),geom = c("point"),axes=c(1,2))
+#fviz_pca_ind(ACPpolluants,col.ind=as.factor(Datalog$annee_inv),geom = c("point"),axes=c(1,2)) utile de mettre celui avec les années ?
 ```
 
-```{r}
-layout(matrix(1:2,1,2))
-plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.1, legends = NULL) 
-plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 3, cex = 0.1, legends = NULL)  #
+$(\Delta)$ Nous affichons aussi cette représentation sans le groupement des $TypeEPCI$. Cela confirme que nous avons un classement de la pollution en fonction du Type EPCI. Si on va du plus au moins pollué, on a : Metropole, CU, CA puis CC.
 
+```{r,  echo = FALSE, include = FALSE}
+fviz_pca_ind(ACPpolluants,col.ind=as.factor(Datalog$TypeEPCI),geom = c("point"),axes=c(1,2))
 ```
 
-```{r}
-layout(matrix(1:2,1,2))
-barplot(ACPpolluants$eig[,"cumulative percentage of variance"],names.arg=paste("Dim",1:11,sep="."))
-abline(a = 90, b=0, col="red", lty=2, lwd=3)
-barplot(ACPpolluants$eig[,"percentage of variance"], names.arg=paste("Dim",1:11,sep="."))
-```
-
-```{r}
-Datalog = Data[1:16]
-Datalog[,4:14] = log(Datalog[,4:14])
-Data_final <- subset(Datalog, lib_epci != "Toulouse Métropole") #, "CC Pays de Nay"))
+```{r,  echo = FALSE}
+Data_final <- subset(Datalog_, lib_epci != "Toulouse Métropole")
 Data_final <- subset(Data_final, lib_epci != "CC Pays de Nay")
-
-print(nrow(Data_final))
-summary(Data_final)
 ```
 
-```{r}
-ggplot(melt(Data_final[4:14]),aes(x=variable,y=value))+geom_boxplot()
+$\Delta$ Nous réaffichons les mêmes graphes sans les deux outliers.
+
+```{r,  echo = FALSE, include = FALSE}
+ACPpolluants_ <- PCA(Data_final[1:16], scale.unit = TRUE, ncp = 3, quali.sup = c(1,2,3,15,16), graph = FALSE)  # Utilisation de scale.unit = TRUE pour    (TODO : faut qu'on supprime le commentaire ou qu'on le complète)
+fviz_pca_var(ACPpolluants_,axes =c(1,2))
+fviz_pca_ind(ACPpolluants_,col.ind=as.factor(Data_final$TypeEPCI),geom = c("point"),axes=c(1,2))
 ```
 
-```{r}
-ACPpolluants <- PCA(Data_final, scale.unit = TRUE, ncp = 3, quali.sup = c(1,2,3,15,16), graph = FALSE)  # Utilisation de scale.unit = TRUE pour standardiser les données.
-# on degage la dimension 3
-plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.1, legends = NULL) 
-plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 3, cex = 0.1, legends = NULL) 
-
-plot(ACPpolluants, choix="var",invisible = "quali", habillage = 15, legends = NULL, axes =c(1,2)) 
-plot(ACPpolluants, choix="ind",invisible = "quali", habillage = 15, cex = 0.3, legends = NULL, axes =c(1,3)) 
-
-
-
-```
+# Clustering (pas rédigé)
+<!-- TODO : changer le titre peut-être (genre "Classification des ...") -->
+<!-- TODO : rédiger la partie clustering -->
+<!-- TODO : repasser sur les codes, notamment les parties indiquées "# A completer" --> 
 
 ```{r}
-f1 = fviz_contrib(ACPpolluants, choice="var", axes=1, color = "black" ,fill="turquoise4")
-f2 = fviz_contrib(ACPpolluants, choice="var", axes=2, color ="black", fill = "#3EBB00")
-f3 = fviz_contrib(ACPpolluants, choice="var", axes=3, color ="black", fill = "#E6E600")
-plot_grid(f1,f2,f3)
-```
-
-```{r}
-
-```
-
-```{r}
-ACPpolluants$var
-```
-
-```{r}
-ggplot(Datalog,aes(x=annee_inv))+
-  geom_bar()
-```
-
-```{r}
-corrplot(cor(Data_final[4:14]), method="ellipse")
-```
-
-Test rien à voir avec le sujet
-
-```{r}
-plot(Data$nox_kg, type = "l")
-plot(log(Data$nox_kg), type = "l")
-```
-
-```{r}
-ggplot(Data, aes(nox_kg)) + 
-  stat_ecdf(geom = "step")+xlab("Variable Alcool")+
-  ylab("")+ggtitle("Fonction de répartition empirique")+
-  geom_hline(yintercept=0, linetype="dashed")+geom_hline(yintercept=1, linetype="dashed")
-
-ggplot(Datalog, aes(nox_kg)) + 
-  stat_ecdf(geom = "step")+xlab("Variable Alcool")+
-  ylab("")+ggtitle("Fonction de répartition empirique")+
-  geom_hline(yintercept=0, linetype="dashed")+geom_hline(yintercept=1, linetype="dashed")
-```
-
-```{r}
-g1<-ggplot(Data,aes(x=nox_kg))+geom_histogram(bins=15,color="black", fill="white")+
-  ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
-g2<-ggplot(Datalog,aes(x=nox_kg))+geom_histogram(bins=15,color="black", fill="white")+
-  ggtitle("Histo. des effectifs")+ylab("Frequency")+xlab("Alcool")
-grid.arrange(g1,g2,ncol=2)
-```
-
-Clustering
-
-```{r}
-Data_poll = Data[,4:14]
-
-Data_poll
-
-reskmeans<-kmeans(scale(Datalog[,4:14]), 7, nstart = 5)
-
+reskmeans<-kmeans((Data_final[,4:14]),centers=5)
 table(reskmeans$cluster)
-
-fviz_cluster(reskmeans,data=Datalog[,4:14],type="norm",labelsize=0)
-```
-
-
-
-
-
-## LDA
-### Exploration et prédiction du dépassement d'émission de méthane de 1000 t par an
-
-On veut prédire si la variable ch4_t dépasse le seuil de 1000 t par an. Nous allons alors créer une nouvelle variable y avec deux levels : 'above' si ch4_t > 1000 et 'below' sinon.
-
-```{r}
-y = as.factor(Data$ch4_t < 1000)
-levels(y) = c('above','below')
-```
-
-Pour la suite, nous remplaçons la colonne ch4_t, dans les données modifiées, par y.
-
-```{r}
-DataLDA = Datalog[,4:14]
-DataLDA$ch4_t = y
+fviz_cluster(reskmeans,data=Data_final[,4:14],ellipse.type="norm",labelsize=8,geom=c("point"), axes = c(1,2))+ggtitle("")
 ```
 
 ```{r}
-DataLDA
+reskmeans<-kmeans((Datalog[,4:14]),centers=7)
+table(reskmeans$cluster)
+fviz_cluster(reskmeans,data=Datalog[,4:14],ellipse.type="norm",labelsize=8,geom=c("point"), axes = c(1,2))+ggtitle("")
 ```
-Pour préciser ce que LDA vise à faire, nous nous mettons d'accord que LDA est une PCA appliquée sur les classes des centroides, avec le métrique Mahalanobis (i.e. les données sont tout d'abord sphérées). La LDA appliquée sur 2 nouveaux individus (les 2 centroides des 2 classes : 'above' et 'below') dans un espace de 11 variables.
-Nous cherchons à visualiser les 2 classes avec une PCA représentation pour les données log-modifiées.
+```{r,eval=F}
+# A completer
+Kmax<-15
+reskmeanscl<-matrix(0,nrow=nrow(Data_final),ncol=Kmax-1)
+Iintra<-NULL
+for (k in 2:Kmax){
+  resaux<-kmeans(Data_final[,4:14],centers=k)
+  reskmeanscl[,k-1]<-resaux$cluster
+  Iintra<-c(Iintra,resaux$tot.withinss)
+}
+
+df<-data.frame(K=2:15,Iintra=Iintra)
+ggplot(df,aes(x=K,y=Iintra))+geom_line()+geom_point()+xlab("Nombre de classes")+ylab("Inertie intraclasse")
+```
+```{r,eval=F}
+# A completer
+Kmax<-15
+reskmeanscl<-matrix(0,nrow=nrow(Datalog),ncol=Kmax-1)
+Iintra<-NULL
+for (k in 2:Kmax){
+  resaux<-kmeans(Datalog[,4:14],centers=k)
+  reskmeanscl[,k-1]<-resaux$cluster
+  Iintra<-c(Iintra,resaux$tot.withinss)
+}
+
+df<-data.frame(K=2:15,Iintra=Iintra)
+ggplot(df,aes(x=K,y=Iintra))+geom_line()+geom_point()+xlab("Nombre de classes")+ylab("Inertie intraclasse")
+```
+
+# ANCOVA
+<!-- TODO : mettre un titre un peu moins brutal aussi (quitte à même laisser ANCOVA entre parenthèses en suffixe) -->
+
+Nous souhaitons étudier l'émission de méthane $ch4\_t$ en fonction de l'ammoniac $nh3\_kg$, du protoxyde d'azote $n2o\_t$, du type d'EPCI $TypeEPCI$ et de l'année $annee\_inv$. Nous avons des variables quantitatives et qualitatives, nous allons donc faire une ANCOVA. Nous effectuons l'ANCOVA sur les données modifiées (par le logarithme).
+
+Dans un premier temps, on considère le modèle complet avec interactions.
+
+$$
+(M_1) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \gamma_{ij} + (a1 + a2_i + a3_j)\times nh3\_kg_{ijk} + (b1 + b2_i + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
+
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+} \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
+$$
+
+$ch4\_t_{ijk}$ représentes la valeur de la $k^{ème}$ mesure du $ch4\_t$ pour la $i^{ème}$ année et pour le $j^{ème}$ type d'EPCI.
+
+```{r,  echo = FALSE }
+complet<-lm(ch4_t ~ .^2 ,data=Datalog_[c(3,10,12, 14,15)])
+summary(complet)
+```
+
+Nous supposons ensuite le modèle suivant sans interactions : 
+
+$$
+(M_2) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \theta \times nh3\_kg_{ijk} + \gamma \times n2o\_t_{ijk} + 
+
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+}\mathcal{N}(0,\sigma^2) \end{array}\right. 
+$$
+
+```{r,  echo = FALSE,  include = FALSE}
+mod_si<-lm(ch4_t ~ . ,data=Datalog_[c(3,10,12, 14,15)])
+summary(mod_si)
+```
+
+Au vue des sorties des tests de student pour chaque coefficient, il semblerait que nous puissions supprimer certaines de ces interactions. Nous effectuons alors un test de sous modèle de Fisher pour voir si nous pouvons enlever les interactions.
+
+```{r, echo=FALSE}
+anova(mod_si,complet)
+```
+
+Notre p-valeur est très faible, nous ne pouvons pas supprimer toutes les interactions. Nous allons à la place utiliser un algorithme de sélection de variable pour réduire notre modèle.
+
+Nous choissisons la méthode backward avec les critères BIC et AIC.
+
+```{r, echo = FALSE}
+stepAIC(complet,trace=F,direction="backward")
+```
+
+```{r, echo = FALSE}
+stepAIC(complet,trace=F,direction="backward",k=log(nrow(Datalog_[c(3,10,12, 14,15)])))
+```
+
+Les deux algorithmes nous donne le même sous modèle :
+
+$$
+(M_3) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + (a1 + a3_j)\times nh3\_kg_{ijk} + (b1 + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
+
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+} \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
+$$
+
+Nous avons supprimé 3 coefficients. Nous vérifions ce resultat avec un test de sous modèle.
+
 ```{r}
-ACPLDA <- PCA(DataLDA, scale.unit = TRUE, quali.sup = c(9), graph=FALSE)
-summary(ACPLDA)
-plot(ACPLDA, choix="ind", invisible="quali", habillage=9, label="none")
-```
-Nous nous rappelons que l'hypothèse qui se pose pour une LDA est que les individus d'une même classe sont tirées depuis un Gaussien commun avec une même matrice de covariance. En regardant les 2 nuages des points sur le PCA plot, elles sont de la forme assez éllipsoide et uniforme, qui permet de dire que les individus sont bien d'un même Gaussien. De plus, la deuxième dimension est expliquée ci-dessus proportionnelle à l'émission en ch4, donc quand on observe les 2 nuages, celle représentante la classe 'above' est au-dessus (i.e. supérieure) de la 'below', totalement cohérent à ce qu'on a trouvé dans la PCA.  
-De plus, on se rend compte que la projection des individus dans le sous-espace 2D explique à peu près 90% de la variance donc on ne perd pas beaucoup d'informations.
-
-Pour la prédiction, nous divisons le jeu de données en deux : un train set de 70% des données et un test set de 30% des données.
-
-```{r}
-train =  
-test =
+M3 = lm(ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
+    nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, data = Datalog_[c(3, 
+    10, 12, 14, 15)])
 ```
 
-## ANOVA à 2 facteurs
-Analyser la relation entre l'émission des gas à effets de serrre et le type EPCI et l'année.  
-L'émission des gas à effet de serre pour chaque modalité croisée du typeEPCI et l'année.
-```{r}
-table(Data$TypeEPCI,Data$annee_inv)
-Data %>%
-  group_by(TypeEPCI,annee_inv) %>%
-  rstatix::get_summary_stats(ges_teqco2, type="mean_sd")
+```{r, echo = FALSE}
+anova(M3, complet)
 ```
 
-```{r}
-ggplot(Data,aes(x=annee_inv,y=ges_teqco2,fill=TypeEPCI)) + geom_boxplot()
-ggplot(Data,aes(x=TypeEPCI,y=ges_teqco2,fill=annee_inv)) + geom_boxplot()
+Notre p-valeur est bien supérieur à $0.05$ donc on ne rejette pas ce sous modèle.
+
+Par curiosité, nous avons voulu supprimer certaines interactions manuellement. Nous avons trouvé que nous pouvions supprimer l'interaction entre $nh3\_kg$ et $n2o\_t$ et toujours avoir une p-valeur supérieure à $0.05$.
+
+```{r, echo = FALSE}
+anova(lm(formula = ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
+     nh3_kg:TypeEPCI + n2o_t:TypeEPCI, data = Datalog_[c(3, 
+    10, 12, 14, 15)]), complet)
 ```
 
-Interaction plot
-```{r}
-#interaction.plot(Data$TypeEPCI, Data$annee_inv, Data$ges_teqco2,
- #                main="interaction plot", xlab="TypeEPCI", ylab="ges_teqco2",
-  #               trace.label ="annee_inv")
-interaction.plot(Data$annee_inv, Data$TypeEPCI, Data$ges_teqco2,
-                 main="interaction plot", ylab="TypeEPCI", xlab="ges_teqco2",
-                 trace.label ="annee_inv")
-```
-Les droites du plot de l'intéraction sont parallèles donc on peut dire qu'il n'y a pas d'effet d'intéraction.
+Nous pourrions alors considérer le modèle final suivant : 
 
-```{r}
-anova.complet = lm(ges_teqco2~TypeEPCI * annee_inv, data=Data)
-summary(anova.complet)
-```
-Commentaire :
-Le coefficient de détermination R² est à 0.67, l'ajustement n'est pas mal mais pas trop bon.
-On accepte la nullité de tous les paramètres de l'effet différentiel de l'année et de l'effet d'intéraction. On peut dire que les différentes années jouent le même rôle
+$$
+(M_4) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + (a1 + a3_j)\times nh3\_kg_{ijk} + (b1 + b3_j)\times n2o\_t_{ijk} +
 
-```{r}
-anova.additif= lm(ges_teqco2~TypeEPCI + annee_inv, data=Data)
-anova(anova.additif, anova.complet)
-```
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+} \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
+$$
 
-```{r}
-anova(lm(ges_teqco2~annee_inv, data=Data), anova.additif)
-anova(lm(ges_teqco2~TypeEPCI, data=Data), anova.additif)
-```
-
-```{r}
-anova(lm(ges_teqco2~TypeEPCI, data=Data), anova.complet)
-```
-
-```{r}
-anova(lm(ges_teqco2~1, data=Data), lm(ges_teqco2~TypeEPCI, data=Data))
-```
+<!-- TODO : conclure quant au modèle que l'on garde au final -->
 
 
 
-
-
-
-
+<!-- TODO (note indicative à retirer) : la partie MLG a été faite par Maxime (sur un fichier à part initialement, donc il peut y avoir des modifs à refaire) -->
 ## Modèle linéaire généralisé
+<!-- TODO : titre agressif également -->
 
 Nous allons dans cette section tenter d'expliquer le dépassement d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire généralisé.
 
+<!-- TODO : malheureusement, j'ai pas pu mettre en commun parce que mon RStudio réussissait pas à ouvrir le fichier .csv
+Dans un monde à peut près idéal, remplacer le bout de code R suivant par un Data_mlg = Data_log devrait suffir. 
+-->
 ```{r, echo=F, eval=F}
 library(bestglm)
+# TODO : voir si la libraire est vraiment nécessaire
 
 # TODO : à remettre en commun
 
@@ -372,14 +474,16 @@ Data_mlg <- subset(Data_mlg, lib_epci != "CC Pays de Nay")
 
 summary(Data_mlg)
 
-# Je garde les variables qui m'intéresse
+# Je garde les variables qui m'intéressent
 Data_mlg <- Data_mlg[c(3,10,12,14,15)]
 
 summary(Data_mlg)
 ```
 
 On crée la nouvelle variable booléenne, valant 1 si le taux de méthane (\code{ch4_t}) est supérieur à $1000t$, 0 sinon.
+<!-- TODO : normaliser la notation des variables (choisir entre $$ ou \code{}) -->
 
+<!-- TODO : passer en echo = T (sûrement) -->
 ```{r, echo=T, eval=T}
 # Je crée une nouvelle variable qualitative (celle qui traduit méthane > 1000t)
 Data_mlg$dep_met_1000 <- as.factor(as.numeric(Data_mlg$ch4_t>1000))
@@ -422,6 +526,7 @@ summary(modelcompletinter)
 ```
 
 On voit que beaucoup de variables ont une pvaleur > 0.05. On va alors s'intéresser à la simplification du modèle.
+<!-- TODO : pourquoi pas réutiliser cette tournure de phrase pour la partie ANCOVA ? -->
 
 ```{r, echo=T, eval=T}
 pseudoR2 = 1 - modelcompletinter$deviance/modelcompletinter$null.deviance
@@ -429,6 +534,7 @@ pseudoR2
 ```
 
 Le $\text{pseudoR}^2$ vaut 0.73, ce qui est une valeur correcte.
+<!-- TODO : je sais pas si on peut apporter plus de choses à cette remarque -->
 
 ```{r, echo = T, eval = F}
 # Les bestglm ne fonctionnent pas
@@ -499,14 +605,14 @@ On teste le sous-modèle $(\text{M}_{GL_{2}})$ par rapport au modèle complet av
 anova(model2, modelcompletinter, test="Chisq")
 ```
 
-La pvaleur est >>0.05, on peut donc conserver le modèle $(\text{M}_{GL_{2}})$ au risque 5%.
+La pvaleur est >>0.05, on peut donc conserver le modèle $(\text{M}_{GL_{2}})$ au risque $5\%$.
 
 ```{r, echo = T, eval = T}
 pseudoR2 = 1 - modelinterred$deviance/modelinterred$null.deviance
 pseudoR2
 ```
 
-Le $\text{pseudoR}^2$ vaut 0.72, ce qui reste une valeur correcte (très légèrement en dessous du $\text{pseudoR}^2$ du modèle complet avec interaction).
+Le $\text{pseudoR}^2$ vaut 0.72, ce qui reste une valeur correcte (très légèrement en dessous du $\text{pseudoR}^2$ du modèle complet avec interactions).
 
 ```{r, echo = T, eval = T}
 # Modèle 3
@@ -520,15 +626,3 @@ anova(model3, modelcompletinter, test="Chisq")
 
 Cependant, le test du sous-modèle $(\text{M}_{GL_{3}})$ vis-à-vis du modèle complet $(\text{M}_{GL_{1}})$ renvoie une pvaleur << 0.05.
 On rejette donc le modèle $(\text{M}_{GL_{3}})$ au risque $5\%$.
-
-```{r, echo=F, eval=F}
-# A VOIR SI L'ETUDE DU MODELE ADDITIF EST PERTINENTE, JE METS POUR L'INSTANT CETTE SECTION DE CODE AINSI QUE LA SUICANTE EN "echo=F, eval=F"
-
-modelcompletadd = glm(dep_met_1000~. ,data=Data_mlg, family=binomial(link = "logit"))
-summary(modelcompletinter)
-```
-
-```{r, echo=F, eval=F}
-step.backward = step(modelcompletadd) # AIC
-step.backward = step(modelcompletadd, direction="backward",k=log(nrow(Data_mlg))) # BIC
-```
