@@ -47,11 +47,11 @@ Et par les variables quantitatives suivantes :
 
 Dans la suite de ce rapport, nous utilisons la notation $\Delta$ pour faire référence à des plots qui sont disponibles dans le Rmd mais que nous avons décidé de ne pas inclure dans le rapport. 
 
-```{r, echo=False}
+```{r, echo=FALSE}
 Data = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
 ```
 
-```{r, echo=False}
+```{r, echo=FALSE}
 head(Data)
 ```
 
@@ -138,7 +138,7 @@ Les données sont uniformément réparties. Cela confirme que nous n'avons pas b
 "Nous utiliserons donc ce dataset pour la suite de notre étude."
 Peut-être qu'on pourrait nous reprocher que de manière générale, ça ne suffit pas à confirmer qu'on a rien besoin d'appliquer d'autres aux données. --> 
 
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = so2_kg) +
   stat_ecdf() +
@@ -146,28 +146,28 @@ ggplot(Datalog) +
   ggtitle("Fonction de répartition de la concentration d'oxyde de soufre en kg")
 ```
 
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = co_kg) +
   stat_ecdf() +
   ylab(" ") +
   ggtitle("Fonction de répartition de la concentration de monoxyde de carbone")
 ```
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = pm25_kg) +
   stat_ecdf() +
   ylab(" ") +
   ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
 ```
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = pm25_kg) +
   stat_ecdf() +
   ylab(" ") +
   ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
 ```
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = pm25_kg) +
   stat_ecdf() +
@@ -180,7 +180,7 @@ ggplot(Datalog) +
 Nous nous intéressons maintenant aux variables qualitatives : $TypeEPCI$ & $annee_inv$.
 $(\Delta)$ Nous remarquons que nous avons le même nombre de prises de mesure pour chaque année, donc aucunes données ne semblent manquer.
 
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Data) + aes(annee_inv) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction des années")
 ```
 
@@ -455,7 +455,7 @@ Nous allons dans cette section tenter d'expliquer le dépassement d'émission de
 ```
 
 On crée la nouvelle variable booléenne, valant 1 si le taux de méthane (\code{ch4_t}) est supérieur à $1000t$, 0 sinon.
-<!-- TODO : normaliser la notation des variables (choisir entre $$ ou \code{}) -->
+<!-- TODO : normaliser la notation des variables (choisir entre dollardollar ou \code{}) -->
 
 <!-- TODO : passer en echo = F (sûrement) -->
 ```{r, echo=T, eval=T}
@@ -586,7 +586,8 @@ anova(model2, modelcompletinter, test="Chisq")
 La pvaleur est >>0.05, on peut donc conserver le modèle $(\text{M}_{GL_{2}})$ au risque $5\%$.
 
 ```{r, echo = T, eval = T}
-pseudoR2 = 1 - modelinterred$deviance/modelinterred$null.deviance
+# TODO : ce bloc fonctionne pas, vérifier le noms du modèle
+#pseudoR2 = 1 - modelinterred$deviance/modelinterred$null.deviance
 pseudoR2
 ```
 

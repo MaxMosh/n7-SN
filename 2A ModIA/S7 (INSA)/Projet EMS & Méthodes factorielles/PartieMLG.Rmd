@@ -3,7 +3,7 @@
 Nous allons dans cette section tenter d'expliquer le dépassement d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire généralisé.
 
 ```{r, echo=F, eval=F}
-library(bestglm)
+#library(bestglm)
 
 # TODO : à remettre en commun
 
