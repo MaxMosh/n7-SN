@@ -347,7 +347,6 @@ Dans un premier temps, on considère le modèle complet avec interactions.
 $$
 (M_1) 
 \left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \gamma_{ij} + (a1 + a2_i + a3_j)\times nh3\_kg_{ijk} + (b1 + b2_i + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
-
 \varepsilon_{ijk},\ \\
 i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
 } \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
@@ -482,19 +481,14 @@ Dans un premier temps on crée le modèle complet avec interaction, modèle que 
 $$
 \begin{equation*}
 (\text{M}_{GL_{1}}) : 
-
 \begin{cases}
 \text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
-
 \\
-
 \text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
   + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
   + \sum_{k=1}^5 (\delta_{1k}  +  \delta_{2k}\cdot\text{nh3_kg}_i ~ + \delta_{3k}\cdot\text{n2o_t}_i + \delta_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{annee}_i = 2014 + k} \\
   + \sum_{k=1}^5 (\kappa_{1k}  +  \kappa_{2k}\cdot\text{nh3_kg}_i ~ + \kappa_{3k}\cdot\text{n2o_t}_i + \kappa_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i)\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}}\cdot\mathbb{1}_{\text{annee}_i = 2014 + k} \\
-
 \end{cases}
-
 \end{equation*}
 $$
 

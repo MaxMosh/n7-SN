@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ## Modèle linéaire généralisé
 
 Nous allons dans cette section tenter d'expliquer le dépassement d'émission de méthane de $1000t$ par an en fonction de l'ammoniac, le protoxyde d'azote, le type d'EPCI et l'année par un modèle linéaire généralisé.
@@ -135,7 +140,7 @@ $$
 
 \end{equation*}
 
-$$
+$$  
 
 
 ```{r, echo = T, eval = T}

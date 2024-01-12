@@ -1,0 +1,416 @@
+---
+title: "TP Clustering"
+subtitle: "Partie 4 : Classification par modèles de mélanges"
+date : "4modIA / 2023-2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth : 4
+    number_sections : true
+header-includes:
+  - \usepackage{comment}
+params:
+  soln: TRUE   
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #cfdefc; 
+}
+
+.corrO { background-color: rgb(255,238,237); }
+.corrS { background-color: pink; color: black; border: 1px solid red; }
+```
+
+```{r setup, echo=FALSE, cache=TRUE, message=F,warning=F}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+L'objectif de ce TP est d'illustrer les notions abordées autour des modèles de mélanges. 
+
+Les librairies R nécessaires pour ce TP : 
+
+```{r,echo=T, error=F,warning=F,message=F}
+## Pour faire le TP
+library(mclust)
+library(Rmixmod)
+library(ggplot2)
+library(gridExtra)
+library(FactoMineR)
+library(factoextra)
+library(reshape2)
+
+library(circlize)
+library(viridis)
+```
+
+# Mélanges gaussiens
+
+## Application sur données simulées uni-dimensionnelles
+
+**Question : ** A l'aide du code suivant, simulez un jeu de données selon un mélange gaussien en $3$ composantes unidimensionnel. Faites varier les différents paramètres (proportions, moyennes et variances). 
+
+```{r, eval=F}
+a<- 10
+b<- 1
+mu<-c(-a,0,a) # les moyennes \mu_k
+sigma<-c(b,0.5,b) # les \sigma_k
+prop<-c(0.2,0.3,0.5)
+n<- 1000
+
+Z<-rmultinom(n, 1, prop)
+
+X<-data.frame(X=c(rnorm(sum(Z[1,]), mean = mu[1], sd = sigma[1]),
+                  rnorm(sum(Z[2,]), mean = mu[2], sd = sigma[2]),
+                  rnorm(sum(Z[3,]), mean = mu[3], sd = sigma[3])))
+labeltrue<- c(rep(1, sum(Z[1,] == 1)), rep(2, sum(Z[2,] == 1)), rep(3, sum(Z[3,] == 1))) # vecteur des vrais labels   MODIF : correction prof (pas sur pour le premier argument de rep)
+```
+
+```{r, eval=F}
+aux<-seq(-(a+4),a+4,0.01)
+Y<-data.frame(x=aux,
+              y1=(prop[1]*dnorm(aux,mu[1],sigma[1])), 
+              y2=(prop[2]*dnorm(aux,mu[2],sigma[2])),     
+              y3=(prop[3]*dnorm(aux,mu[3],sigma[3])))
+
+gvrai<-ggplot(X,aes(x=X))+
+  geom_histogram(aes(y = after_stat(density)),bins=100)+
+  geom_line(aes(x=x,y=y1),data=Y,col="red")+
+  geom_line(aes(x=x,y=y2),data=Y,col="blue")+
+  geom_line(aes(x=x,y=y3),data=Y,col="green")
+gvrai
+```
+
+
+**Question : ** Estimez les paramètres d'un mélange à $K=3$ classes à l'aide de la fonction `Mclust()` de la librairie `mclust`. Comparez la classification obtenue avec les vrais labels. 
+
+```{r,eval=F}
+# A completer
+res<-Mclust(X$X, G=3) # MODIF : arg CG
+table(res$classification, labeltrue)
+```
+
+```{r,eval=F}
+adjustedRandIndex(res$classification, labeltrue)
+```
+
+
+
+**Question : ** Représentez la densité de mélange estimée sur l'histogramme de l'échantillon simulé. 
+
+```{r,eval=F}
+# A completer
+# dans y_k <- \pi_k \times \phi(x; \mu_k,\sigma_k^2)
+
+MelEstim<-data.frame(x=aux,
+                     y1=res$parameters$pro[1] * dnorm(aux, res$parameters$mean[1], res$parameters$variance$sigmasq[1]), 
+                     y2=res$parameters$pro[2] * dnorm(aux, res$parameters$mean[2], res$parameters$variance$sigmasq[2]),
+                     y3=res$parameters$pro[3] * dnorm(aux, res$parameters$mean[3], res$parameters$variance$sigmasq[3]))       # MODIF : corrrection prof (quasi même que CG)
+MelEstim<-data.frame(MelEstim,Somme=apply(MelEstim[,2:4],1,sum))
+
+gMelEst<-ggplot(X,aes(x=X))+
+  geom_histogram(aes(y = after_stat(density)),bins=100)+
+  geom_line(aes(x=x,y=y1),data=MelEstim,col="red")+
+  geom_line(aes(x=x,y=y2),data=MelEstim,col="blue")+
+  geom_line(aes(x=x,y=y3),data=MelEstim,col="green")+
+  geom_line(aes(x=x,y=Somme),data=MelEstim,col="cyan",linetype = "dashed",size=1.5)
+gMelEst
+
+```
+
+
+
+**Question : ** Calculez les probabilités a posteriori d'appartenance des individus à chacune des trois classes et tracez-les graphiquement.
+
+```{r,eval=F}
+# dans p, les proba a posteriori d'appartenance t_{11},\ldots,t_{n1},t_{12},\ldots,t_{n3}
+
+MelProba<-data.frame(x=rep(aux,3),
+                     p= c(MelEstim$y1 / MelEstim$Somme, MelEstim$y2 / MelEstim$Somme, MelEstim$y3 / MelEstim$Somme),    
+                     class=as.factor(rep(c(1,2,3),each=length(aux)))) # MODIF : arg 2 correction prof
+
+gprobapost<-ggplot(MelProba,aes(x=x,y=p,col=class))+geom_line()
+
+gprobapost
+```
+
+
+**Question : ** Tracez les boxplots des probabilités d'appartenance maximales par classe. Vous pouvez vous aider de la fonction `apply()`. 
+
+```{r,eval=F}
+df<-data.frame(lab = as.factor(apply(res$z, 1, which.max)), probamax = apply(res$z, 1, max)) # MODIF : correction prof
+gprobamax<-ggplot(df,aes(x=lab,y=probamax))+geom_boxplot()
+grid.arrange(gvrai,gMelEst,gprobapost,gprobamax,ncol=2)
+```
+
+
+## Application sur des données simulées dans $\mathbb{R}^2$ 
+
+On va ici utiliser les données simulées "ex4.1" disponibles dans la librairie `mclust`. Ces données sont simulées selon un mélange de densités gaussiennes, proposées dans Baudry et al (2010). L'objectif est d'étudier l'impact du choix des formes des mélanges considérées et de la différence d'objectif entre les critères BIC et ICL. On va au travers de ce jeu de données simulées simple appréhender la manipulation des fonctions pour le clustering par mélanges gaussiens avec R. 
+
+On commence ici par charger les données : 
+
+```{r}
+library(mclust)
+data(Baudry_etal_2010_JCGS_examples)
+Data<-ex4.1
+ggplot(Data,aes(x=X1,y=X2))+geom_point()
+```
+
+
+### Mélanges gaussiens diagonaux
+
+Dans cette section, on va considérer une collection de modèles de mélanges gaussiens avec un nombre de composantes $K$ variant entre $2$ et $10$ et des matrices de variance-covariance diagonales. 
+
+<!-- Note : Matrices de variance-covariance diagonales => répartition "sphérique" => forme de mélange gaussien EII -->
+
+**Question  :** A l'aide de la fonction `Mclust()`, estimez les paramètres des mélanges gaussiens considérés. Vous pouvez consulter l'aide de la fonction `mclustModelNames()` pour le choix des formes des mélanges.
+
+```{r,eval=F}
+# A COMPLETER
+resBICdiag<- Mclust(Data, G = 2:10, modelNames = c("EII", "VII", "EEI", "VEI", "EVI", "VVI"))    # MODIF : correction prof
+```
+
+
+**Question : ** A l'aide de la fonction `fviz_mclust_bic()`, visualisez le comportement du critère BIC sur la collection de modèles. Quel modèle est sélectionné ? Contrôlez à l'aide de `summary(resBICdiag)`. 
+
+```{r,eval=F}
+fviz_mclust(resBICdiag,what="BIC") # MODIF : code Ewan
+summary(resBICdiag)
+```
+
+
+**Question :** Tracez la classification obtenue sur le nuage de points (vous pouvez utiliser la fonction `fviz_cluster()`). Comment est obtenue cette classification à partir du mélange gaussien retenu ? Quels sont les effectifs par classe ? Contrôlez les probabilités a posterori d'appartenance. 
+
+```{r,eval=F}
+# TODO : PAS FINI
+# Visualisation du clustering
+h2 <- fviz_cluster(resBICdiag, data = Data, ellipse, type = "norm", geom = "point")+ggtitle("")+theme(legend.position = "none") # MODIF : correction prof (complétion fonction °+ attribution variable)
+# Effectifs par classe
+#table(....)
+# Boxplot des probabilités a posteriori maximales
+Aux<-data.frame(label=paste("CI", resBICdiag$classification, sep = ""),    proba=resBICdiag$z, 1, max)  # MODIF : correction prof
+h1 <- ggplot(Aux,aes(x=label,y=proba))+geom_boxplot() # MODIF : attribution variable correction prof
+grid.arrange(h1, h2, ncol = 2) # MODIF : ajout de la ligne correction prof
+```
+
+
+**Question :** Quel mélange gaussien est retenu avec le critère ICL ? Vous utiliserez la fonction `mclustICL()`. Etudiez la classification alors déduite. 
+
+```{r,eval=F}
+# PAS FAIT
+resICL<-mclustICL(...)
+summary(resICL)
+```
+
+```{r,eval=F}
+# MODIF : ajout correction prof, je ne sais pas où va ce chunk
+plot(modICL, what="classification")
+```
+
+### Toutes les formes de mélanges gaussiens
+
+**Question : ** Reprenez les questions de la section précédente en considérant ici toutes les formes de mélanges gaussiens. Commentez. 
+
+```{r,eval=F}
+# A COMPLETER
+```
+
+
+## Etude des données de vins
+On reprend dans ce TP les données `wine` disponibles sur la page moodle du cours. 
+On charge ici les données.  
+
+```{r}
+wine<-read.table("wine.txt",header=T)
+wine$Qualite = as.factor(wine$Qualite)
+wine$Type = factor(wine$Type, labels = c("blanc", "rouge"))
+
+wineinit<-wine
+wine[,-c(1,2)]<-scale(wine[,-c(1,2)],center=T,scale=T)
+
+head(wine)
+```
+
+```{r}
+# AJOUT PAR MOI
+summary(wine)
+```
+
+On fait une ACP pour la visualisation des résultats dans la suite
+
+```{r}
+resacp<-PCA(wine,quali.sup=c(1,2), scale.unit = TRUE,graph=FALSE)
+```
+
+```{r}
+fviz_pca(resacp)
+```
+
+**Question :** Déterminez une classification de ces données à l'aide d'un modèle de mélange. Comparez votre résultat avec les classifications obtenues dans les TP précédents (avec Kmeans, CAH). 
+
+```{r,eval=F}
+# A FAIRE
+resmclust<-Mclust(wine[,-5],G=1:9,modelNames = c("EEE","VEE","EVV","VVV"))
+summary(resmclust)
+```
+
+
+# Classification par mélanges pour données catégorielles
+
+Dans cette partie, on souhaite obtenir une classification des animaux du jeu de données zoo à l'aide de modèles de mélanges. On reprend donc le jeu de données et on refait une analyse en composantes multiples pour la visualisation des résultats. 
+
+```{r}
+zoo<-read.table("zoo-dataTP.txt",header=T,stringsAsFactors = TRUE)
+for (j in 1:ncol(zoo))
+  zoo[,j]<-as.factor(zoo[,j])
+summary(zoo)
+dim(zoo)
+
+res.mca<- MCA(zoo,ncp = 5, graph = FALSE)
+fviz_mca_ind(res.mca)
+```
+
+
+Pour la suite du TP, on pourra utiliser les fonctions auxiliaires suivantes. La fonction `barplotClus()` permet de tracer la répartition des modalités de variables qualitatives pour chaque classe d'un clustering donné. 
+
+```{r}
+# J indice des variables
+# Data = jeu de données
+# clust = clustering étudié
+# output : graphe par variable dans J donnant la répartition des modalités de J par classe de clust
+
+barplotClus <- function(clust, Data, J) {
+    aux.long.p <- heatm(clust, Data, J)$freq
+    # ux<-unique(aux.long.p$variable)
+    for (j in J) {
+        p <- ggplot(aux.long.p[which(aux.long.p$variable == colnames(Data)[j]), ],
+            aes(x = clust, y = perc, fill = value)) + geom_bar(stat = "identity")+
+            labs(fill = colnames(Data)[j])
+        print(p)
+    }
+}
+
+heatm <- function(clust, Data, J) {
+    library(dplyr)
+    Dataaux <- data.frame(id.s = c(1:nrow(Data)), Data)
+    aux <- cbind(Dataaux, clust)
+    aux.long <- melt(data.frame(lapply(aux, as.character)), stringsAsFactors = FALSE,
+        id = c("id.s", "clust"), factorsAsStrings = T)
+    # Effectifs
+    aux.long.q <- aux.long %>%
+        group_by(clust, variable, value) %>%
+        mutate(count = n_distinct(id.s)) %>%
+        distinct(clust, variable, value, count)
+    # avec fréquences
+    aux.long.p <- aux.long.q %>%
+        group_by(clust, variable) %>%
+        mutate(perc = count/sum(count)) %>%
+        arrange(clust)
+
+    Lev <- NULL
+    for (j in 1:ncol(Data)) Lev <- c(Lev, levels(Data[, j]))
+
+    Jaux <- NULL
+    for (j in 1:length(J)) {
+        Jaux <- c(Jaux, which(aux.long.p$variable == colnames(Data)[J[j]]))
+    }
+
+    gaux <- ggplot(aux.long.p[Jaux, ], aes(x = clust, y = value)) + geom_tile(aes(fill = perc)) +
+        scale_fill_gradient2(low = "white", mid = "blue", high = "red") + theme_minimal()
+
+    return(list(gaux = gaux, eff = aux.long.q, freq = aux.long.p))
+}
+
+```
+
+
+
+Nous allons utiliser une stratégie de classification via des modèles de mélange. Rappelons que l'on a pour données
+$\mathbf{X}=(x_1,\ldots,x_n)$ avec $x_i$ décrit par $p$ variables catégorielles, chacune avec $m_j$ modalités. Dans ce cas de variables qualitatives, on peut considérer des distributions multinomiales par variable et par composante. Pour écrire la distribution de mélange, on commence par transformer l'écriture des données de la façon suivante :
+
+$$x_i=(x_{i1},\ldots,x_{ip})\rightsquigarrow (x_i^{jh}; j=1,\ldots,p, h=1,\ldots,m_j)$$
+avec
+$$
+  x_i^{\,jh}=\left\{\begin{array}{l l}1 & \textrm{ si } i \textrm{ prend la modalité } h  \textrm{ pour la variable }j\\
+                                      0 & \textrm{ sinon.}\end{array}\right.
+$$
+Les densités de mélange considérées sont de la forme 
+$$f(.|\theta_K)=\underset{k=1}{\stackrel{K}{\sum}}\pi_k f_k(x_i|\boldsymbol{\alpha}_k)$$ 
+avec
+
+  + $f_k(x_i|\boldsymbol{\alpha}_k)=\underset{j=1}{\stackrel{p}{\prod}}\underset{h=1}{\stackrel{m_j}{\prod}}\left(\alpha_k^{\,jh}\right)^{x_i^{jh}}$
+  + $\boldsymbol{\alpha}_k=(\alpha_k^{\,jh}; j=1,\ldots,p, h=1,\ldots,m_j)$ avec $\underset{h=1}{\stackrel{m_j}{\sum}}\alpha_k^{jh}=1$
+        \centerline{$\alpha_k^{\,jh}=$ proba. que la variable $j$ présente la modalité $h$ dans la classe $k$}
+  + $\theta_k=(\pi_1,\ldots,\pi_K,\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_K)$
+
+
+Classiquement, on reparamétrise par 
+
+- Pour chaque classe $k$ et chaque variable $j$
+$$(\alpha_k^{\ j1},\ldots,\alpha_k^{\ jm_j}) \rightarrow (a_k^{\ j1},\ldots,a_k^{\ jm_j},\varepsilon_k^{\ j1},\ldots,\varepsilon_k^{\ jm_j})$$
+avec
+$$
+a_k^{\ jh}=\left\{\begin{array}{l l}1 & \textrm{ si } h=\underset{h'=1,\ldots,m_j}{\mbox{argmax}}\ \alpha_k^{\ jh'}\\
+                                   0 & \textrm{sinon}\end{array}\right.
+$$
+($h$= modalité majoritaire pour variable $j$ dans classe $k$) et
+
+$$
+\varepsilon_{k}^{\ jh}=\left\{\begin{array}{l l}1 - \alpha_k^{\ jh} & \textrm{ si } a_k^{\ jh}=1\\
+                                   \alpha_k^{\ jh} & \textrm{ si } a_k^{\ jh}=0\end{array}\right.
+$$
+
+Par exemple $(0.3,0.6,0.1) \rightsquigarrow (0,1,0,\ \ 0.3,0.4,0.1)$\vspace*{0.2cm}
+
+La densité de mélange se réécrit alors
+    $$f(.|\theta_K)=\underset{k=1}{\stackrel{K}{\sum}}\pi_k \underset{j=1}{\stackrel{p}{\prod}}\underset{h=1}{\stackrel{m_j}{\prod}} \left[\left(1-\varepsilon_k^{\,jh}\right)^{a_k^{\ jh}} \left(\varepsilon_k^{\,jh}\right)^{1-a_k^{\ jh}}\right]^{x_i^{jh}}$$
+
+Selon les hypothèses faites sur les $\varepsilon_{k}^{\ jh}$ et sur les proportions du mélange, on a 10 formes possibles (dans le même esprit que les différentes formes des mélanges gaussiens, cf cours). 
+
+**Question :** A l'aide de la fonction `mixmodCluster` de la librairie `Rmixmod`, déterminez une classification des données par modèles de mélange. Vous étudierez en particulier les probabilités conditionnelles d'appartenance. Vous pouvez tester plusieurs formes de mélange. 
+
+```{r,eval=F}
+library(Rmixmod)
+
+resmixmod<-mixmodCluster(
+  data = zoo, nbCluster = 2:20, 
+  criterion = c("BIC", "ICL"),
+  model = mixmodMultinomialModel("Binary_pk_Ekjh")
+)
+
+# Graphe des critères de sélection
+K<-NULL
+BIC<-NULL
+ICL<-NULL
+for (k in 1:length(resmixmod@results)){
+  K<-c(K,resmixmod@results[[k]]@nbCluster)
+  BIC<-c(BIC,resmixmod@results[[k]]@criterionValue[1])
+  ICL<-c(ICL,resmixmod@results[[k]]@criterionValue[2])
+}
+
+## graphique à faire
+...
+
+
+# Etude de la classification retenue
+df<-data.frame(proba=apply(resmixmod@bestResult@proba,1,max),label=as.factor(apply(resmixmod@bestResult@proba,1,which.max)))
+ggplot(df,aes(x=label,y=proba))+geom_boxplot()
+table(resmixmod@bestResult@partition)
+## A completer
+
+# Comparaison avec les autres classifications
+## A completer
+```

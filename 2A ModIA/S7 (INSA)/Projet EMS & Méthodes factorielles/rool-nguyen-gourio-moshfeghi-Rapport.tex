@@ -412,7 +412,7 @@ pollué, on a : Metropole, CU, CA puis CC.
 \begin{verbatim}
 ## 
 ##   1   2   3   4   5 
-## 121 188 170 199 294
+## 170 296 188 197 121
 \end{verbatim}
 
 \begin{Shaded}
@@ -433,7 +433,7 @@ pollué, on a : Metropole, CU, CA puis CC.
 \begin{verbatim}
 ## 
 ##   1   2   3   4   5   6   7 
-## 178 180 212 133   6 127 148
+## 180 148 133 212   6 178 127
 \end{verbatim}
 
 \begin{Shaded}
@@ -763,22 +763,19 @@ régression logistique.
 Dans un premier temps on crée le modèle complet avec interaction, modèle
 que l'on note \((\mathcal{M}_{GL_{1}})\) :
 
-\$\$ \begin{equation*}
+\[
+\begin{equation*}
 (\text{M}_{GL_{1}}) : 
-
 \begin{cases}
 \text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
-
 \\
-
 \text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
   + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
   + \sum_{k=1}^5 (\delta_{1k}  +  \delta_{2k}\cdot\text{nh3_kg}_i ~ + \delta_{3k}\cdot\text{n2o_t}_i + \delta_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{annee}_i = 2014 + k} \\
   + \sum_{k=1}^5 (\kappa_{1k}  +  \kappa_{2k}\cdot\text{nh3_kg}_i ~ + \kappa_{3k}\cdot\text{n2o_t}_i + \kappa_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i)\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}}\cdot\mathbb{1}_{\text{annee}_i = 2014 + k} \\
-
 \end{cases}
-
-\end{equation*} \$\$
+\end{equation*}
+\]
 
 \begin{Shaded}
 \begin{Highlighting}[]
