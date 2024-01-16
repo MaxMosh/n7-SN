@@ -1,5 +1,5 @@
 ---
-title: "Tests non paramétriques - TD 1"
+title: "Tests non paramétriques - TD 1 : Exercice 1"
 output: html_document
 date: "2024-01-09"
 ---
@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Exercice 1
 
-```{r cars}
+```{r}
 x = c(0.15, 0.18, 0.22, 0.26, 0.39, 0.53, 0.62, 0.7, 0.96, 0.99)
 
 ks.test(x, punif) # l'argument "punif" permet d'effectuer le test de Kolmogorov avec la fonction de répartition d'une loi uniforme sur [0, 1]

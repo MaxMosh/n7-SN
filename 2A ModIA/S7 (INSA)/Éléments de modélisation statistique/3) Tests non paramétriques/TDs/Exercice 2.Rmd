@@ -1,0 +1,23 @@
+---
+title: "Tests non paramétriques - TD 1 : exercice 2"
+output: html_document
+date: "2024-01-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercice 2
+
+```{r}
+x = c(458, 478, 538, 548, 548, 568, 578, 618)
+y = c(360, 380, 400, 430, 430, 480, 490, 570)
+
+ks.test(x, y, alternative = "less") # l'argument "punif" permet d'effectuer le test de Kolmogorov avec la fonction de répartition d'une loi uniforme sur [0, 1]
+```
+
+```{r}
+wilcox.test(x, y, alternative = "greater") # l'argument "punif" permet d'effectuer le test de Kolmogorov avec la fonction de répartition d'une loi uniforme sur [0, 1]
+```
+
