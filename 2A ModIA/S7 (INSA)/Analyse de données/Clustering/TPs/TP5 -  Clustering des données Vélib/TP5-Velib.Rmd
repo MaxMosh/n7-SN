@@ -1,0 +1,542 @@
+---
+title: "TP Clustering"
+subtitle: "Partie 5 : Clustering des données Vélib"
+date : "4modIA / 2023-2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth : 2
+    number_sections : true
+header-includes:
+  - \usepackage{comment}
+  - \usepackage{dsfont}
+params:
+  soln: TRUE   
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #cfdefc; 
+}
+
+.corrO { background-color: rgb(255,238,237); }
+.corrS { background-color: pink; color: black; border: 1px solid red; }
+```
+
+```{r setup, echo=FALSE, cache=TRUE, message=F,warning=F}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+```{r,message=F,warning=F}
+library(funFEM)
+library(reshape2)
+library(ggplot2)
+library(gridExtra)
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(mclust)
+library(stringr)
+library(cluster)
+library(clusterSim)
+library(leaflet)
+```
+
+# Etude préliminaire
+
+## Préparation des données
+
+Cet ensemble de données contient des données provenant du système de partage de vélos de Paris, appelé Vélib. Les données sont des profils de chargement des stations de vélos sur une semaine. Les données ont été collectées toutes les heures pendant la période du dimanche 1er septembre au dimanche 7 septembre 2014.
+
+On charge ici les données `Velib` disponibles dans la librairie `funFEM`. 
+
+```{r,message=F,warning=F}
+library(funFEM)
+data(velib)
+```
+
+Ces données contiennent 
+
+- data : les profils de chargement (nb de vélos disponibles / nb de points d'attache) des 1189 stations à 181 points de temps.
+
+- position : la longitude et la latitude des 1189 stations de vélos.
+
+- dates : les dates de téléchargement.
+
+- bonus : indique si la station est sur une colline (bonus = 1).
+
+- names : les noms des stations.
+
+Afin d'avoir des semaines complètes, nous allons supprimer les 13 premières colonnes. 
+
+```{r,message=F,warning=F}
+Velibdata<-velib$data[,-c(1:13)]
+colnames(Velibdata)<-velib$dates[-c(1:13)]
+```
+
+On controle le nombre de jours et d'heures dans le jeu de données
+
+```{r,message=F,warning=F}
+day<-str_sub(colnames(Velibdata), 1, 3)
+day<-factor(day, levels = c("Lun","Mar","Mer","Jeu","Ven","Sam","Dim"))
+table(day)
+hour<-str_sub(colnames(Velibdata),5,6)
+table(hour)
+timeTick <- 24*(0:6)  
+```
+
+On charge des informations sur les stations de Velib disponibles dans le fichier `InfoStationsVelib.txt`.
+
+```{r,message=F,warning=F}
+station<- read.table("InfoStationsVelib.txt",header=T)
+```
+
+## Quelques fonctions auxiliaires pour exploiter les résultats 
+
+Fonction pour tracer les profils (charge de chaque station / loading) en fonction des jours et heures pour les stations choisies. 
+
+```{r,message=F,warning=F}
+plotprofils<-function(Velibdata,station,numstation,plotsem=TRUE){
+  # Velibdata = les données de velib initiales
+  # station = ens. des informations sur les stations
+  # numstation = vecteur contenant le numéro de ligne des stations dont on souhaite tracer les profils
+  
+library(reshape2)
+library(ggplot2)
+Dataaux<-data.frame(id.s=station$nom,Velibdata)
+Aux<-melt(Dataaux[numstation,],id = c("id.s"))
+Aux<-data.frame(Aux,day=str_sub(Aux$variable,1,3),hour=as.numeric(str_sub(Aux$variable,5,6)))
+Aux$day<-factor(Aux$day, levels = c("Lun","Mer","Mar","Sam","Jeu","Dim","Ven"))
+
+if (plotsem==TRUE){
+g<-ggplot(Aux,aes(x=hour,y=value,col=id.s))+
+  geom_line()+
+  facet_wrap(~day,ncol=2)+
+  xlab("Time")+ylab("Loading")+
+  scale_x_continuous(breaks=seq(0,24,4))+
+  theme(legend.position = "bottom")+theme(axis.title.x = element_blank())+
+  labs(col = "Classif.")+
+  scale_x_continuous(breaks=c(0,7,9,12,14,20,24))
+}else{
+v<-rep(0,nrow(Aux))
+for (j in 1:length(levels(Aux$day)))
+  v[which(Aux$day==levels(Aux$day)[j])]<-Aux$hour[which(Aux$day==levels(Aux$day)[j])] + (24*(j-1))
+Aux<-data.frame(Aux,v=v)
+rect<-data.frame(xmin=timeTick,xmax=timeTick+23,ymin=rep(0,7),ymax=rep(1,7),color=rainbow(n=7))
+g<-ggplot(data=Aux)+
+  geom_line(data=Aux,aes(x=v,y=value,col=id.s))+
+  geom_rect(data=rect,aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill=color),show.legend=FALSE,alpha=0.1)+
+  xlab("Time")+ylab("Loading")+
+  theme(legend.position = "bottom")+
+  theme(axis.title.x = element_blank())+
+  labs(col = "Classif.")+
+  scale_x_continuous(breaks=rep(seq(0,21,3),7) + rep(24*(0:6),each=4),labels = rep(seq(0,21,3),7))  
+}
+return(g)
+}
+```
+
+Exemple d'utilisation :
+
+```{r,message=F,warning=F}
+plotprofils(Velibdata,station,numstation=c(813,655,468))
+plotprofils(Velibdata,station,numstation=c(813,655,468),plotsem=FALSE)
+```
+
+Se donnant une classification, fonction pour tracer les profils moyens par classe :
+
+```{r,message=F,warning=F}
+plotprofilsmoy<-function(Velibdata,clustering,plotsem=TRUE){
+library(reshape2)
+library(ggplot2)
+  
+Dataaux<-matrix(0,nrow=max(clustering),ncol=ncol(Velibdata))
+for (k in 1:max(clustering)){
+  Dataaux[k,]<-apply(Velibdata[which(clustering==k),],2,mean)
+}
+colnames(Dataaux)<-colnames(Velibdata)
+Dataaux<-data.frame(id.s=as.factor(1:max(clustering)),Dataaux)
+Aux<-melt(Dataaux,id = c("id.s"))
+Aux<-data.frame(Aux,day=str_sub(Aux$variable,1,3),hour=as.numeric(str_sub(Aux$variable,5,6)))
+Aux$day<-factor(Aux$day, levels = c("Lun","Mer","Mar","Sam","Jeu","Dim","Ven"))
+
+if(plotsem==TRUE){
+g<-ggplot(Aux,aes(x=hour,y=value,col=id.s))+
+  geom_line()+
+  facet_wrap(~day,ncol=2)+xlab("Time")+ylab("Loading")+
+  ylim(0,1)+
+  theme(legend.position = "bottom")+
+  theme(axis.title.x = element_blank())+
+  labs(col = "Classif.")+
+  scale_x_continuous(breaks=c(0,7,9,12,14,20,24))
+}
+else{
+v<-rep(0,nrow(Aux))
+for (j in 1:length(levels(Aux$day)))
+  v[which(Aux$day==levels(Aux$day)[j])]<-Aux$hour[which(Aux$day==levels(Aux$day)[j])] + (24*(j-1))
+Aux<-data.frame(Aux,v=v)
+rect<-data.frame(xmin=timeTick,xmax=timeTick+23,ymin=rep(0,7),ymax=rep(1,7),color=rainbow(n=7))  
+g<-ggplot(data=Aux)+
+  geom_line(data=Aux,aes(x=v,y=value,col=id.s))+
+  geom_rect(data=rect,aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill=color),show.legend=FALSE,alpha=0.1)+
+  xlab("Time")+ylab("Loading")+
+  ylim(0,1)+
+  theme(legend.position = "bottom")+
+  theme(axis.title.x = element_blank())+
+  labs(col = "Classif.")+
+  scale_x_continuous(breaks=rep(seq(0,21,3),7) + rep(24*(0:6),each=4),labels = rep(seq(0,21,3),7))
+}
+return(g)
+}
+```
+
+Exemple d'utilisation avec les stations sur colline par rapport aux autres :
+
+```{r,message=F,warning=F}
+plotprofilsmoy(Velibdata,clustering=station$colline+1,plotsem=TRUE)
+plotprofilsmoy(Velibdata,clustering=station$colline+1,plotsem=FALSE)
+```
+
+Fonction auxiliaire pour comparer une classification avec les informations auxiliaires disponibles pour les stations
+
+```{r,message=F,warning=F}
+stationcaract<-function(station,clustering){
+  library(dplyr)
+  #Dataaux<-data.frame(id.s=c(1:nrow(Data)),station)
+  #aux <- cbind(Dataaux, clust)
+  aux<-cbind(station,clustering)
+  aux.long <- melt(data.frame(lapply(aux[,-c(2:3)],as.character)),stringsAsFactors=FALSE, id = c("nom", "clustering"), factorsAsStrings=T)
+  # Effectifs
+  aux.long.q <- aux.long %>%
+    group_by(clustering, variable, value) %>%
+    mutate(count = n_distinct(nom)) %>%
+    distinct(clustering, variable, value, count)
+  # avec fréquences
+  aux.long.p <- aux.long.q %>%
+    group_by(clustering, variable) %>%
+    mutate(perc = count / sum(count)) %>%
+    arrange(clustering)
+
+gaux<-ggplot(data=aux.long.p, aes(x=clustering, y=perc, fill=value)) +
+  geom_bar(stat="identity")+facet_wrap(~variable)
+
+return(gaux)
+}
+```
+
+Fonction pour observer une variable quantitative sur une carte 2D de Paris 
+
+```{r}
+plotmapquanti<-function(dataposition,varquanti){
+  library(leaflet)
+  pal <- colorNumeric(palette = "RdYlBu",domain = varquanti)
+  leaflet(dataposition) %>% 
+  addTiles() %>%
+  addCircleMarkers(radius = 3,color = pal(varquanti),stroke = FALSE, fillOpacity = 1)%>%
+  addLegend("bottomright", pal = pal, values = varquanti,
+    opacity = 1)
+}
+```
+
+Par exemple, la charge moyenne par station : 
+
+```{r}
+plotmapquanti(dataposition=velib$position,varquanti=rowMeans(Velibdata))
+```
+
+Fonction pour observer une variable qualitative sur une carte 2D de Paris :
+
+```{r}
+plotmapquali<-function(dataposition,varquali){
+library(leaflet)
+factpal <- colorFactor(topo.colors(nlevels(varquali)), varquali)
+
+leaflet(dataposition) %>% 
+  addTiles() %>%
+  addCircleMarkers(radius = 3,color = factpal(varquali),stroke = FALSE, fillOpacity = 0.9)%>%
+  addLegend("bottomright", pal = factpal, values = varquali, opacity = 1)
+}
+```
+
+Par exemple avec la variable binaire `colline`:
+
+```{r}
+plotmapquali(dataposition=velib$position,varquali=as.factor(station$colline))
+```
+
+## Quelques statistiques descriptives
+
+On reprend ici rapidement quelques éléments d'analyse descriptive vus précédemment dans l'UF. 
+
+- Tracé des corrélations des heures par jour, toutes les stations confondues :
+
+```{r,message=F,warning=F}
+library(corrplot)
+timeTickAux<-c(timeTick,168)
+for (k in 1:7)
+  corrplot(cor(Velibdata[,(timeTickAux[k]+1):(timeTickAux[k+1])]),method="ellipse")
+```
+
+- Comportement moyen par jour :
+
+```{r,message=F,warning=F}
+velibmeanday<-matrix(0,nrow=nrow(Velibdata),ncol=7)
+for (k in 1:7){
+velibmeanday[,k] <- apply(Velibdata[,(timeTickAux[k]+1):(timeTickAux[k+1])],1,mean)
+}  
+colnames(velibmeanday)<-c("Lun","Mar","Mer","Jeu","Ven","Sam","Dim")
+ggplot(melt(velibmeanday),aes(x=Var2,y=value))+geom_boxplot()+xlab("")+ylab("Loading")
+```
+
+- Comportement moyen par heure et par jour :
+
+```{r,message=F,warning=F}
+velibHour <- data.frame(value=colMeans(Velibdata),day=day,hour=as.numeric(hour))
+ggplot(velibHour,aes(x=hour,y=value,col=day))+
+  geom_line()+geom_point()+
+  ylab("Loading")+ggtitle("Hourly loading, averaged over all stations")
+```
+
+- Quelques visualisations des stations sur le plan 2D de Paris : 
+
+```{r}
+plotmapquanti(velib$position,rowMeans(Velibdata))
+```
+
+```{r}
+t<-0
+loadheure  <- rowMeans(Velibdata[, seq(from = (t+1),  by = 24, length = 7)])
+plotmapquanti(velib$position,loadheure)
+```
+
+- Visualisation des stations selon les informations auxiliaires sur les stations :
+
+```{r}
+plotmapquali(velib$position,as.factor(station$colline))
+```
+
+```{r}
+plotmapquali(velib$position,as.factor(station$tourisme))
+```
+
+## Analyse en composantes principales
+
+**Question : ** Faites une ACP des stations et analysez les résultats.
+
+```{r,eval=F}
+respca<-PCA(Velibdata,ncp = 7)
+fviz_eig(respca)
+fviz_pca_var(respca)
+fviz_pca_ind(respca)
+```
+
+# Clustering sur les coordonnées de l'ACP
+
+Dans cette partie, nous allons utiliser les coordonnées de l'ACP comme matrice de données pour classer les stations. 
+
+```{r,eval=F}
+velibacp<-respca$ind$coord[,1:7]
+```
+
+## Clustering avec l'algorithme des Kmeans
+
+**Question :** A l'aide d'une procédure des Kmeans, déterminez une classification des stations. 
+
+
+```{r,eval=F}
+# A COMPLETER
+Kmax<-15
+reskmeanscl<-matrix(0,nrow=nrow(Velibdata),ncol=Kmax-1)
+Iintra<-NULL
+for (k in 2:Kmax){
+  resaux<-kmeans(Velibdata[, -c(1,2)], k)
+  reskmeanscl[,k-1]<-resaux$cluster
+  Iintra<-c(Iintra,resaux$tot.withinss)
+}
+
+df<-data.frame(K=2:15,Iintra=Iintra)
+ggplot(df,aes(x=K,y=Iintra))+geom_line()+geom_point()+xlab("Nombre de classes")+ylab("Inertie intraclasse")
+```
+
+**Question :** A l'aide des fonctions auxiliaires données dans la première partie, étudiez la classification obtenue. 
+
+## Clustering avec de la classification hiérarchique
+
+**Question :** A l'aide d'une procédure hiérarchique, déterminez une classification des stations. 
+
+```{r,eval=F}
+# A COMPLETER
+d <- dist(Velibdata, method = "euclidean")
+hclustsingle<-hclust(d, method = "single",members = NULL)
+hclustcomplete<-hclust(d, method = "complete",members = NULL)
+hclustaverage<-hclust(d, method = "average",members = NULL)
+
+# Dendrogramme
+plot(hclustsingle,hang=-1,labels=FALSE)
+plot(hclustcomplete,hang=-1,labels=FALSE)
+plot(hclustaverage,hang=-1,labels=FALSE)
+
+fviz_dend(hclustsingle,show_labels=FALSE)
+fviz_dend(hclustcomplete,show_labels=FALSE)
+fviz_dend(hclustaverage,show_labels=FALSE)
+```
+
+**Question :** A l'aide des fonctions auxiliaires données dans la première partie, étudiez la classification obtenue par CAH. Comparez cette classification avec celle obtenue par les Kmeans. 
+
+```{r,eval=F}
+# A COMPLETER
+ClassK3 = cutree(hclustcomplete, k = 3)
+fviz_dend(hclustcomplete, k = 3)
+```
+```{r,eval=F}
+dward <- dist(Velibdata, method = "euclidean")
+hward<-hclust(dward, method = "ward.D2",members = NULL)
+fviz_dend(hward,show_labels=FALSE)
+```
+
+## Clustering avec des mélanges gaussiens
+
+**Question :** A l'aide des mélanges gaussiens, déterminez une classification des stations. 
+
+```{r,eval=F}
+# A FINIR
+# A COMPLETER
+a<- 10
+b<- 1
+mu<-c(-a,0,a) # les moyennes \mu_k
+sigma<-c(b,0.5,b) # les \sigma_k
+prop<-c(0.2,0.3,0.5)
+n<- 1000
+
+Z<-rmultinom(n, 1, prop)
+
+X<-data.frame(X=c(rnorm(sum(Z[1,]), mean = mu[1], sd = sigma[1]),
+                  rnorm(sum(Z[2,]), mean = mu[2], sd = sigma[2]),
+                  rnorm(sum(Z[3,]), mean = mu[3], sd = sigma[3])))
+labeltrue<- c(rep(1, sum(Z[1,] == 1)), rep(2, sum(Z[2,] == 1)), rep(3, sum(Z[3,] == 1)))
+```
+
+
+
+```{r,eval=F}
+# A FINIR
+library(mclust)
+data(Velibdata)
+Data<-Velibdata
+ggplot(Data,aes(x=X1,y=X2))+geom_point()
+```
+
+**Question :** A l'aide des fonctions auxiliaires données dans la première partie, étudiez la classification obtenue par modèles de mélange. Comparez cette classification avec celles obtenues précédemment.
+
+```{r,eval=F}
+# A COMPLETER
+```
+
+# Clustering sur un résumé des données
+
+Dans cette partie, on va s'intéresser à un clustering sur un jeu de données "résumé" au sens suivant : on fait la moyenne des loadings selon les tranches horaires suivantes : 0-7h, 8h-20h et 21h-23h pour chaque jour et chaque station. 
+
+## Préparation des données 
+
+```{r,eval=F}
+VelibMean<-matrix(0,nrow=nrow(Velibdata),ncol=3*7)
+for (jour in 1:7){
+  VelibMean[,3*(jour-1)+1]<-apply(Velibdata[,24*(jour-1)+c(1:8)],1,mean)
+  VelibMean[,3*(jour-1)+2]<-apply(Velibdata[,24*(jour-1)+c(9:21)],1,mean)
+  VelibMean[,3*(jour-1)+3]<-apply(Velibdata[,24*(jour-1)+c(22:24)],1,mean)
+}
+colnames(VelibMean)<-paste(rep(unique(day),each=3),"-",rep(c("0-7h","8h-20h","21-23h"),7),sep="")
+```
+
+**Question :** Etudiez les corrélations entre variables du jeu de données `VelibMean`. 
+```{r,eval=F}
+# A COMPLETER
+```
+
+**Question :** Faites une ACP et commentez. 
+
+```{r,eval=F}
+# A COMPLETER
+```
+
+## Méthodes de classification
+
+### Kmeans
+
+**Question :** Faites une classification des stations à partir du jeu de données `VelibMean` 
+à l'aide des Kmeans. Etudiez la classification obtenue. 
+
+```{r,eval=F}
+# A COMPLETER
+```
+
+### Mélanges gaussiens
+
+**Question :** Faites une classification des stations à partir du jeu de données `VelibMean` 
+à l'aide des mélanges gaussiens. Etudiez la classification obtenue. 
+
+```{r,eval=F}
+# A COMPLETER
+```
+
+# Clustering pour des séries temporelles
+
+Les données de Vélib sont des données fonctionnelles (on étudie un phénomène qui évolue au cours du temps). Il existe des méthodes de clustering dédiées aux données fonctionnelles, comme par exemple le package `funFEM`.  
+
+Pour utiliser cette méthode, on commence par considérer la décompostion dans la base de Fourier des courbes. 
+
+```{r,warning=F,message=F,eval=F}
+basis<- create.fourier.basis(c(0, 167), nbasis=25)
+fdobj <- smooth.basis(1:168,t(Velibdata),basis)$fd
+```
+
+La méthode `funFEM` est une procédure de clustering basée sur des mélanges fonctionnels. Comme pour les mélanges gaussiens, il y a différentes formes disponibles selon les contraintes imposés dans le modèle (le détail est hors programme !). Cette méthode est détaillée dans l'article de Bouveyron et al. (2015).    
+
+**Question :** Executez les commandes suivantes et exploitez les résultats. On considère une classification en 10 classes comme dans Bouveyron et al. (2015).   
+
+```{r,warning=F,message=F,eval=F}
+resfunFEM <- funFEM(fdobj,K=10,model='AkjBk',init='kmeans',lambda=0,disp=TRUE)
+
+df<-data.frame(proba=apply(resfunFEM$P,1,max),classif=as.factor(apply(resfunFEM$P,1,which.max)))
+ggplot(df,aes(x=classif,y=proba))+geom_boxplot()
+
+```
+
+- Etude de la classification obtenue
+
+```{r,warning=F,message=F,eval=F}
+classifFEM<-apply(resfunFEM$P,1,which.max)
+plotprofilsmoy(Velibdata,clustering=classifFEM,plotsem=FALSE)
+plotprofilsmoy(Velibdata,clustering=classifFEM,plotsem=TRUE)
+
+plotmapquali(velib$position,as.factor(classifFEM))
+
+stationcaract(station,classifFEM)
+```
+
+- Comparaison avec les classifications précédentes
+
+```{r,eval=F}
+table(resICL$classification,classifFEM)
+adjustedRandIndex(resICL$classification,classifFEM)
+```
+
+```{r,eval=F}
+table(resICLbis$classification,classifFEM)
+adjustedRandIndex(resICLbis$classification,classifFEM)
+```
+
+
+
