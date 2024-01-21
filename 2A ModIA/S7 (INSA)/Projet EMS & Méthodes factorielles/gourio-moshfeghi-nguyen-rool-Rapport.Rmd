@@ -112,21 +112,18 @@ str(Data)
 
 Nous observons avec ce boxplot que nos variables n'ont pas les mêmes ordres de grandeur, cela va biaiser nos analyses de variances. Nous appliquons donc une transformation logarithmique aux valeurs quantitatives.
 
-<!-- TODO : ce chunk r ne fonctionne pas, il faut créer Datalog d'abord -->
-```{r}
+```{r, echo = FALSE}
+Datalog = Data
+Datalog[,4:14] = log(Datalog[,4:14])
+```
+
+```{r, echo = FALSE}
 t = ggplot(melt(Data[,4:14]),aes(x=variable,y=value))+geom_boxplot()
 p = ggplot(melt(Datalog[,4:14]),aes(x=variable,y=value))+geom_boxplot()
 grid.arrange(t, p, ncol=2)
 ```
 Nous remarquons que la transformation logarithme suffit à mieux visualiser nos données. Nous conserverons ce jeu de données transformé par la suite.
 Nous stockons le dataset avec les variables quantitatives transformées dans la variable $Datalog$.
-
-<!-- TODO : remonter ce chunk r avant celui qui précède -->
-```{r, echo = FALSE}
-Datalog = Data
-Datalog[,4:14] = log(Datalog[,4:14])
-```
-
 
 Nous affichons maintenant la fonction de répartition de la concentration d'oxyde d'azote. 
 
@@ -192,18 +189,16 @@ ggplot(Data) + aes(annee_inv) + geom_bar()+ ggtitle("Répartition du nombre de m
 
 Nous affichons la répartition des mesures en fonction de $TypeEPCI$. Nous remarquons que les catégories CA, CU et Metropole ne comprennent pas beaucoup de valeurs par rapport au type CC. Nous choissisons donc de combiner les trois catégories pour avoir un nombre suffisant de valeurs pour chacunes de nos modalités.
 
-```{r, echo = FALSE}
-ggplot(Data) + aes(TypeEPCI) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction du Type EPCI (avant)")
-```
-
-<!-- TODO : mettre graphe cote à cote --> 
-
+changer titre
 ```{r,  echo = FALSE}
 Datalog_ = Datalog
 levels(Datalog_[c(3,10,12, 14,15)]$TypeEPCI) <- c("CA/CU/Métropole", "CC", "CA/CU/Métropole", "CA/CU/Métropole")
-ggplot(Datalog_) + aes(TypeEPCI) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction du Type EPCI (après)")
 ```
-
+```{r, echo = FALSE}
+t = ggplot(Data) + aes(TypeEPCI) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction du Type EPCI (avant)")
+p = ggplot(Datalog_) + aes(TypeEPCI) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction du Type EPCI (après)")
+grid.arrange(t, p, ncol=2)
+```
 
 ## Analyse bidementionnelle
 
@@ -213,11 +208,9 @@ En affichant la matrice de corrélation des variables de notre dataset, nous obs
 corrplot(cor(Datalog_[4:14]), method="ellipse")
 ```
 
-<!-- TODO : subplot --> 
-pas fait avec ggplot
-montres corrélation en type epci et polluants
+Nous constatons avec le boxplot ci-dessous qu'il y a un lien entre le type EPCI et les différents polluants. En effet les boxplot en fonction des types sont à des niveaux différents. Rajouter titre ?
 ```{r}
-boxplot(Datalog_$pm10_kg~Datalog_$TypeEPCI)
+ggplot(Datalog_, aes(x = TypeEPCI, y = pm10_kg)) + geom_boxplot()
 ```
 
 
@@ -238,9 +231,6 @@ ggplot(data.frame(ACPpolluants$eig)) + aes(x = 1:11, y =ACPpolluants$eig[,"cumul
 
 Nous affichons le cercle des corrélations. La première dimension décrit toutes les variables sauf $ch4\_t$, $nh3\_kg$ et $n2o\_t$ qui décrivent la deuxième dimension.
 
-
-<!-- TODO : mettre lien avec l'autre corrplot -->
-
 ```{r,  echo = FALSE}
 fviz_pca_var(ACPpolluants,axes =c(1,2))
 ```
@@ -260,9 +250,8 @@ Remarque : Nous constatons, avec le graphique ci dessous, que chaque regroupemen
 fviz_pca_ind(ACPpolluants,col.ind=as.factor(Datalog$annee_inv),geom = c("point"),axes=c(1,2)) #utile de mettre celui avec les années ?
 ```
 
-$(\Delta)$ Nous affichons aussi cette représentation sans le groupement des $TypeEPCI$. Cela confirme que nous avons un classement de la pollution en fonction du Type EPCI. Si on va du plus au moins pollué, on a : Metropole, CU, CA puis CC.
+$(\Delta)$ Nous affichons aussi cette représentation sans le groupement des $TypeEPCI$. Cela confirme que nous avons un classement de la pollution en fonction du Type EPCI. Si nous alons du plus au moins pollué, nous avons : Metropole, CU, CA puis CC.
 
-<!-- TODO : le fviz ici ne fonctionne pas -->
 ```{r,  echo = FALSE, include = FALSE}
 fviz_pca_ind(ACPpolluants,col.ind=as.factor(Datalog$TypeEPCI),geom = c("point"),axes=c(1,2))
 ```
@@ -274,7 +263,6 @@ Data_final <- subset(Data_final, lib_epci != "CC Pays de Nay")
 
 $\Delta$ Nous réaffichons les mêmes graphes sans les deux outliers.
 
-<!-- TODO : les fviz ne fonctionne pas non plus -->
 ```{r,  echo = FALSE, include = FALSE}
 ACPpolluants_ <- PCA(Data_final[1:16], scale.unit = TRUE, ncp = 3, quali.sup = c(1,2,3,15,16), graph = FALSE)
 fviz_pca_var(ACPpolluants_,axes =c(1,2))
@@ -427,7 +415,6 @@ i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j
 $$
 
 
-<!-- TODO (note indicative à retirer) : la partie MLG a été faite par Maxime (sur un fichier à part initialement, donc il peut y avoir des modifs à refaire) -->
 ## Dépassement d'émission de méthane (Modèle linéaire généralisé)
 
 Dans cette section, nous allons expliquer le dépassement d'émission de méthane ($ch4$)de $1000t$ par an en fonction de l'ammoniac ($nh3$), du protoxyde d'azote ($n2o$), du type d'EPCI et de l'année par un modèle linéaire généralisé.
@@ -447,15 +434,12 @@ La variable $dep\_met\_1000$ étant binaire, nous allons utiliser la régression
 
 Dans un premier temps, nous créons le modèle complet avec interactions, modèle que l'on note $(\mathcal{M}_{GL_{1}})$ :
 
-peut etre enlever theta
-<!-- MODIF : j'ai ajouté indépendants 2 à 2, je sais pas si c'est la formulation correcte par contre -->
-<!-- MODIF : j'ai essayé d'aligner aussi -->
 $$
 \begin{equation*}
 (\text{M}_{GL_{1}}) : 
 \begin{cases}
 \begin{aligned}
-\text{dep_met_1000}_i \sim & ~ \mathcal{B}(\pi(x_i)) \text{, indépendants 2 à 2} & \\
+\text{dep_met_1000}_i \sim & ~ \mathcal{B}(\pi(x_i)) \text{, dep_met_1000}_1 \text{, ..., dep_met_1000}_n \text{ indépendant.}& \\ 
 \\
 \text{logit}[\pi(x_i)] = \ln(\cfrac{\pi(x_i)}{1 - \pi(x_i)})  = & ~ \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
 & + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
@@ -494,20 +478,30 @@ stepAIC(mlg_complet, direction=c("backward"),p=2,trace=0) # AIC
 ```{r, echo = FALSE, eval = TRUE}
 stepAIC(mlg_complet, direction=c("backward"),p=log(nrow(Data_mlg))) # BIC
 ```
+
 Nous utilisons 3 méthodes d'algorithme de selection de variable en méthode backward et les 3 s'accordent sur le même modèle.
-(mettre formule)
+
+$$
+\begin{equation*}
+(\text{M}_{GL_{2}}) : 
+\begin{cases}
+\begin{aligned}
+\text{dep_met_1000}_i \sim & ~ \mathcal{B}(\pi(x_i)) \text{, dep_met_1000}_1 \text{, ..., dep_met_1000}_n \text{ indépendant.}& \\ 
+\\
+\text{logit}[\pi(x_i)] = \ln(\cfrac{\pi(x_i)}{1 - \pi(x_i)})  = & ~ \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
+& + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
+\end{aligned}
+\end{cases}
+\end{equation*}
+$$
+
 ```{r, echo = FALSE, eval = TRUE}
 mlg_reduit = glm(formula = dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, family = binomial(link = "logit"), 
     data = Data_mlg)
 ```
 Nous effectuons un test de sous-modèle pour le valider. La p-valeur est de 0.5528 > 0.05. Nous ne rejetons alors pas le modèle réduit.
-
-<!-- TODO : après en soi malgré ce que j'ai dit au dessus la fonction anova semble tout de même avoir une sortie correcte vis-à-vis de la réduction proposée -->
 <!-- TODO : au passage le "Chisq" doit pouvoir se justifier avec le fait qu'on fait un test de Wald ou un truc dans le genre -->
-<!-- MODIF : écrire la formule D(M_0) - D(M_1) ~ \Khi2 machin bidule -->
-<!-- MODIF : le chunk r était en double -->
-<!-- MODIF : j'ai interverti les deux modèles dans la fonction ANOVA, ça donne une différence de déviance positive (auparavant négative, tous comme les degrés de libertés qui étaient négatifs) -->
 ```{r, echo = FALSE, eval = TRUE}
 anova(mlg_reduit, mlg_complet, test = "Chisq")
 ```
@@ -522,83 +516,5 @@ pseudoR2 = 1 - mlg_reduit$deviance/mlg_reduit$null.deviance
 pseudoR2
 ```
 
-Le $\text{pseudoR}^2$ du modèle réduit vaut 0.6490327, c'est une valeur satisfaisante pour fitter notre modèle. (Trouver une autre phrase)
+Le $\text{pseudoR}^2$ du modèle réduit vaut 0.6490327, c'est une valeur satisfaisante pour fitter notre modèle.
 
-
-#ancienne version
-Le critère $AIC$ conserve le modèle sans l'interaction annee_inv:TypeEPCI, modèle que l'on note $(\text{M}_{GL_{2}})$.
-Le critère $BIC$ conserve le modèle avec les variables nh3_kg, n2o_t, TypeEPCI, nh3_kg:n2o_t, modèle que l'on note $(\text{M}_{GL_{3}})$.
-
-
-$$
-\begin{equation*}
-(\text{M}_{GL_{2}}) : 
-
-\begin{cases}
-\text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
-
-\\
-
-\text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
-  + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i  + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
-  + \sum_{k=1}^5 (\delta_{1k}  +  \delta_{2k}\cdot\text{nh3_kg}_i ~ + \delta_{3k}\cdot\text{n2o_t}_i + \delta_{4k}\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{annee}_i = 2014 + k} \\
-
-\end{cases}
-
-\end{equation*}
-$$
-
-
-$$
-\begin{equation*}
-(\text{M}_{GL_{3}}) : 
-
-\begin{cases}
-\text{dep_met_1000}_i \sim \mathcal{B}(\pi_\theta(x_i)) \\
-
-\\
-
-\text{logit}[\pi_\theta(x_i)] = \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
-  + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i + \beta_4\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
-
-\end{cases}
-
-\end{equation*}
-
-$$
-
-
-```{r, echo = T, eval = T}
-# Modèle 2
-model2 = glm(dep_met_1000~annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_kg + 
-    annee_inv:n2o_t + nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI ,data=Data_mlg, family=binomial(link = "logit"))
-summary(model2)
-```
-
-On teste le sous-modèle $(\text{M}_{GL_{2}})$ par rapport au modèle complet avec interactions $(\text{M}_{GL_{1}})$.
-
-```{r, echo = T, eval = T}
-anova(model2, modelcompletinter, test="Chisq")
-```
-
-La pvaleur est >>0.05, on peut donc conserver le modèle $(\text{M}_{GL_{2}})$ au risque $5\%$.
-
-```{r, echo = T, eval = T}
-pseudoR2 = 1 - modelinterred$deviance/modelinterred$null.deviance
-pseudoR2
-```
-
-Le $\text{pseudoR}^2$ vaut 0.72, ce qui reste une valeur correcte (très légèrement en dessous du $\text{pseudoR}^2$ du modèle complet avec interactions).
-
-```{r, echo = T, eval = T}
-# Modèle 3
-model3 = glm(dep_met_1000 ~ nh3_kg + n2o_t + TypeEPCI + nh3_kg:n2o_t,data=Data_mlg, family=binomial(link = "logit"))
-summary(model3)
-```
-
-```{r, echo = T, eval = T}
-anova(model3, modelcompletinter, test="Chisq")
-```
-
-Cependant, le test du sous-modèle $(\text{M}_{GL_{3}})$ vis-à-vis du modèle complet $(\text{M}_{GL_{1}})$ renvoie une pvaleur << 0.05.
-On rejette donc le modèle $(\text{M}_{GL_{3}})$ au risque $5\%$.
