@@ -141,7 +141,7 @@ ggplot(Datalog) +
 Les données sont uniformément réparties. Nous utiliserons donc ce dataset pour la suite de notre étude.
 
  boucle for to do 
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = so2_kg) +
   stat_ecdf() +
@@ -149,28 +149,28 @@ ggplot(Datalog) +
   ggtitle("Fonction de répartition de la concentration d'oxyde de soufre en kg")
 ```
 
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = co_kg) +
   stat_ecdf() +
   ylab(" ") +
   ggtitle("Fonction de répartition de la concentration de monoxyde de carbone")
 ```
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = pm25_kg) +
   stat_ecdf() +
   ylab(" ") +
   ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
 ```
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = pm25_kg) +
   stat_ecdf() +
   ylab(" ") +
   ggtitle("Fonction de répartition de la concentration d'oxyde d'azote en kg")
 ```
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Datalog) +
   aes(x = pm25_kg) +
   stat_ecdf() +
@@ -183,7 +183,7 @@ ggplot(Datalog) +
 Nous nous intéressons maintenant aux variables qualitatives : $TypeEPCI$ & $annee_inv$.
 $(\Delta)$ Nous remarquons que nous avons le même nombre de prises de mesure pour chaque année, donc aucunes données ne semblent manquer.
 
-```{r, echo = FALSE, include = False}
+```{r, echo = FALSE, include = FALSE}
 ggplot(Data) + aes(annee_inv) + geom_bar()+ ggtitle("Répartition du nombre de mesure en fonction des années")
 ```
 
@@ -323,7 +323,6 @@ Dans un premier temps, on considère le modèle complet avec interactions.
 $$
 (M_1) 
 \left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \gamma_{ij} + (a1 + a2_i + a3_j)\times nh3\_kg_{ijk} + (b1 + b2_i + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
-
 \varepsilon_{ijk},\ \\
 i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
 } \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
@@ -341,7 +340,6 @@ Au vue des sorties des tests de student pour chaque coefficient, il semblerait q
 $$
 (M_2) 
 \left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \theta \times nh3\_kg_{ijk} + \gamma \times n2o\_t_{ijk} + 
-
 \varepsilon_{ijk},\ \\
 i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
 }\mathcal{N}(0,\sigma^2) \end{array}\right. 
@@ -375,7 +373,6 @@ Les deux algorithmes nous donne le même sous modèle :
 $$
 (M_3) 
 \left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + (a1 + a3_j)\times nh3\_kg_{ijk} + (b1 + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
-
 \varepsilon_{ijk},\ \\
 i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
 } \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
@@ -408,7 +405,6 @@ Nous pourrions alors considérer le modèle final suivant :
 $$
 (M_4) 
 \left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + (a1 + a3_j)\times nh3\_kg_{ijk} + (b1 + b3_j)\times n2o\_t_{ijk} +
-
 \varepsilon_{ijk},\ \\
 i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
 } \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
@@ -450,7 +446,7 @@ $$
 \end{equation*}
 $$
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, eval=TRUE}
 mlg_complet = glm(dep_met_1000~(.)^2, data=Data_mlg, family=binomial(link = "logit"))
 ```
 

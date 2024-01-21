@@ -1,0 +1,1041 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Projet d'étude : Analyse de données \& Éléments de modélisation statistique},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Projet d'étude : Analyse de données \& Éléments de modélisation
+statistique}
+\author{}
+\date{\vspace{-2.5em}2023-09-29}
+
+\begin{document}
+\maketitle
+
+\begin{verbatim}
+## corrplot 0.92 loaded
+\end{verbatim}
+
+\hypertarget{statistiques-descriptives}{%
+\section{Statistiques descriptives}\label{statistiques-descriptives}}
+
+Le jeu de données comprend \(984\) mesures des émissions de polluants
+atmosphériques tous secteurs d'activités confondues des EPCI
+(Etablissements Publics de Coopération Intercommunale) de la région
+Occitanie de 2014 à 2019.
+
+Chaque mesure est décrite par les variables qualitatives suivantes : +
+\emph{lib\_epci} : son nom + \emph{code\_epci} : son code
+d'identification + \emph{nomdepart} : son (ses) département(s)
+d'appartenance + \emph{TypeEPCI} : CC (communauté de commune), CA
+(communauté d'agglomération), Métrople et CU (communauté urbaine) +
+\emph{annee\_inv} : l'année de mesure
+
+Et par les variables quantitatives suivantes : + \emph{nox\_kg} : oxyde
+d'azote en kg + \emph{so2\_kg} : oxyde de soufre en kg + \emph{pm10\_kg}
+: particules en suspension dans l'air de diamètre inférieur à 10 µm +
+\emph{pm25\_kg} : particules en suspension dans l'air de diamètre
+inférieur à 2.5 µm + \emph{co\_kg} : monoxyde de carbone +
+\emph{c6h6\_kg} : benzène + \emph{nh3\_kg} : ammoniac +
+\emph{ges\_teqco2} : gaz à effet de serre + \emph{ch4\_t} : méthane +
+\emph{co2\_t} : dioxyde de carbone + \emph{n2o\_t} : protoxyde d'azote +
+\emph{latit} : sa latitude + \emph{longit} : sa longitude
+
+Dans la suite de ce rapport, nous utilisons la notation \(\Delta\) pour
+faire référence à des plots qui sont disponibles dans le Rmd mais que
+nous avons décidé de ne pas inclure dans le rapport.
+
+\begin{verbatim}
+##   code_epci                            lib_epci annee_inv     nox_kg    so2_kg
+## 1 200006930                   CC du Haut Allier      2019   65633.66  3866.599
+## 2 200017341               CC Lodévois et Larzac      2019  310288.20  8083.028
+## 3 200022986          CC du Grand Pic Saint-Loup      2019  337655.55  9373.106
+## 4 200023620       CC de la Gascogne Toulousaine      2019  298100.30  4091.852
+## 5 200023737                  CA du Grand Cahors      2019  447186.53 13650.148
+## 6 200027183 CU Perpignan Méditerranée Métropole      2019 2110865.51 57993.192
+##     pm10_kg   pm25_kg     co_kg   c6h6_kg    nh3_kg ges_teqco2   ch4_t
+## 1  15728.87  10975.55  173194.3  2319.199 133686.18   43995.12 617.104
+## 2  50929.20  38591.71  593036.6  8349.081 114533.40  127777.47 436.445
+## 3 143623.67  82143.61 1275976.8 18806.497  71177.45  161136.84 251.623
+## 4 126735.60  63331.88  780230.6 12250.430 244266.82  116802.18 275.749
+## 5 143525.58 111854.31 1386798.2 21346.289 130426.82  216301.79 447.677
+## 6 506888.15 353513.88 5270166.1 78510.229 111010.72 1057760.61 398.561
+##       co2_t  n2o_t TypeEPCI           nomdepart Ardèche Ariège Aude Aveyron
+## 1  17831.59 17.114       CC              Lozère       0      0    0       0
+## 2  93016.70 19.755       CC             Hérault       0      0    0       0
+## 3 125004.72 17.606       CC             Hérault       0      0    0       0
+## 4  79458.03 50.976       CC  Gers,Haute-Garonne       0      0    0       0
+## 5 161747.97 24.640       CA                 Lot       0      0    0       0
+## 6 806673.97 59.760       CU Pyrénées-Orientales       0      0    0       0
+##   Gard Haute.Garonne Gers Hérault Landes Lot Lot.et.Garonne Lozère
+## 1    0             0    0       0      0   0              0      1
+## 2    0             0    0       1      0   0              0      0
+## 3    0             0    0       1      0   0              0      0
+## 4    0             1    1       0      0   0              0      0
+## 5    0             0    0       0      0   1              0      0
+## 6    0             0    0       0      0   0              0      0
+##   Pyrénées.Atlantiques Hautes.Pyrénées Pyrénées.Orientales Tarn Tarn.et.Garonne
+## 1                    0               0                   0    0               0
+## 2                    0               0                   0    0               0
+## 3                    0               0                   0    0               0
+## 4                    0               0                   0    0               0
+## 5                    0               0                   0    0               0
+## 6                    0               0                   1    0               0
+##   Vaucluse    latit   longit
+## 1        0 44.73240 3.769267
+## 2        0 43.79291 3.372977
+## 3        0 43.77692 3.794306
+## 4        0 43.59144 1.066752
+## 5        0 44.48480 1.447761
+## 6        0 42.75200 2.851604
+\end{verbatim}
+
+\hypertarget{analyse-unidimentionnelle}{%
+\subsection{Analyse unidimentionnelle}\label{analyse-unidimentionnelle}}
+
+\hypertarget{analyse-des-variables-quantitatives}{%
+\subsubsection{Analyse des variables
+quantitatives}\label{analyse-des-variables-quantitatives}}
+
+Nous observons avec ce boxplot que nos variables n'ont pas les mêmes
+ordres de grandeur, cela va biaiser nos analyses de variances. Nous
+appliquons donc une transformation logarithmique aux valeurs
+quantitatives.
+
+\begin{verbatim}
+## Using  as id variables
+## Using  as id variables
+\end{verbatim}
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-8-1.pdf}
+Nous remarquons que la transformation logarithme suffit à mieux
+visualiser nos données. Nous conserverons ce jeu de données transformé
+par la suite. Nous stockons le dataset avec les variables quantitatives
+transformées dans la variable \(Datalog\).
+
+Nous affichons maintenant la fonction de répartition de la concentration
+d'oxyde d'azote.
+
+\((\Delta)\) D'autres graphes similaires sont disponibles dans le Rmd.
+
+à enlever surement
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+Les données sont uniformément réparties. Nous utiliserons donc ce
+dataset pour la suite de notre étude.
+
+boucle for to do
+
+\hypertarget{analyse-des-variables-qualitatives}{%
+\subsubsection{Analyse des variables
+qualitatives}\label{analyse-des-variables-qualitatives}}
+
+Nous nous intéressons maintenant aux variables qualitatives :
+\(TypeEPCI\) \& \(annee_inv\). \((\Delta)\) Nous remarquons que nous
+avons le même nombre de prises de mesure pour chaque année, donc aucunes
+données ne semblent manquer.
+
+Nous affichons la répartition des mesures en fonction de \(TypeEPCI\).
+Nous remarquons que les catégories CA, CU et Metropole ne comprennent
+pas beaucoup de valeurs par rapport au type CC. Nous choissisons donc de
+combiner les trois catégories pour avoir un nombre suffisant de valeurs
+pour chacunes de nos modalités.
+
+changer titre
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\hypertarget{analyse-bidementionnelle}{%
+\subsection{Analyse bidementionnelle}\label{analyse-bidementionnelle}}
+
+En affichant la matrice de corrélation des variables de notre dataset,
+nous observons que la plupart des polluants sont corrélés positivement
+les uns avec les autres à l'exception de \(nh3\_kg\), \(ch4\_t\) et
+\(n2o\_t\) qui ne semblent être corrélés à aucune autre variable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{corrplot}\NormalTok{(}\FunctionTok{cor}\NormalTok{(Datalog\_[}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{]), }\AttributeTok{method=}\StringTok{"ellipse"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+Nous constatons avec le boxplot ci-dessous qu'il y a un lien entre le
+type EPCI et les différents polluants. En effet les boxplot en fonction
+des types sont à des niveaux différents. Rajouter titre ?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(Datalog\_, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ TypeEPCI, }\AttributeTok{y =}\NormalTok{ pm10\_kg)) }\SpecialCharTok{+} \FunctionTok{geom\_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\hypertarget{visualisation-des-individus}{%
+\section{Visualisation des
+individus}\label{visualisation-des-individus}}
+
+Nous réalisons une ACP pour visualiser nos données dans un espace de
+dimension inférieure.
+
+Nous remarquons avec les graphes ci-dessous que les deux premières
+dimensions constituent 90\% de la variance. Nous allons poursuivre les
+analyses par ces deux dimensions.
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-21-1.pdf}
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-21-2.pdf}
+
+Nous affichons le cercle des corrélations. La première dimension décrit
+toutes les variables sauf \(ch4\_t\), \(nh3\_kg\) et \(n2o\_t\) qui
+décrivent la deuxième dimension.
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-22-1.pdf}
+Nous remarquons que les 3 polluants qui ne sont pas corrélés avec les
+autres polluants (cf corrplot) composent la deuxième dimension de l'ACP.
+
+Nous affichons également le graphe des individus colorés en fonction du
+Type EPCI. Nous remarquons que les types CA/CU/Metropole ont tendance à
+avoir en plus grandes quantité les polluants de la première dimension.
+Nous remarquons aussi deux groupements extrêmes. Un groupement très peu
+pollué et un autre plus pollué. Après identification, il s'agit de
+Toulouse Métropole et de CC Pays de Nay. Nous décidons d'enlever ces
+deux groupements car ils ne représentent pas la tendance général ; ce
+sont des outliers qui créeront une grande disparité.
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+Remarque : Nous constatons, avec le graphique ci dessous, que chaque
+regroupement corresponds à une ville grâce à l'habillage par année.
+Cette visualisation nous a permis d'éliminer les outliers.
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\((\Delta)\) Nous affichons aussi cette représentation sans le
+groupement des \(TypeEPCI\). Cela confirme que nous avons un classement
+de la pollution en fonction du Type EPCI. Si nous alons du plus au moins
+pollué, nous avons : Metropole, CU, CA puis CC.
+
+\(\Delta\) Nous réaffichons les mêmes graphes sans les deux outliers.
+
+\hypertarget{clustering-pas-ruxe9diguxe9}{%
+\section{Clustering (pas rédigé)}\label{clustering-pas-ruxe9diguxe9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reskmeans}\OtherTok{\textless{}{-}}\FunctionTok{kmeans}\NormalTok{((Data\_final[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{]),}\AttributeTok{centers=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{table}\NormalTok{(reskmeans}\SpecialCharTok{$}\NormalTok{cluster)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##   1   2   3   4   5 
+## 121 294 170 199 188
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_cluster}\NormalTok{(reskmeans,}\AttributeTok{data=}\NormalTok{Data\_final[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{],}\AttributeTok{ellipse.type=}\StringTok{"norm"}\NormalTok{,}\AttributeTok{labelsize=}\DecValTok{8}\NormalTok{,}\AttributeTok{geom=}\FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{), }\AttributeTok{axes =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}\SpecialCharTok{+}\FunctionTok{ggtitle}\NormalTok{(}\StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reskmeans}\OtherTok{\textless{}{-}}\FunctionTok{kmeans}\NormalTok{((Datalog[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{]),}\AttributeTok{centers=}\DecValTok{7}\NormalTok{)}
+\FunctionTok{table}\NormalTok{(reskmeans}\SpecialCharTok{$}\NormalTok{cluster)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##   1   2   3   4   5   6   7 
+## 169 221 279  96 171   6  42
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_cluster}\NormalTok{(reskmeans,}\AttributeTok{data=}\NormalTok{Datalog[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{],}\AttributeTok{ellipse.type=}\StringTok{"norm"}\NormalTok{,}\AttributeTok{labelsize=}\DecValTok{8}\NormalTok{,}\AttributeTok{geom=}\FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{), }\AttributeTok{axes =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}\SpecialCharTok{+}\FunctionTok{ggtitle}\NormalTok{(}\StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{gourio-moshfeghi-nguyen-rool-Rapport_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# A completer}
+\NormalTok{Kmax}\OtherTok{\textless{}{-}}\DecValTok{15}
+\NormalTok{reskmeanscl}\OtherTok{\textless{}{-}}\FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}\AttributeTok{nrow=}\FunctionTok{nrow}\NormalTok{(Data\_final),}\AttributeTok{ncol=}\NormalTok{Kmax}\DecValTok{{-}1}\NormalTok{)}
+\NormalTok{Iintra}\OtherTok{\textless{}{-}}\ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (k }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{Kmax)\{}
+\NormalTok{  resaux}\OtherTok{\textless{}{-}}\FunctionTok{kmeans}\NormalTok{(Data\_final[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{],}\AttributeTok{centers=}\NormalTok{k)}
+\NormalTok{  reskmeanscl[,k}\DecValTok{{-}1}\NormalTok{]}\OtherTok{\textless{}{-}}\NormalTok{resaux}\SpecialCharTok{$}\NormalTok{cluster}
+\NormalTok{  Iintra}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(Iintra,resaux}\SpecialCharTok{$}\NormalTok{tot.withinss)}
+\NormalTok{\}}
+
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{K=}\DecValTok{2}\SpecialCharTok{:}\DecValTok{15}\NormalTok{,}\AttributeTok{Iintra=}\NormalTok{Iintra)}
+\FunctionTok{ggplot}\NormalTok{(df,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{K,}\AttributeTok{y=}\NormalTok{Iintra))}\SpecialCharTok{+}\FunctionTok{geom\_line}\NormalTok{()}\SpecialCharTok{+}\FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}\FunctionTok{xlab}\NormalTok{(}\StringTok{"Nombre de classes"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Inertie intraclasse"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# A completer}
+\NormalTok{Kmax}\OtherTok{\textless{}{-}}\DecValTok{15}
+\NormalTok{reskmeanscl}\OtherTok{\textless{}{-}}\FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}\AttributeTok{nrow=}\FunctionTok{nrow}\NormalTok{(Datalog),}\AttributeTok{ncol=}\NormalTok{Kmax}\DecValTok{{-}1}\NormalTok{)}
+\NormalTok{Iintra}\OtherTok{\textless{}{-}}\ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (k }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{Kmax)\{}
+\NormalTok{  resaux}\OtherTok{\textless{}{-}}\FunctionTok{kmeans}\NormalTok{(Datalog[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{14}\NormalTok{],}\AttributeTok{centers=}\NormalTok{k)}
+\NormalTok{  reskmeanscl[,k}\DecValTok{{-}1}\NormalTok{]}\OtherTok{\textless{}{-}}\NormalTok{resaux}\SpecialCharTok{$}\NormalTok{cluster}
+\NormalTok{  Iintra}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(Iintra,resaux}\SpecialCharTok{$}\NormalTok{tot.withinss)}
+\NormalTok{\}}
+
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{K=}\DecValTok{2}\SpecialCharTok{:}\DecValTok{15}\NormalTok{,}\AttributeTok{Iintra=}\NormalTok{Iintra)}
+\FunctionTok{ggplot}\NormalTok{(df,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{K,}\AttributeTok{y=}\NormalTok{Iintra))}\SpecialCharTok{+}\FunctionTok{geom\_line}\NormalTok{()}\SpecialCharTok{+}\FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}\FunctionTok{xlab}\NormalTok{(}\StringTok{"Nombre de classes"}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Inertie intraclasse"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{etude-de-luxe9mission-de-muxe9thane-ancova}{%
+\section{Etude de l'émission de méthane
+(ANCOVA)}\label{etude-de-luxe9mission-de-muxe9thane-ancova}}
+
+Nous souhaitons étudier l'émission de méthane \(ch4\_t\) en fonction de
+l'ammoniac \(nh3\_kg\), du protoxyde d'azote \(n2o\_t\), du type d'EPCI
+\(TypeEPCI\) et de l'année \(annee\_inv\). Nous avons des variables
+quantitatives et qualitatives, nous allons donc faire une ANCOVA. Nous
+effectuons l'ANCOVA sur les données modifiées (par le logarithme).
+
+Dans un premier temps, on considère le modèle complet avec interactions.
+
+\[
+(M_1) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \gamma_{ij} + (a1 + a2_i + a3_j)\times nh3\_kg_{ijk} + (b1 + b2_i + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+} \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
+\]
+
+\(ch4\_t_{ijk}\) représentes la valeur de la \(k^{ème}\) mesure du
+\(ch4\_t\) pour la \(i^{ème}\) année et pour le \(j^{ème}\) type d'EPCI.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{complet}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(ch4\_t }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{ ,}\AttributeTok{data=}\NormalTok{Datalog\_[}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{12}\NormalTok{, }\DecValTok{14}\NormalTok{,}\DecValTok{15}\NormalTok{)])}
+\FunctionTok{summary}\NormalTok{(complet)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ch4_t ~ .^2, data = Datalog_[c(3, 10, 12, 14, 15)])
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.54659 -0.23562  0.05262  0.27848  1.80607 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)               -1.395554   1.153374  -1.210 0.226587    
+## annee_inv2015              0.391017   1.078546   0.363 0.717028    
+## annee_inv2016              0.140902   1.138029   0.124 0.901490    
+## annee_inv2017             -0.766577   1.245618  -0.615 0.538424    
+## annee_inv2018             -1.526748   1.303239  -1.172 0.241688    
+## annee_inv2019             -0.737383   1.275277  -0.578 0.563256    
+## nh3_kg                     0.692391   0.126043   5.493 5.06e-08 ***
+## n2o_t                     -0.635608   0.192432  -3.303 0.000992 ***
+## TypeEPCICC               -11.480929   0.881128 -13.030  < 2e-16 ***
+## annee_inv2015:nh3_kg      -0.040240   0.133827  -0.301 0.763718    
+## annee_inv2016:nh3_kg      -0.012393   0.141834  -0.087 0.930390    
+## annee_inv2017:nh3_kg       0.086343   0.155379   0.556 0.578549    
+## annee_inv2018:nh3_kg       0.179818   0.162588   1.106 0.269017    
+## annee_inv2019:nh3_kg       0.080817   0.159150   0.508 0.611707    
+## annee_inv2015:n2o_t        0.017030   0.149732   0.114 0.909471    
+## annee_inv2016:n2o_t       -0.012442   0.159373  -0.078 0.937788    
+## annee_inv2017:n2o_t       -0.115455   0.175564  -0.658 0.510937    
+## annee_inv2018:n2o_t       -0.216637   0.183242  -1.182 0.237402    
+## annee_inv2019:n2o_t       -0.108123   0.179714  -0.602 0.547558    
+## annee_inv2015:TypeEPCICC  -0.006751   0.160803  -0.042 0.966520    
+## annee_inv2016:TypeEPCICC  -0.046244   0.161614  -0.286 0.774835    
+## annee_inv2017:TypeEPCICC  -0.059297   0.160619  -0.369 0.712074    
+## annee_inv2018:TypeEPCICC  -0.205710   0.163455  -1.259 0.208513    
+## annee_inv2019:TypeEPCICC  -0.149353   0.162379  -0.920 0.357917    
+## nh3_kg:n2o_t               0.039984   0.012036   3.322 0.000927 ***
+## nh3_kg:TypeEPCICC          1.294907   0.098110  13.198  < 2e-16 ***
+## n2o_t:TypeEPCICC          -1.205566   0.107187 -11.247  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.4432 on 957 degrees of freedom
+## Multiple R-squared:  0.8354, Adjusted R-squared:  0.8309 
+## F-statistic: 186.8 on 26 and 957 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+Au vue des sorties des tests de student pour chaque coefficient, il
+semblerait que nous puissions supprimer certaines de ces interactions.
+Nous allons donc essayer de réduire notre modèle. Pour cela, nous
+supposons d'abord le modèle suivant sans interactions :
+
+\[
+(M_2) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + \theta \times nh3\_kg_{ijk} + \gamma \times n2o\_t_{ijk} + 
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+}\mathcal{N}(0,\sigma^2) \end{array}\right. 
+\]
+
+Nous effectuons alors un test de sous modèle de Fisher pour voir si nous
+pouvons enlever les interactions.
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI
+## Model 2: ch4_t ~ (annee_inv + nh3_kg + n2o_t + TypeEPCI)^2
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1    975 226.33                                  
+## 2    957 187.95 18    38.381 10.857 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+Notre p-valeur est très faible, nous ne pouvons pas supprimer toutes les
+interactions. Nous allons à la place utiliser un algorithme de sélection
+de variable pour réduire notre modèle.
+
+Nous choissisons la méthode backward avec les critères BIC et AIC.
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
+##     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, data = Datalog_[c(3, 
+##     10, 12, 14, 15)])
+## 
+## Coefficients:
+##       (Intercept)      annee_inv2015      annee_inv2016      annee_inv2017  
+##          -1.58579           -0.03908           -0.09280           -0.18379  
+##     annee_inv2018      annee_inv2019             nh3_kg              n2o_t  
+##          -0.29054           -0.27095            0.72586           -0.67216  
+##        TypeEPCICC       nh3_kg:n2o_t  nh3_kg:TypeEPCICC   n2o_t:TypeEPCICC  
+##         -11.54616            0.03941            1.29888           -1.22017
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
+##     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, data = Datalog_[c(3, 
+##     10, 12, 14, 15)])
+## 
+## Coefficients:
+##       (Intercept)      annee_inv2015      annee_inv2016      annee_inv2017  
+##          -1.58579           -0.03908           -0.09280           -0.18379  
+##     annee_inv2018      annee_inv2019             nh3_kg              n2o_t  
+##          -0.29054           -0.27095            0.72586           -0.67216  
+##        TypeEPCICC       nh3_kg:n2o_t  nh3_kg:TypeEPCICC   n2o_t:TypeEPCICC  
+##         -11.54616            0.03941            1.29888           -1.22017
+\end{verbatim}
+
+Les deux algorithmes nous donne le même sous modèle :
+
+\[
+(M_3) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + (a1 + a3_j)\times nh3\_kg_{ijk} + (b1 + b3_j)\times n2o\_t_{ijk} + \nu \times n2o\_t_{ijk} \times nh3\_kg_{ijk} +
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+} \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
+\]
+
+Nous avons supprimé 3 coefficients. Nous vérifions ce resultat avec un
+test de sous modèle.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{M3 }\OtherTok{=} \FunctionTok{lm}\NormalTok{(ch4\_t }\SpecialCharTok{\textasciitilde{}}\NormalTok{ annee\_inv }\SpecialCharTok{+}\NormalTok{ nh3\_kg }\SpecialCharTok{+}\NormalTok{ n2o\_t }\SpecialCharTok{+}\NormalTok{ TypeEPCI }\SpecialCharTok{+} 
+\NormalTok{    nh3\_kg}\SpecialCharTok{:}\NormalTok{n2o\_t }\SpecialCharTok{+}\NormalTok{ nh3\_kg}\SpecialCharTok{:}\NormalTok{TypeEPCI }\SpecialCharTok{+}\NormalTok{ n2o\_t}\SpecialCharTok{:}\NormalTok{TypeEPCI, }\AttributeTok{data =}\NormalTok{ Datalog\_[}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }
+    \DecValTok{10}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{14}\NormalTok{, }\DecValTok{15}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + nh3_kg:n2o_t + 
+##     nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+## Model 2: ch4_t ~ (annee_inv + nh3_kg + n2o_t + TypeEPCI)^2
+##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+## 1    972 188.74                           
+## 2    957 187.95 15   0.78493 0.2664 0.9977
+\end{verbatim}
+
+Notre p-valeur est bien supérieur à \(0.05\) donc on ne rejette pas ce
+sous modèle.
+
+Par curiosité, nous avons voulu supprimer certaines interactions
+manuellement. Nous avons trouvé que nous pouvions supprimer
+l'interaction entre \(nh3\_kg\) et \(n2o\_t\) et toujours avoir une
+p-valeur supérieure à \(0.05\).
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: ch4_t ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + nh3_kg:TypeEPCI + 
+##     n2o_t:TypeEPCI
+## Model 2: ch4_t ~ (annee_inv + nh3_kg + n2o_t + TypeEPCI)^2
+##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+## 1    973 190.85                           
+## 2    957 187.95 16    2.8963 0.9217 0.5437
+\end{verbatim}
+
+Nous pourrions alors considérer le modèle final suivant :
+
+\[
+(M_4) 
+\left\{\begin{array}{l} ch4\_t_{ijk}= \mu + \alpha_i + \beta_j + (a1 + a3_j)\times nh3\_kg_{ijk} + (b1 + b3_j)\times n2o\_t_{ijk} +
+\varepsilon_{ijk},\ \\
+i=1,\ldots,I=6,\ j=1 \ldots,J=2, \ k=1,\ldots,n_{ij}.\\ (\varepsilon_{ijk})_{i,j,k} \textrm{ i.i.d
+} \ \mathcal{N}(0,\sigma^2) \end{array}\right. 
+\]
+
+\hypertarget{duxe9passement-duxe9mission-de-muxe9thane-moduxe8le-linuxe9aire-guxe9nuxe9ralisuxe9}{%
+\subsection{Dépassement d'émission de méthane (Modèle linéaire
+généralisé)}\label{duxe9passement-duxe9mission-de-muxe9thane-moduxe8le-linuxe9aire-guxe9nuxe9ralisuxe9}}
+
+Dans cette section, nous allons expliquer le dépassement d'émission de
+méthane (\(ch4\))de \(1000t\) par an en fonction de l'ammoniac
+(\(nh3\)), du protoxyde d'azote (\(n2o\)), du type d'EPCI et de l'année
+par un modèle linéaire généralisé.
+
+Nous créons la nouvelle variable booléenne \(Data\_mlg\), valant 1 si le
+taux de méthane \(ch4\_t\) est supérieur à \(1000t\), 0 sinon.
+
+\begin{verbatim}
+##   annee_inv   nh3_kg    n2o_t        TypeEPCI dep_met_1000
+## 1      2019 11.80325 2.839897              CC        FALSE
+## 2      2019 11.64862 2.983407              CC        FALSE
+## 3      2019 11.17293 2.868240              CC        FALSE
+## 4      2019 12.40602 3.931355              CC        FALSE
+## 5      2019 11.77857 3.204371 CA/CU/Métropole        FALSE
+## 6      2019 11.61738 4.090337 CA/CU/Métropole        FALSE
+\end{verbatim}
+
+La variable \(dep\_met\_1000\) étant binaire, nous allons utiliser la
+régression logistique.
+
+Dans un premier temps, nous créons le modèle complet avec interactions,
+modèle que l'on note \((\mathcal{M}_{GL_{1}})\) :
+
+\[
+\begin{equation*}
+(\text{M}_{GL_{1}}) : 
+\begin{cases}
+\begin{aligned}
+\text{dep_met_1000}_i \sim & ~ \mathcal{B}(\pi(x_i)) \text{, dep_met_1000}_1 \text{, ..., dep_met_1000}_n \text{ indépendant.}& \\ 
+\\
+\text{logit}[\pi(x_i)] = \ln(\cfrac{\pi(x_i)}{1 - \pi(x_i)})  = & ~ \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
+& + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
+&  + \sum_{k=1}^5 (\delta_{1k}  +  \delta_{2k}\cdot\text{nh3_kg}_i ~ + \delta_{3k}\cdot\text{n2o_t}_i )\mathbb{1}_{\text{annee}_i = 2014 + k} \\
+& + \sum_{k=1}^5 (\kappa_{1k} \cdot \mathbb{1}_{\text{TypeEPCI}_i = \text{CC}}\cdot\mathbb{1}_{\text{annee}_i = 2014 + k}) \\
+\end{aligned}
+\end{cases}
+\end{equation*}
+\]
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+Nous observons que certaines variables du modèle complet ont une
+p-valeur \textgreater{} 0.05. Nous allons nous intéresser à la
+simplification du modèle. Nous commencons par faire un test de
+sous-modèle entre le modèle complet et le modèle sans interactions.
+
+Nous obtenons une p-valeur \textless\textless{} 0.05. On rejette donc
+l'hypothèse \(\mathcal{H_0}\), et nous devons conserver dans un premier
+temps le modèle complet, avec toutes les interactions. Nous allons
+maintenant appliquer des algorithmes de selection de variables pour
+réduire le modèle complet.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{step.backward }\OtherTok{\textless{}{-}} \FunctionTok{step}\NormalTok{(mlg\_complet)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=459.14
+## dep_met_1000 ~ (annee_inv + nh3_kg + n2o_t + TypeEPCI)^2
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                      Df Deviance    AIC
+## - annee_inv:TypeEPCI  5   410.45 454.45
+## - annee_inv:n2o_t     5   411.49 455.49
+## - annee_inv:nh3_kg    5   411.53 455.53
+## <none>                    405.14 459.14
+## - nh3_kg:n2o_t        1   415.64 467.64
+## - nh3_kg:TypeEPCI     1   448.45 500.45
+## - n2o_t:TypeEPCI      1   449.23 501.23
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Step:  AIC=454.45
+## dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_kg + 
+##     annee_inv:n2o_t + nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                    Df Deviance    AIC
+## - annee_inv:n2o_t   5   416.27 450.27
+## - annee_inv:nh3_kg  5   417.18 451.18
+## <none>                  410.45 454.45
+## - nh3_kg:n2o_t      1   421.51 463.51
+## - nh3_kg:TypeEPCI   1   450.01 492.01
+## - n2o_t:TypeEPCI    1   451.12 493.12
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Step:  AIC=450.27
+## dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_kg + 
+##     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                    Df Deviance    AIC
+## - annee_inv:nh3_kg  5   418.78 442.78
+## <none>                  416.27 450.27
+## - nh3_kg:n2o_t      1   427.24 459.24
+## - nh3_kg:TypeEPCI   1   462.59 494.59
+## - n2o_t:TypeEPCI    1   463.99 495.99
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Step:  AIC=442.78
+## dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + nh3_kg:n2o_t + 
+##     nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                   Df Deviance    AIC
+## <none>                 418.78 442.78
+## - nh3_kg:n2o_t     1   431.39 453.39
+## - annee_inv        5   446.78 460.78
+## - nh3_kg:TypeEPCI  1   464.51 486.51
+## - n2o_t:TypeEPCI   1   466.07 488.07
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:  glm(formula = dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
+##     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, family = binomial(link = "logit"), 
+##     data = Data_mlg)
+## 
+## Coefficients:
+##       (Intercept)      annee_inv2015      annee_inv2016      annee_inv2017  
+##         -121.7763            -0.4846            -0.6902            -1.1280  
+##     annee_inv2018      annee_inv2019             nh3_kg              n2o_t  
+##           -1.8518            -1.8314            10.0779            16.4354  
+##        TypeEPCICC       nh3_kg:n2o_t  nh3_kg:TypeEPCICC   n2o_t:TypeEPCICC  
+##         -117.6891            -1.3993            13.1830           -12.2932  
+## 
+## Degrees of Freedom: 971 Total (i.e. Null);  960 Residual
+## Null Deviance:       1193 
+## Residual Deviance: 418.8     AIC: 442.8
+\end{verbatim}
+
+\begin{verbatim}
+## Start:  AIC=459.14
+## dep_met_1000 ~ (annee_inv + nh3_kg + n2o_t + TypeEPCI)^2
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                      Df Deviance    AIC
+## - annee_inv:TypeEPCI  5   410.45 454.45
+## - annee_inv:n2o_t     5   411.49 455.49
+## - annee_inv:nh3_kg    5   411.53 455.53
+## <none>                    405.14 459.14
+## - nh3_kg:n2o_t        1   415.64 467.64
+## - nh3_kg:TypeEPCI     1   448.45 500.45
+## - n2o_t:TypeEPCI      1   449.23 501.23
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Step:  AIC=454.45
+## dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_kg + 
+##     annee_inv:n2o_t + nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                    Df Deviance    AIC
+## - annee_inv:n2o_t   5   416.27 450.27
+## - annee_inv:nh3_kg  5   417.18 451.18
+## <none>                  410.45 454.45
+## - nh3_kg:n2o_t      1   421.51 463.51
+## - nh3_kg:TypeEPCI   1   450.01 492.01
+## - n2o_t:TypeEPCI    1   451.12 493.12
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Step:  AIC=450.27
+## dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + annee_inv:nh3_kg + 
+##     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                    Df Deviance    AIC
+## - annee_inv:nh3_kg  5   418.78 442.78
+## <none>                  416.27 450.27
+## - nh3_kg:n2o_t      1   427.24 459.24
+## - nh3_kg:TypeEPCI   1   462.59 494.59
+## - n2o_t:TypeEPCI    1   463.99 495.99
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Step:  AIC=442.78
+## dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + nh3_kg:n2o_t + 
+##     nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+\begin{verbatim}
+##                   Df Deviance    AIC
+## <none>                 418.78 442.78
+## - nh3_kg:n2o_t     1   431.39 453.39
+## - annee_inv        5   446.78 460.78
+## - nh3_kg:TypeEPCI  1   464.51 486.51
+## - n2o_t:TypeEPCI   1   466.07 488.07
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:  glm(formula = dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
+##     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, family = binomial(link = "logit"), 
+##     data = Data_mlg)
+## 
+## Coefficients:
+##       (Intercept)      annee_inv2015      annee_inv2016      annee_inv2017  
+##         -121.7763            -0.4846            -0.6902            -1.1280  
+##     annee_inv2018      annee_inv2019             nh3_kg              n2o_t  
+##           -1.8518            -1.8314            10.0779            16.4354  
+##        TypeEPCICC       nh3_kg:n2o_t  nh3_kg:TypeEPCICC   n2o_t:TypeEPCICC  
+##         -117.6891            -1.3993            13.1830           -12.2932  
+## 
+## Degrees of Freedom: 971 Total (i.e. Null);  960 Residual
+## Null Deviance:       1193 
+## Residual Deviance: 418.8     AIC: 442.8
+\end{verbatim}
+
+Nous utilisons 3 méthodes d'algorithme de selection de variable en
+méthode backward et les 3 s'accordent sur le même modèle.
+
+\[
+\begin{equation*}
+(\text{M}_{GL_{2}}) : 
+\begin{cases}
+\begin{aligned}
+\text{dep_met_1000}_i \sim & ~ \mathcal{B}(\pi(x_i)) \text{, dep_met_1000}_1 \text{, ..., dep_met_1000}_n \text{ indépendant.}& \\ 
+\\
+\text{logit}[\pi(x_i)] = \ln(\cfrac{\pi(x_i)}{1 - \pi(x_i)})  = & ~ \mu  +  \theta_1\cdot\text{nh3_kg}_i  + \theta_2\cdot\text{n2o_t}_i  +  \gamma\cdot\text{nh3_kg}_i\cdot\text{n2o_t}_i  \\ 
+& + (\beta_1  +  \beta_2\cdot\text{nh3_kg}_i ~ + \beta_3\cdot\text{n2o_t}_i )\mathbb{1}_{\text{TypeEPCI}_i = \text{CC}} \\
+\end{aligned}
+\end{cases}
+\end{equation*}
+\]
+
+\begin{verbatim}
+## Warning: glm.fit: des probabilités ont été ajustées numériquement à 0 ou 1
+\end{verbatim}
+
+Nous effectuons un test de sous-modèle pour le valider. La p-valeur est
+de 0.5528 \textgreater{} 0.05. Nous ne rejetons alors pas le modèle
+réduit.
+
+\begin{verbatim}
+## Analysis of Deviance Table
+## 
+## Model 1: dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + nh3_kg:n2o_t + 
+##     nh3_kg:TypeEPCI + n2o_t:TypeEPCI
+## Model 2: dep_met_1000 ~ (annee_inv + nh3_kg + n2o_t + TypeEPCI)^2
+##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+## 1       960     418.78                     
+## 2       945     405.14 15   13.643   0.5528
+\end{verbatim}
+
+On a :
+\(T := \mathcal{D}(M_0) - \mathcal{D}(M_1) \sim \chi^2(k_1 - k_0)\),
+avec
+\(\mathcal{D}(M) = -2\{l(Y,\hat{\theta}) - l(Y,\hat{\theta}_{sat})\}\).
+Avec les sorties R, on constate : \(T^{obs} = 13,643,\) puis pvaleur =
+\(\mathbb{P}(T > T^{obs}) = 0.55\).
+
+On a pvaleur \(> 0.05\), on conserve donc le modèle réduit au risque
+\(5\%\).
+
+\begin{verbatim}
+## [1] 0.6490327
+\end{verbatim}
+
+Le \(\text{pseudoR}^2\) du modèle réduit vaut 0.6490327, c'est une
+valeur satisfaisante pour fitter notre modèle.
+
+\end{document}
