@@ -478,9 +478,32 @@ Nous créons la nouvelle variable booléenne $Data\_mlg$, valant 1 si le taux de
 ```{r, echo=FALSE, eval=TRUE}
 # REDÉ
 Data = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
+Data$TypeEPCI=as.factor(Data$TypeEPCI)
+Data$annee_inv=as.factor(Data$annee_inv)
+Data$nomdepart=as.factor(Data$nomdepart)
+Data$lib_epci=as.factor(Data$lib_epci)
+Data$Ardèche = as.factor(Data$Ardèche)
+Data$Ariège = as.factor(Data$Ariège)
+Data$Aude = as.factor(Data$Aude)
+Data$Aveyron = as.factor(Data$Aveyron)
+Data$Gard = as.factor(Data$Gard)
+Data$Haute.Garonne = as.factor(Data$Haute.Garonne)
+Data$Gers = as.factor(Data$Gers)
+Data$Hérault = as.factor(Data$Hérault)
+Data$Landes = as.factor(Data$Landes)
+Data$Lot = as.factor(Data$Lot)
+Data$Lot.et.Garonne = as.factor(Data$Lot.et.Garonne)
+Data$Lozère = as.factor(Data$Lozère)
+Data$Pyrénées.Atlantiques = as.factor(Data$Pyrénées.Atlantiques)
+Data$Hautes.Pyrénées = as.factor(Data$Hautes.Pyrénées)
+Data$Pyrénées.Orientales = as.factor(Data$Pyrénées.Orientales)
+Data$Tarn = as.factor(Data$Tarn)
+Data$Tarn.et.Garonne = as.factor(Data$Tarn.et.Garonne)
+Data$Vaucluse = as.factor(Data$Vaucluse)
 Datalog = Data
 Datalog[,4:14] = log(Datalog[,4:14])
 Datalog_ = Datalog
+levels(Datalog_[c(3,10,12, 14,15)]$TypeEPCI) <- c("CA/CU/Métropole", "CC", "CA/CU/Métropole", "CA/CU/Métropole")
 Data_final <- subset(Datalog_, lib_epci != "Toulouse Métropole")
 Data_final <- subset(Data_final, lib_epci != "CC Pays de Nay")
 
