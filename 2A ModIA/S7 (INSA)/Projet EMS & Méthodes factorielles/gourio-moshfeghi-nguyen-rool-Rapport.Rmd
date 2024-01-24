@@ -314,6 +314,64 @@ df<-data.frame(K=2:15,Iintra=Iintra)
 ggplot(df,aes(x=K,y=Iintra))+geom_line()+geom_point()+xlab("Nombre de classes")+ylab("Inertie intraclasse")
 ```
 
+<!-- MODIF : AJOUT DE LA PARTIE CAH DE CUSTERING  -->
+```{r,eval=F}
+Data_CAH = Data_final[,4:14]
+```
+
+```{r,eval=F}
+# A completer : FAIT
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.G1(Data_CAH,cutree(hc,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()
+```
+```{r,eval=F}
+ClustCH<-cutree(hc,which.max(CH)+1)
+fviz_dend(hc,show_labels = FALSE,k=which.max(CH)+1)
+```
+```{r,eval=F}
+fviz_cluster(hc,Data_CAH,ellipse.type="norm",labelsize=8,geom=c("point"),axes=c(1,2)) + ggtitle("")
+table(hc$order)
+```
+
+
+```{r,eval=F}
+d=dist(Data_CAH, method = "euclidean")
+hc=hclust(d,method="single")
+#ggdendogram(hc)
+classK5 <- cutree(hc, k = 5)
+fviz_dend(hc, k=5, show_labels=FALSE)
+```
+
+```{r,eval=F}
+Data_CAH = Data_final[,4:14]
+d=dist(Data_CAH, method = "euclidean")
+hc=hclust(d,method="complete")
+#ggdendogram(hc)
+fviz_dend(hc, k = 5, show_labels=FALSE)
+```
+
+```{r,eval=F}
+Data_CAH = Data_final[,4:14]
+d=dist(Data_CAH, method = "euclidean")
+hc=hclust(d,method="average")
+#ggdendogram(hc)
+fviz_dend(hc,show_labels=FALSE)
+```
+
+```{r,eval=F}
+Data_CAH = Data_final[,4:14]
+d=dist(Data_CAH, method = "euclidean")
+hc=hclust(d,method="ward")
+#ggdendogram(hc)
+fviz_dend(hc,show_labels=FALSE)
+```
+
+
 # Etude de l'émission de méthane (ANCOVA)
 
 Nous souhaitons étudier l'émission de méthane $ch4\_t$ en fonction de l'ammoniac $nh3\_kg$, du protoxyde d'azote $n2o\_t$, du type d'EPCI $TypeEPCI$ et de l'année $annee\_inv$. Nous avons des variables quantitatives et qualitatives, nous allons donc faire une ANCOVA. Nous effectuons l'ANCOVA sur les données modifiées (par le logarithme).
@@ -418,11 +476,21 @@ Dans cette section, nous allons expliquer le dépassement d'émission de méthan
 Nous créons la nouvelle variable booléenne $Data\_mlg$, valant 1 si le taux de méthane $ch4\_t$ est supérieur à $1000t$, 0 sinon.
 
 ```{r, echo=FALSE, eval=TRUE}
+# REDÉ
+Data = read.csv("Data-projetmodIA-2324.csv", header = TRUE)
+Datalog = Data
+Datalog[,4:14] = log(Datalog[,4:14])
+Datalog_ = Datalog
+Data_final <- subset(Datalog_, lib_epci != "Toulouse Métropole")
+Data_final <- subset(Data_final, lib_epci != "CC Pays de Nay")
+
+
 Data_mlg = Data_final[c(3,10,12,14,15)]
 # Création d'une nouvelle variable qualitative (celle qui traduit méthane > 1000t)
 Data_mlg$dep_met_1000 <- as.logical(Data_mlg$ch4_t>log(1000))
 # Retrait de la variable quantitative ch4_t
 Data_mlg <- Data_mlg[c(1,2,4,5,6)]
+#Data_mlg[,2:3] = scale(Data_mlg[,2:3])
 head(Data_mlg)
 ```
 
@@ -446,7 +514,7 @@ $$
 \end{equation*}
 $$
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE, warning=FALSE}
 mlg_complet = glm(dep_met_1000~(.)^2, data=Data_mlg, family=binomial(link = "logit"))
 ```
 
@@ -454,7 +522,7 @@ Nous observons que certaines variables du modèle complet ont une p-valeur > 0.0
 Nous commencons par faire un test de sous-modèle entre le modèle complet et le modèle sans interactions.
 
 <!-- TODO : écrire le test de sous-modèle que l'on s'apprète à faire (avec H_0 et H_1), éventuellement évoquer le fait que c'est un test de Wald (si pertinent et avéré)  --> 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, eval=FALSE, warning=FALSE}
 mlg_si = glm(dep_met_1000~., data=Data_mlg, family=binomial(link = "logit"))
 ```
 
@@ -465,7 +533,8 @@ Nous obtenons une p-valeur << 0.05. On rejette donc l'hypothèse $\mathcal{H_0}$
 Nous allons maintenant appliquer des algorithmes de selection de variables pour réduire le modèle complet.
 
 <!-- TODO : Dans tous les algorithmes faut qu'on fasse gaffe, ils ne semblent ne prendre que les variables d'interaction (et plus les variables additives). La prof avait dit qu'il fallait faire gaffe à ça je crois, j'avais entendu d'une oreille la dernière fois --> 
-```{r}
+<!-- MODIF : ajout de "warning = F" -->
+```{r, warning = F}
 step.backward <- step(mlg_complet)
 ```
 ```{r, echo = FALSE, eval = TRUE}
