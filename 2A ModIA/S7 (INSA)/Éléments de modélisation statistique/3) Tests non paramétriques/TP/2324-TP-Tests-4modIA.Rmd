@@ -64,6 +64,9 @@ Dans un premier temps, faites quelques statistiques descriptives pour vous famil
 
 ```{r}
 # STATISTIQUES DESCRIPTIVES - A COMPLETER
+str(amis)
+summary(amis)
+boxplot(amis)
 ```
 
 ## Test de Student
@@ -73,28 +76,31 @@ Dans cette section, on suppose que les deux échantillons sont gaussiens : $X_i\
 + A l'aide de la commande `var.test()`, faites un test d'égalité des variances. 
 ```{r}
 # A completer
+var.test(speed1, speed2)
 ```
 
 Qu'en concluez-vous ? \
-Réponse : ...
+Réponse : La pvaleur est supérieure à $0.05$ : on rejette l'hypothèse d'égalité des variances au risque $5%$
 
 + A l'aide de la commande `t.test()`, faites un test d'égalité des moyennes en tenant compte du test précédent sur les variances. 
 
 ```{r}
 # A COMPLETER
+t.test(speed1, speed2, var.equal = FALSE)
 ```
 
 Qu'en concluez-vous ?\
-Réponse :...
+Réponse : On a aussi une pvaleur < $0.05$, on rejette l'hypothèse d'égalité des moyennes
 
 + A l'aide de la commande `t.test()`, testez si la présence de signalisation permet un ralentissement des voitures. 
 
 ```{r}
 # A COMPLETER
+t.test(speed1, speed2, var.equal = FALSE, alternative = "less")
 ```
 
 Qu'en concluez-vous ? \
-Réponse : ...
+Réponse : La pvaleur est inférieur à $0.05$: on rejette l'hyopothèse d'égalité contre l'hypothèse "la vitesse des automobilistes est inférieurs lorsqu'il y a une signalisation".
 
 ## Test de normalité des échantillons
 Les tests précédents sont totalement conditionnés à l'hypothèse que chacun des échantillons est gaussien. Nous allons ici nous intéresser à tester la normalité de chacun des échantillons.
@@ -130,6 +136,8 @@ celle d'une loi normale de moyenne la moyenne empirique et de variance la varian
 
 ```{r}
 # A COMPLETER
+plot(ecdf(speed1))
+plot(ecdf(speed2))
 ```
 
 
@@ -149,17 +157,21 @@ grid.arrange(F1,F2,ncol=2)
 
 ```{r}
 # A COMPLETER
+lillie.test(speed1)
+lillie.test(speed2)
 ```
 
-Commentaire : ...
+Commentaire : Avec un test de Komogorov-Smirnov, on rejette l'hyopothèse de normalité des échantillons.
 
 + A l'aide de la fonction `shapiro.test()`, testez la normalité de chacun des échantillons à l'aide d'un test de Shapiro-Wilk. 
 
 ```{r}
 # A COMPLETER
+shapiro.test(speed1)
+shapiro.test(speed2)
 ```
 
-Commentaire : ...
+Commentaire : Avec un test de Shapiro-Wilk, on rejette aussi l'hyopothèse de normalité des échantillons.
 
 ## Tests non-paramétriques de comparaison de deux échantillons 
 On ne va plus supposer ici que les échantillons sont distribués selon une loi normale chacun. On ne va faire aucune hypothèse sur la distribution des échantillons. 
@@ -172,17 +184,21 @@ H_0 : F_X = F_Y \textrm{ contre } H_1 : F_X\ \  ??  \ \ F_Y
 $$
 ```{r}
 # A COMPLETER
+ks.test(speed1, speed2, alternative = "greater")
 ```
 
-Commentaire : ...
+Commentaire : On rejette l'hypothèse nulle donc la signalisation fait diminuer les vitesse.
 
 +  A l'aide de la fonction `wilcox.test()`, répondez à la même question à l'aide d'un test de Wilcoxon Mann-Whitney.
 
 ```{r}
 # A COMPLETER
+wilcox.test(speed1, speed2, alternative = "less")
 ```
 
-Commentaire : ...
+Commentaire : De même, on rejette l'hypothèse nulle donc la signalisation fait diminuer les vitesse.
+
+**NOTE** : l'un des tests raisonne sur les fonctions de répartitions et l'autre sur les variables, attention à cette subtilité. 
 
 # Test d'indépendance du Khi-deux
 Sur $1000$ personnes en France, on a relevé la couleur des yeux et la couleur des cheveux. On souhaite tester s'il y a indépendance entre la couleur des yeux et celle des cheveux. 
@@ -203,10 +219,11 @@ rmarkdown::paged_table(Data)
 
 ```{r}
 # A COMPLETER
-# Ind = ...
+Ind = chisq.test(Data)
+print(Ind)
 ```
 
-Commentaire : ...
+Commentaire : $K = 3$, $L = 4$, $(K - 1)(L - 1) = 2 \times 3 = 6$ pour les ddl de la loi du $Khi^2$. On rejette l'hypothèse nulle donc pas d'indépendance entre les deux v.a.
 
 + Que représente les quantités suivantes : 
 <!-- enlever eval=F-->
@@ -262,6 +279,9 @@ rbind(c("<=1","2","3","4","5","6","7",">=8"),np0g)
 
 ```{r}
 # A COMPLETER
+np0g = c(sum(np0[1:2]),np0[3:8],sum(np0[9:16]))
+np0g[8] = n - sum(np0g[1:7])
+rbind(c("<=1","2","3","4","5","6","7",">=8"),np0g)
 ```
 
 Commentaire : ...
@@ -270,9 +290,23 @@ Commentaire : ...
 
 ```{r}
 # A COMPLETER
+Nkgroupe = c(sum(Accid[1:2,2]),Accid[3:8,2],sum(Accid[9:16,2]))
+chisq.test(Nkgroupe, p=np0g/n)
+```
+```{r}
+# A COMPLETER
+lambdahat = sum(Accid[,1] * Accid[,2] / sum(Accid[,2]))
+proba = c(dpoirs(0:14, lambdahat), 1 - ppois(14, lambdahat0))
+np0 = n*proba
+
+np0groupe = c(np0[1:7,2],sum(Accid[9:16,2]))
+chisq.test(Nkgroupe, p = np0groupe/n)
+
+# CE CHUNK N'A PAS ÉTÉ FINI
 ```
 
-Commentaire : ...
+
+Commentaire : Pour le ddl, on a fait $K = 8$ groupes donc $\text{ddl} = K - 1 = 7$. On rejette ici l'hypothèse nulle donc on ne suppose pas que cela suit une loi $\mathcal{P}(4)$.
 
 # Comparaison de 2 échantillons appariés
 Dans une usine, on a du mal à fixer le taux d'acidité des yaourts. Sur les mêmes 10 pots, on mesure leur taux d'acidité à la fabrication (0h) et après 5 heures de fabrication. On obtient les valeurs suivantes : 
@@ -295,6 +329,9 @@ Les $X_i$ et $Y_i$ ne sont pas indépendants d'où le terme d'appariés. On cons
 ```{r}
 Z = acidite5 - acidite0
 # A COMPLETER
+str(Z)
+summary(Z)
+boxplot(Z)
 ```
 
 
