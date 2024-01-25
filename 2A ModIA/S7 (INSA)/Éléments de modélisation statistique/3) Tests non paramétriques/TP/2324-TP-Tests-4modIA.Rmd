@@ -1,0 +1,335 @@
+---
+title: "Tests non paramétriques et du khi-deux"
+date : "4modIA - 2023-2024"
+always_allow_html: true
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth : 4
+    number_sections : true
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+**Résumé :**\
+*L'objectif de ce TP est d'illustrer les différents tests vus en cours. N'oubliez pas de vérifier que vous êtes capable de construire ces tests sur le papier !*
+
+_____________________________________________________________________________________________________________
+
+
+```{r,echo=T, error=F,warning=F}
+library(boot)
+library(nortest)
+library(ggplot2)  
+library(gridExtra)
+```
+______________________________________________________________________________________________________________
+
+
+# Comparaison de deux échantillons non appariés
+
+On considère le jeu de données *amis* disponible dans la librairie `boot`. 
+Ce jeu de données comporte des mesures de vitesse de voitures sur divers lieux dont certains comportent des signes d'avertissement. 
+On note $(X_1,\ldots,X_n)$ les vitesses mesurées dans des lieux comportant des signes d'avertissement et $(Y_1,\ldots,Y_m)$ les vitesses mesurées dans des lieux sans signe d'avertissement. 
+L'objectif est de déterminer s'il y a une différence significative sur les vitesses en présence ou non de signes d'avertissement. 
+
+```{r}
+data(amis)
+help(amis)
+speed1=amis$speed[amis$warning==1]
+speed2=amis$speed[amis$warning==2]
+```
+
+Dans un premier temps, faites quelques statistiques descriptives pour vous familiariser avec ces données. 
+
+```{r}
+# STATISTIQUES DESCRIPTIVES - A COMPLETER
+```
+
+## Test de Student
+
+Dans cette section, on suppose que les deux échantillons sont gaussiens : $X_i\sim\mathcal{N}(m_1,\sigma_1^2)$ et $Y_j\sim\mathcal{N}(m_2,\sigma_2^2)$.
+
++ A l'aide de la commande `var.test()`, faites un test d'égalité des variances. 
+```{r}
+# A completer
+```
+
+Qu'en concluez-vous ? \
+Réponse : ...
+
++ A l'aide de la commande `t.test()`, faites un test d'égalité des moyennes en tenant compte du test précédent sur les variances. 
+
+```{r}
+# A COMPLETER
+```
+
+Qu'en concluez-vous ?\
+Réponse :...
+
++ A l'aide de la commande `t.test()`, testez si la présence de signalisation permet un ralentissement des voitures. 
+
+```{r}
+# A COMPLETER
+```
+
+Qu'en concluez-vous ? \
+Réponse : ...
+
+## Test de normalité des échantillons
+Les tests précédents sont totalement conditionnés à l'hypothèse que chacun des échantillons est gaussien. Nous allons ici nous intéresser à tester la normalité de chacun des échantillons.
+
++ On commence par tracer la droite d'Henry (qqplot) pour chacun des échantillons :
+
+<!-- pour affichage des plots classiques : enlever echo=F et eval=F -->
+```{r,echo=F,eval=F}
+par(mfrow=c(1,2))
+qqnorm(speed1,pch=20,main="Echantillon 1")
+qqline(speed1, col = "red")
+qqnorm(speed2,pch=20,main="Echantillon 2")
+qqline(speed2, col = "red")
+```
+
+<!-- graphes en ggplot : mettre eval=F, echo=F si non utilisation -->
+```{r}
+p1 = ggplot(data.frame(y=speed1), aes(sample = y))+
+  stat_qq() + 
+  stat_qq_line(col="red")+
+  ggtitle("Speed 1")
+p2 = ggplot(data.frame(y=speed2), aes(sample = y))+
+  stat_qq() + 
+  stat_qq_line(col="red")+
+  ggtitle("Speed 2")
+grid.arrange(p1,p2,ncol=2)
+```
+
+Commentaire : ...
+
++ Pour chacun des échantillons, tracez la fonction de répartition empirique (à l'aide de `ecdf()`) et superposez
+celle d'une loi normale de moyenne la moyenne empirique et de variance la variance empirique (à l'aide de `pnorm()`).
+
+```{r}
+# A COMPLETER
+```
+
+
+<!--  la version ggplot -->
+```{r,eval=F,echo=F}
+F1=ggplot(data.frame(speed1=speed1), aes(speed1)) + 
+  stat_ecdf(geom = "step") +
+  stat_function(fun = pnorm, args =list(mean=mean(speed1),sd=sd(speed1)), col="red")
+
+F2=ggplot(data.frame(speed2=speed2), aes(speed2)) + 
+  stat_ecdf(geom = "step") +
+  stat_function(fun = pnorm, args = list(mean=mean(speed2),sd=sd(speed2)), col="red")
+grid.arrange(F1,F2,ncol=2)
+```
+
++ A l'aide de la fonction `lillie.test()` de la librairie `nortest`, testez la normalité de chacun des échantillons à l'aide d'un test de Kolmogorov-Smirnov. 
+
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
++ A l'aide de la fonction `shapiro.test()`, testez la normalité de chacun des échantillons à l'aide d'un test de Shapiro-Wilk. 
+
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
+## Tests non-paramétriques de comparaison de deux échantillons 
+On ne va plus supposer ici que les échantillons sont distribués selon une loi normale chacun. On ne va faire aucune hypothèse sur la distribution des échantillons. 
+
++ A l'aide de la fonction `ks.test()`, testez si la signalisation a une influence sur la diminution de la vitesse à l'aide d'un test de Kolmogorov-Smirnov. 
+
+On veut tester 
+$$
+H_0 : F_X = F_Y \textrm{ contre } H_1 : F_X\ \  ??  \ \ F_Y
+$$
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
++  A l'aide de la fonction `wilcox.test()`, répondez à la même question à l'aide d'un test de Wilcoxon Mann-Whitney.
+
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
+# Test d'indépendance du Khi-deux
+Sur $1000$ personnes en France, on a relevé la couleur des yeux et la couleur des cheveux. On souhaite tester s'il y a indépendance entre la couleur des yeux et celle des cheveux. 
+
+```{r}
+Data = as.data.frame(matrix(c(152,73,36,247,114,102,83,37,127,
+                         11,8,10),ncol=4))
+rownames(Data)=c("marrons","vert","bleus")
+colnames(Data)=c("noirs","bruns","blonds","roux")
+```
+
+```{r, echo=F}
+rmarkdown::paged_table(Data)
+```
+
+
++ A l'aide de la fonction `chisq.test()`, testez l'indépendance entre la couleur des yeux et celle des cheveux.
+
+```{r}
+# A COMPLETER
+# Ind = ...
+```
+
+Commentaire : ...
+
++ Que représente les quantités suivantes : 
+<!-- enlever eval=F-->
+```{r, eval=F}
+Ind$observed    
+Ind$expected   
+Ind$residuals
+```
+
+Commentaire : ...
+
+# Exemple de test d'adéquation à une loi discrète de support infini
+Dans une entreprise, le nombre d'accidents du travail par semaine était modélisé jusqu'ici par la loi de Poisson $\mathcal P(4)$. Pour savoir si ce modèle est toujours valable, on étudie le nombre d'accidents du travail par semaine sur les 4 dernières années environ. Les données observées portent sur 200 semaines. On note $X=(X_1,\ldots,X_n)$ avec $X_i$ le nombre d'accidents lors de la $i$ème semaine.
+```{r}
+Accid = matrix(c(0:15,5,28,47,41,27,21,19,5,4,3,
+		rep(0,6)),ncol=2)
+colnames(Accid) = c("NbAccid","Effectif")
+```
+
+```{r,echo=F}
+print(Accid)
+```
+
++ A l'aide des commandes suivantes, comparez la distribution empirique de l'échantillon avec la distribution d'une loi $\mathcal P(4)$.
+
+```{r,eval=F,echo=F}
+A=barplot(Accid[,2]/sum(Accid[,2]))
+points(A[,1],dpois(Accid[,1],4),col="red",pch=20)
+```
+
+<!-- version ggplot -->
+```{r}
+df=data.frame(Accid,Poisson=dpois(Accid[,1],lambda=4))
+df$NbAccid = as.factor(df$NbAccid)
+df$Effectif = df$Effectif/sum(df$Effectif)
+ggplot(data=df)+
+  geom_bar(aes(x=NbAccid, y=Effectif),stat= "identity")+
+  geom_point(aes(x=NbAccid,y=Poisson),col="red")
+```
+
++ On souhaite ici faire un test du khi-deux mais le support de la loi est infini. On va donc se ramener à un support fini en créant des classes de "modalités" $\mathcal C_k$ d'effectifs théoriques $n p_k^0 \geq 5$.
+
+```{r}
+n=sum(Accid[,2])
+np0 = n*dpois(0:15,4)
+print(cbind(0:15,np0))
+np0g = c(sum(np0[1:2]),np0[3:8],sum(np0[9:16])) 
+np0g[8] = n - sum(np0g[1:7])
+rbind(c("<=1","2","3","4","5","6","7",">=8"),np0g)
+```
+
++ Faites un test du khi-deux pour savoir s'il est pertinent au vu des données de modéliser le nombre d'accidents du travail par semaine par une loi de Poisson $\mathcal P(4)$.
+
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
++ Reprenez le raisonnement pour tester si on peut modéliser le nombre d'accidents du travail par semaine par une loi de Poisson (sans fixer le paramètre). 
+
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
+# Comparaison de 2 échantillons appariés
+Dans une usine, on a du mal à fixer le taux d'acidité des yaourts. Sur les mêmes 10 pots, on mesure leur taux d'acidité à la fabrication (0h) et après 5 heures de fabrication. On obtient les valeurs suivantes : 
+```{r}
+acidite0 = c(12.51,12.48,12.91,12.56,12.58,
+                    12.82,12.53,12.50,12.51,12.42)  
+acidite5 = c(12.82,12.79,12.74,12.88,12.82,
+                    12.4,12.84,12.81,12.91,12.39)   
+```
+
+On veut tester s'il existe une différence significative d'acidité entre les deux instants.
+
+On note $X_i$ (resp. $Y_i$) le taux d'acidité du $i$ème pot à $Oh$ (resp. $5h$). 
+
+## Test de Student de la différence
+Les $X_i$ et $Y_i$ ne sont pas indépendants d'où le terme d'appariés. On considère donc l'échantillon des différences $Z=(Z_i = Y_i - X_i)_{1\leq i \leq n}$. 
+
++ Faites quelques statistiques descriptives du vecteur $Z$
+
+```{r}
+Z = acidite5 - acidite0
+# A COMPLETER
+```
+
+
++  A l'aide des commandes suivantes, testez s'il existe une différence significative d'acidité entre 0h et 5h :
+
+```{r}
+t.test(Z)
+t.test(acidite5,acidite0,paired=T)
+```
+
+Commentaire : ...
+
++ Quelle critique pouvez-vous faire de ce test ? Vous argumenterez votre réponse par un test. 
+
+Commentaire : ...
+
+```{r}
+# A completer
+```
+
+Commentaire : ...
+
+## Tests non-paramétriques
+L'hypothèse de normalité de $Z$ étant rejetée, on s'oriente vers des tests non-paramétriques. 
+
+### Test du signe des $Z_i$ 
+Soit $N=\sum_{i=1}^n \mathbb{1}_{Z_i\geq 0}$. 
+
++ Quelle est la loi de $N$ quand la médiane des $Z_i$ est nulle ?
+
++ Testez s'il existe une différence significative d'acidité entre les deux instants à partir de $N$. Vous pouvez utiliser la fonction `binom.test()`. 
+
+```{r}
+# A COMPLETER
+```
+
+Commentaire : ...
+
