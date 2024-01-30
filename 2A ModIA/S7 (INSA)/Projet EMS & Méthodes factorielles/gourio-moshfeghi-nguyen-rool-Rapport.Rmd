@@ -37,6 +37,7 @@ library(viridis)
 library(reshape2)
 library(klaR)
 library(MASS)
+library(clusterSim)
 ```
 # Statistiques descriptives
 
@@ -319,56 +320,183 @@ ggplot(df,aes(x=K,y=Iintra))+geom_line()+geom_point()+xlab("Nombre de classes")+
 Data_CAH = Data_final[,4:14]
 ```
 
+
+
 ```{r,eval=F}
-# A completer : FAIT
+#Classif<-kmeans(datasimu1[,1:2],4,nstart=10)
+aux<-silhouette(Classif$cl, daisy(datasimu1[,1:2]))
+fviz_silhouette(aux)+theme(plot.title = element_text(size =9))
+```
+
+
+```{r,eval=F}
+ClustCH<-cutree(hc,which.max(CH)+1)
+fviz_dend(hc,show_labels = FALSE,k=which.max(CH)+1)
+```
+
+```{r,eval=F}
+fviz_cluster(hc,Data_CAH,ellipse.type="norm",labelsize=8,geom=c("point"),axes=c(1,2)) + ggtitle("")
+table(hc$order)
+```
+
+```{r,eval=F}
+Data_CAH = Data_final[,4:14]
+d=dist(Data_CAH, method = "euclidean")
+```
+
+```{r,eval=F}
+hc=hclust(d,method="single")
+classK5 <- cutree(hc, k = 5)
+fviz_dend(hc, show_labels=FALSE)+
+  ggtitle(label = "Dendogramme de la classification hiérarchique : ",
+              subtitle = "méthode \"single\"")
+```
+
+```{r,eval=F}
 CH<-NULL
 Kmax<-20
 for (k in 2:Kmax){
   CH<-c(CH,index.G1(Data_CAH,cutree(hc,k)))
 }
 daux<-data.frame(NbClust=2:Kmax,CH=CH)
-ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()
+CAH_CH_single <- ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()+
+  ggtitle(label = "Critère de Calinski-Harabasz")
 ```
+
 ```{r,eval=F}
-ClustCH<-cutree(hc,which.max(CH)+1)
-fviz_dend(hc,show_labels = FALSE,k=which.max(CH)+1)
+Silhou<-NULL
+for (k in 2:Kmax){
+   Silhou<-c(Silhou,index.S(d,cutree(hc,k)))
+}
+
+daux <- data.frame(NbClust=2:Kmax,Silhouette = Silhou)
+CAH_sil_single <- ggplot(daux,aes(x=NbClust,y=Silhouette))+
+  geom_point()+
+  geom_line()+
+  ggtitle(label = "Critère silhouette")
 ```
+
 ```{r,eval=F}
-fviz_cluster(hc,Data_CAH,ellipse.type="norm",labelsize=8,geom=c("point"),axes=c(1,2)) + ggtitle("")
-table(hc$order)
+grid.arrange(CAH_CH_single, CAH_sil_single, ncol = 2, top = "Classification hiérarchique avec méthode \"single\"")
 ```
 
 
 ```{r,eval=F}
-d=dist(Data_CAH, method = "euclidean")
-hc=hclust(d,method="single")
-#ggdendogram(hc)
-classK5 <- cutree(hc, k = 5)
-fviz_dend(hc, k=5, show_labels=FALSE)
-```
-
-```{r,eval=F}
-Data_CAH = Data_final[,4:14]
-d=dist(Data_CAH, method = "euclidean")
 hc=hclust(d,method="complete")
-#ggdendogram(hc)
-fviz_dend(hc, k = 5, show_labels=FALSE)
+fviz_dend(hc,show_labels=FALSE)+
+  ggtitle(label = "Dendogramme de la classification hiérarchique : ",
+              subtitle = "méthode \"complete\"")
 ```
 
 ```{r,eval=F}
-Data_CAH = Data_final[,4:14]
-d=dist(Data_CAH, method = "euclidean")
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.G1(Data_CAH,cutree(hc,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+CAH_CH_complete <- ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()+
+  ggtitle(label = "Critère de Calinski-Harabasz")
+```
+
+```{r,eval=F}
+Silhou<-NULL
+for (k in 2:Kmax){
+   Silhou<-c(Silhou,index.S(d,cutree(hc,k)))
+}
+
+daux <- data.frame(NbClust=2:Kmax,Silhouette = Silhou)
+CAH_sil_complete <- ggplot(daux,aes(x=NbClust,y=Silhouette))+
+  geom_point()+
+  geom_line()+
+  ggtitle(label = "Critère silhouette")
+```
+
+```{r,eval=F}
+grid.arrange(CAH_CH_complete, CAH_sil_complete, ncol = 2, top = "Classification hiérarchique avec méthode \"complete\"")
+```
+
+
+```{r,eval=F}
 hc=hclust(d,method="average")
-#ggdendogram(hc)
-fviz_dend(hc,show_labels=FALSE)
+fviz_dend(hc,show_labels=FALSE)+
+  ggtitle(label = "Dendogramme de la classification hiérarchique : ",
+              subtitle = "méthode \"average\"")
+```
+
+
+```{r,eval=F}
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.G1(Data_CAH,cutree(hc,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+CAH_CH_average <- ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()+
+  ggtitle(label = "Critère de Calinski-Harabasz")
 ```
 
 ```{r,eval=F}
-Data_CAH = Data_final[,4:14]
-d=dist(Data_CAH, method = "euclidean")
-hc=hclust(d,method="ward")
-#ggdendogram(hc)
-fviz_dend(hc,show_labels=FALSE)
+Silhou<-NULL
+for (k in 2:Kmax){
+   Silhou<-c(Silhou,index.S(d,cutree(hc,k)))
+}
+
+daux <- data.frame(NbClust=2:Kmax,Silhouette = Silhou)
+CAH_sil_average <- ggplot(daux,aes(x=NbClust,y=Silhouette))+
+  geom_point()+
+  geom_line()+
+  ggtitle(label = "Critère silhouette")
+```
+
+```{r,eval=F}
+grid.arrange(CAH_CH_average, CAH_sil_average, ncol = 2, top = "Classification hiérarchique avec méthode \"average\"")
+```
+
+
+```{r,eval=F}
+hc=hclust(d,method="ward.D2")
+fviz_dend(hc,show_labels=FALSE)+
+  ggtitle(label = "Dendogramme de la classification hiérarchique : ",
+              subtitle = "méthode \"Ward\"")
+```
+
+```{r,eval=F}
+CH<-NULL
+Kmax<-20
+for (k in 2:Kmax){
+  CH<-c(CH,index.G1(Data_CAH,cutree(hc,k)))
+}
+daux<-data.frame(NbClust=2:Kmax,CH=CH)
+CAH_CH_Ward <- ggplot(daux,aes(x=NbClust,y=CH))+geom_line()+geom_point()+
+  ggtitle(label = "Critère de Calinski-Harabasz")
+```
+
+```{r,eval=F}
+Silhou<-NULL
+for (k in 2:Kmax){
+   Silhou<-c(Silhou,index.S(d,cutree(hc,k)))
+}
+
+daux <- data.frame(NbClust=2:Kmax,Silhouette = Silhou)
+CAH_sil_Ward <- ggplot(daux,aes(x=NbClust,y=Silhouette))+
+  geom_point()+
+  geom_line()+
+  ggtitle(label = "Critère silhouette")
+```
+
+```{r,eval=F}
+grid.arrange(CAH_CH_Ward, CAH_sil_Ward, ncol = 2, top = "Classification hiérarchique avec méthode \"Ward\"")
+```
+
+
+En appliquant les différentes méthodes de clustering hiérarchique et en traçant le critère de Calinski-Harabasz et de silhouette pour chacune de ces classifications, on remarque que la plupart des graphes (6 sur les 8) atteignent leur maximum en $K = 2$. On décidera donc de garder deux classes pour la classification hiérarchique. On affiche ci-dessous cette classification hiérarchique en deux classes pour la méthode "complete", dont le maximum était atteint en $K = 2$ pour les deux critères.
+
+```{r, echo=FALSE}
+hc=hclust(d,method="complete")
+fviz_dend(hc, k = 2, show_labels=FALSE)+
+  ggtitle(label = "Dendogramme de la classification hiérarchique : ",
+              subtitle = "affichage des deux classes avec méthode \"complete\"")
 ```
 
 
@@ -473,7 +601,7 @@ $$
 
 Dans cette section, nous allons expliquer le dépassement d'émission de méthane ($ch4$)de $1000t$ par an en fonction de l'ammoniac ($nh3$), du protoxyde d'azote ($n2o$), du type d'EPCI et de l'année par un modèle linéaire généralisé.
 
-Nous créons la nouvelle variable booléenne $Data\_mlg$, valant 1 si le taux de méthane $ch4\_t$ est supérieur à $1000t$, 0 sinon.
+Nous créons la nouvelle variable booléenne $dep\_met\_1000$, valant 1 si le taux de méthane $ch4\_t$ est supérieur à $1000t$, 0 sinon.
 
 ```{r, echo=FALSE, eval=TRUE}
 # REDÉ
@@ -513,8 +641,12 @@ Data_mlg = Data_final[c(3,10,12,14,15)]
 Data_mlg$dep_met_1000 <- as.logical(Data_mlg$ch4_t>log(1000))
 # Retrait de la variable quantitative ch4_t
 Data_mlg <- Data_mlg[c(1,2,4,5,6)]
-#Data_mlg[,2:3] = scale(Data_mlg[,2:3])
+Data_mlg[,2:3] = scale(Data_mlg[,2:3])
 head(Data_mlg)
+```
+
+```{r, echo=FALSE, eval=TRUE, warning=FALSE}
+table(Data_mlg$dep_met_1000)
 ```
 
 La variable $dep\_met\_1000$ étant binaire, nous allons utiliser la régression logistique.
@@ -560,10 +692,11 @@ Nous allons maintenant appliquer des algorithmes de selection de variables pour 
 ```{r, warning = F}
 step.backward <- step(mlg_complet)
 ```
-```{r, echo = FALSE, eval = TRUE}
+
+```{r, echo = FALSE, eval = TRUE, warning=FALSE}
 stepAIC(mlg_complet, direction=c("backward"),p=2,trace=0) # AIC
 ```
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE, warning=FALSE}
 stepAIC(mlg_complet, direction=c("backward"),p=log(nrow(Data_mlg))) # BIC
 ```
 
@@ -583,7 +716,7 @@ $$
 \end{equation*}
 $$
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE, warning=FALSE}
 mlg_reduit = glm(formula = dep_met_1000 ~ annee_inv + nh3_kg + n2o_t + TypeEPCI + 
     nh3_kg:n2o_t + nh3_kg:TypeEPCI + n2o_t:TypeEPCI, family = binomial(link = "logit"), 
     data = Data_mlg)
