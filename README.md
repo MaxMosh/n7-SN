@@ -3,9 +3,9 @@ Là-dedans tu peux te fier selon moi :
 # Pour la 1A
 ## Pour le S5
 ### à 100% :
-  	 	  	- traitement du signal
-  	 	  	- automatique (quand ça y sera lol)
-  	 	  	- projet PIM (celui que j'ai fait avec Samy parce qu'il gère de fou)
+- traitement du signal
+- automatique (quand ça y sera lol)
+- projet PIM (celui que j'ai fait avec Samy parce qu'il gère de fou)
   	 	  (bon d'ailleurs tous les trucs que je mets sûrs à 100% c'est des trucs que j'ai fait avec lui lol)
   	 	  
 ### à 90% :
