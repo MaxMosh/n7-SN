@@ -2,7 +2,7 @@ Là-dedans tu peux te fier selon moi :
 ============================
 # Pour la 1A
 ## Pour le S5
-### à 100% :
+#### à 100% :
 - traitement du signal
 - automatique (quand ça y sera lol)
 - projet PIM (celui que j'ai fait avec Samy parce qu'il gère de fou)
@@ -41,5 +41,5 @@ Là-dedans tu peux te fier selon moi :
 # Pour la 2A (ModIA)
 ## Pour le S7
 ### Bien parti :
-			- EMS (on en est au prérequis)
-			- méthodes factorielles (on a fait les deux TP sur le même notebook jupyter)
+- EMS (on en est au prérequis)
+- méthodes factorielles (on a fait les deux TP sur le même notebook jupyter)
