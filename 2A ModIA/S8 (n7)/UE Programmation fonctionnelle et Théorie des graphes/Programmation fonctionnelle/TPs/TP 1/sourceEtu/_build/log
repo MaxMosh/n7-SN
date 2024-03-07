@@ -1,0 +1,76 @@
+# dune runtest
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Shared cache location: /home/n7student/.cache/dune/db
+# Workspace root:
+# "/home/n7student/Documents/\195\137tudes/ENSEEIHT-INSA/G\195\169n\195\169ral/n7-SN/2A
+# ModIA/S8 (n7)/UE Programmation fonctionnelle et Th\195\169orie des
+# graphes/Programmation fonctionnelle/TPs/TP 1/sourceEtu"
+# Auto-detected concurrency: 20
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; installed_env =
+#      map
+#        { "INSIDE_DUNE" :
+#            "/home/n7student/Documents/\195\137tudes/ENSEEIHT-INSA/G\195\169n\195\169ral/n7-SN/2A ModIA/S8 (n7)/UE Programmation fonctionnelle et Th\195\169orie des graphes/Programmation fonctionnelle/TPs/TP 1/sourceEtu/_build/default"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
+#        }
+#  ; instrument_with = []
+#  }
+$ /home/n7student/.opam/4.12.0/bin/ocamlc.opt -config > /tmp/dune_0858e8_output
+$ (cd _build/default && .tp1.inline-tests/inline_test_runner_tp1.exe inline-test-runner tp1 -source-tree-root . -diff-cmd -)
+> File "tp.ml", line 111, characters 0-25: <<estPremier 2>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>
+> File "tp.ml", line 112, characters 0-25: <<estPremier 3>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>
+> File "tp.ml", line 113, characters 0-31: <<not (estPremier 4)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 113, characters 17-31
+>
+> File "tp.ml", line 114, characters 0-25: <<estPremier 5>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>
+> File "tp.ml", line 115, characters 0-31: <<not (estPremier 6)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 115, characters 17-31
+>
+> File "tp.ml", line 116, characters 0-25: <<estPremier 7>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>
+> File "tp.ml", line 117, characters 0-31: <<not (estPremier 8)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 117, characters 17-31
+>
+> File "tp.ml", line 118, characters 0-31: <<not (estPremier 9)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 118, characters 17-31
+>
+> File "tp.ml", line 119, characters 0-32: <<not (estPremier 10)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 119, characters 17-32
+>
+> File "tp.ml", line 120, characters 0-31: <<not (estPremier 0)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 120, characters 17-31
+>
+> File "tp.ml", line 121, characters 0-31: <<not (estPremier 1)>> threw (Failure "TO DO").
+>   Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+>   Called from Tp1__Tp.estPremier in file "tp.ml" (inlined), line 109, characters 19-35
+>   Called from Tp1__Tp.(fun) in file "tp.ml", line 121, characters 17-31
+>
+> FAILED 11 / 40 tests
+[2]
