@@ -65,6 +65,24 @@ let%test _ = ieme ('r','e','l') 3 = 'l'
 
 (* Exercice 5 *)
 (* PGCD -> pgcd.ml *)
+let pgcd a b = 
+   let abs r =
+     if r >= 0 then r else -r
+   in
+   let rec euclide x y =
+     (* ALTERNATIVE 1 *)
+     match x, y with
+     | (0, 0) -> failwith "Il n'existe pas de PGCD à 0 et 0"
+     | (_, 0) -> x
+     | (0, _) -> y
+     | (_, _) -> euclide y (x mod y)
+     (* ALTERNATIVE 2 (moins bien) : 
+     if x = 0 && y = 0
+       then failwith "Il n'existe pas de PGCD à 0 et 0"
+     else if y = 0
+       then x
+     else euclide y (x mod y) *)
+   in euclide (abs a) (abs b)
 
 (* Exercice 6 *)
 (*  padovan : int -> int
@@ -96,7 +114,25 @@ let%test _ = padovan 8 = 2
 let%test _ = padovan 9 = 3
 let%test _ = padovan 10 = 4
 
-let rec padovan2 n = failwith "TO DO"
+let padovan2 n =
+   let aux (k, ukplus2, ukplus1, uk) = (k+1, ukplus1 + uk, ukplus2, ukplus1)
+            in let rec padovanrec (k, ukplus2, ukplus1, uk) = 
+               if k = n then uk
+               else padovanrec (aux (k, ukplus2, ukplus1, uk))
+         in padovanrec (0, 1, 0, 0)
+(* failwith "TO DO" *)
+
+let%test _ = padovan2 0 = 0
+let%test _ = padovan2 1 = 0 
+let%test _ = padovan2 2 = 1
+let%test _ = padovan2 3 = 0
+let%test _ = padovan2 4 = 1
+let%test _ = padovan2 5 = 1
+let%test _ = padovan2 6 = 1
+let%test _ = padovan2 7 = 2
+let%test _ = padovan2 8 = 2
+let%test _ = padovan2 9 = 3
+let%test _ = padovan2 10 = 4
 
 (* Exercice 7 *)
 (* estPremier : int -> bool
@@ -106,7 +142,16 @@ Précondition : n >= 0
 Résultat : l'information de si n est premier ou pas
 *)
 
-let estPremier n = failwith "TO DO"
+let estPremier n = match n with 
+   |0 -> false
+   |1 -> false
+   |2 -> true
+   |_ -> let rec aux n k =
+      if k = 2 then ((pgcd n 2) = 1)
+      else ((pgcd n k) = 1) && (aux n (k - 1))
+      in
+      aux n (n-1)
+(* failwith "TO DO" *)
 
 let%test _ = estPremier 2
 let%test _ = estPremier 3 
