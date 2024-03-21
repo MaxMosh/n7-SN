@@ -1,0 +1,51 @@
+# dune runtest
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Shared cache location: /home/n7student/.cache/dune/db
+# Workspace root:
+# "/home/n7student/Documents/\195\137tudes/ENSEEIHT-INSA/G\195\169n\195\169ral/n7-SN/2A
+# ModIA/S8 (n7)/UE Programmation fonctionnelle et Th\195\169orie des
+# graphes/Programmation fonctionnelle/TPs/TP 2/sourceEtu"
+# Auto-detected concurrency: 20
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; installed_env =
+#      map
+#        { "INSIDE_DUNE" :
+#            "/home/n7student/Documents/\195\137tudes/ENSEEIHT-INSA/G\195\169n\195\169ral/n7-SN/2A ModIA/S8 (n7)/UE Programmation fonctionnelle et Th\195\169orie des graphes/Programmation fonctionnelle/TPs/TP 2/sourceEtu/_build/default"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
+#        }
+#  ; instrument_with = []
+#  }
+$ /home/n7student/.opam/4.12.0/bin/ocamlc.opt -config > /tmp/dune_da9e14_output
+$ (cd _build/default && .ppx/bfcab61e6a21ecf6d2f80029fc1ef484/ppx.exe --cookie 'inline_tests="enabled"' --cookie 'library-name="tp2"' -o tp2.pp.ml --impl tp2.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamldep.opt -modules -impl tp2.pp.ml) > _build/default/.tp2.objs/tp2.impl.d
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -I .tp2.objs/byte -I /home/n7student/.opam/4.12.0/lib/base -I /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types -I /home/n7student/.opam/4.12.0/lib/base/caml -I /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib -I /home/n7student/.opam/4.12.0/lib/jane-street-headers -I /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib -I /home/n7student/.opam/4.12.0/lib/sexplib0 -I /home/n7student/.opam/4.12.0/lib/time_now -no-alias-deps -opaque -open Tp2__ -o .tp2.objs/byte/tp2.cmo -c -impl tp2.pp.ml)
+> File "tp2.ml", line 36, characters 8-21:
+> 36 | let rec tri_insertion ordre l = 
+>              ^^^^^^^^^^^^^
+> Warning 39 [unused-rec-flag]: unused rec flag.
+> File "tp2.ml", line 117, characters 0-11:
+> 117 | open Lexing
+>       ^^^^^^^^^^^
+> Warning 33 [unused-open]: unused open Stdlib.Lexing.
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -I .tp2.objs/byte -I .tp2.objs/native -I /home/n7student/.opam/4.12.0/lib/base -I /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types -I /home/n7student/.opam/4.12.0/lib/base/caml -I /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib -I /home/n7student/.opam/4.12.0/lib/jane-street-headers -I /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib -I /home/n7student/.opam/4.12.0/lib/sexplib0 -I /home/n7student/.opam/4.12.0/lib/time_now -intf-suffix .ml -no-alias-deps -opaque -open Tp2__ -o .tp2.objs/native/tp2.cmx -c -impl tp2.pp.ml)
+> File "tp2.ml", line 36, characters 8-21:
+> 36 | let rec tri_insertion ordre l = 
+>              ^^^^^^^^^^^^^
+> Warning 39 [unused-rec-flag]: unused rec flag.
+> File "tp2.ml", line 117, characters 0-11:
+> 117 | open Lexing
+>       ^^^^^^^^^^^
+> Warning 33 [unused-open]: unused open Stdlib.Lexing.
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o tp2.cmxa .tp2.objs/native/tp2__.cmx .tp2.objs/native/tp2__Parser.cmx .tp2.objs/native/tp2__Lexer.cmx .tp2.objs/native/tp2.cmx)
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -w -24 -g -g -o .tp2.inline-tests/inline_test_runner_tp2.exe /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config/inline_test_config.cmxa /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types/base_internalhash_types.cmxa -I /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types /home/n7student/.opam/4.12.0/lib/base/caml/caml.cmxa /home/n7student/.opam/4.12.0/lib/sexplib0/sexplib0.cmxa /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib/shadow_stdlib.cmxa /home/n7student/.opam/4.12.0/lib/base/base.cmxa -I /home/n7student/.opam/4.12.0/lib/base /home/n7student/.opam/4.12.0/lib/jane-street-headers/jane_street_headers.cmxa /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib/ppx_sexp_conv_lib.cmxa /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib/ppx_compare_lib.cmxa /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib/ppx_enumerate_lib.cmxa /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib/ppx_hash_lib.cmxa /home/n7student/.opam/4.12.0/lib/time_now/time_now.cmxa -I /home/n7student/.opam/4.12.0/lib/time_now /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib/ppx_inline_test_lib.cmxa tp2.cmxa /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runner/lib/ppx_inline_test_runner_lib.cmxa -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runner/lib .tp2.inline-tests/.tp2.inline-tests.eobjs/native/dune__exe__Inline_test_runner_tp2.cmx -linkall)
+$ (cd _build/default && .tp2.inline-tests/inline_test_runner_tp2.exe inline-test-runner tp2 -source-tree-root . -diff-cmd -)
+> Temps de l'applucation du tri par insertion : 8.634733
+> Temps de l'applucation du tri par fusion : 0.027801
