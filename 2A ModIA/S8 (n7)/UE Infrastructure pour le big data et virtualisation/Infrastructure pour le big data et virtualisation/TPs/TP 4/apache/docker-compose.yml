@@ -1,0 +1,23 @@
+version: '3'
+services:
+ ap1:
+  image: apache:v1
+  hostname: ap1
+  ports:
+   - 80
+  networks:
+   - mynet
+ myhaproxy:
+  image: haproxy
+  depends_on:
+   - ap1
+  volumes:
+   - /home/ubuntu/apache/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  ports:
+   - 80:80
+  networks:
+   - mynet
+networks:
+ mynet:
+  external:
+   name: mynet
