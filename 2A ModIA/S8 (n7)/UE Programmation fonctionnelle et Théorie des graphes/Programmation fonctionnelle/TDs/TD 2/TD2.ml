@@ -63,5 +63,22 @@ let rec insertion e liste = match liste with
 
 
 let rec permutations liste = match liste with
-    | [] -> [[]]
-    | t::q -> List.flatten(List.map (insertion t) (permutations q));;
+    | []    -> [[]]
+    | t::q  -> List.flatten(List.map (insertion t) (permutations q));;
+
+
+(* Viens du TP *)
+let rec combinaisons k l = match k,l with
+    | _,[]  -> []
+    | 0,_   -> [[]]
+    (* | (List.length l),_ -> [l] *)
+    | _,t::q -> if (List.length l = k) then [l]
+                else (List.map (fun x -> t::x) (combinaisons (k - 1) q))@(combinaisons k q);;
+
+
+(* Correction du prof *)
+let rec combinaisons_prof k l = match k,l with
+    | 0,_   -> [[]]
+    | _,[]  -> []
+    (* | (List.length l),_ -> [l] *)
+    | _,t::q -> (List.map (fun x -> t::x) (combinaisons_prof (k - 1) q))@(combinaisons_prof k q);;
