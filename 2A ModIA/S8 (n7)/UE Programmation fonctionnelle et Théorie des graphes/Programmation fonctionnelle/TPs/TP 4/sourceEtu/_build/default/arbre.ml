@@ -94,3 +94,15 @@ let arbre_sujet3 =
 
 let%test _ = arbre_sujet2 = arbre_sujet
 let%test _ = arbre_sujet3 = arbre_sujet
+
+
+(* let rec retrait_arbre arbre element = match arbre, element with
+   | _, []  -> (Noeud (false, arbre))
+   | (Noeud (b, lb)), t::q -> retrait_arbre Noeud(b,lb) q *)
+
+(* CORRECTION PROF *)
+let rec retrait_arbre lc (Noeud(b,lb)) = match lc with
+   | []     -> Noeud(false, lb)
+   | c::qlc -> match (recherche c lb) with
+                        | None   -> Noeud(b, lb)
+                        | Some a -> Noeud(b, (maj c (retrait_arbre qlc a) lb))
