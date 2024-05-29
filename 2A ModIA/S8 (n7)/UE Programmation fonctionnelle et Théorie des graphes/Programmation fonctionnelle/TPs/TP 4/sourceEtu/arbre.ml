@@ -106,3 +106,7 @@ let rec retrait_arbre lc (Noeud(b,lb)) = match lc with
    | c::qlc -> match (recherche c lb) with
                         | None   -> Noeud(b, lb)
                         | Some a -> Noeud(b, (maj c (retrait_arbre qlc a) lb))
+
+let rec parcours_branche lc (Noeud(b,lb)) =
+   List.map (fun l -> lc::l) parcours_branche
+(* À FINIR *)
