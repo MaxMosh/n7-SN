@@ -10,8 +10,8 @@ import scala.Tuple2;
 public class WordCount { 
 	 
 	public static void main(String[] args) { 
-	    String inputFile = "hdfs://master:54310/input/data.txt"; 
-	    String outputDir = "hdfs://master:54310/output"; 
+	    String inputFile = "hdfs://n7student@master:54310/input/data.txt"; 
+	    String outputDir = "hdfs://n7student@master:54310/output"; 
 
 	    SparkConf conf = new SparkConf().setAppName("WordCount"); 
 	    JavaSparkContext sc = new JavaSparkContext(conf); 
