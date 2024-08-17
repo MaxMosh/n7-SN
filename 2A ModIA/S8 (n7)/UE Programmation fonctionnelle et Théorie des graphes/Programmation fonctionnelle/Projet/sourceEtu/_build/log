@@ -23,18 +23,54 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/n7student/.opam/4.12.0/bin/ocamlc.opt -config > /tmp/dune_f1ffa5_output
-$ (cd _build/default && .ppx/bfcab61e6a21ecf6d2f80029fc1ef484/ppx.exe --cookie 'inline_tests="enabled"' --cookie 'library-name="t9"' -o naif.pp.ml --impl naif.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
-$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamldep.opt -modules -impl naif.pp.ml) > _build/default/.t9.objs/t9__Naif.impl.d
-$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -I .t9.objs/byte -I /home/n7student/.opam/4.12.0/lib/base -I /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types -I /home/n7student/.opam/4.12.0/lib/base/caml -I /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib -I /home/n7student/.opam/4.12.0/lib/graphics -I /home/n7student/.opam/4.12.0/lib/jane-street-headers -I /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib -I /home/n7student/.opam/4.12.0/lib/sexplib0 -I /home/n7student/.opam/4.12.0/lib/time_now -no-alias-deps -opaque -open T9 -o .t9.objs/byte/t9__Naif.cmo -c -impl naif.pp.ml)
-> File "naif.ml", line 2, characters 0-12:
+$ /home/n7student/.opam/4.12.0/bin/ocamlc.opt -config > /tmp/dune_1b075b_output
+$ (cd _build/default && .ppx/bfcab61e6a21ecf6d2f80029fc1ef484/ppx.exe --cookie 'inline_tests="enabled"' --cookie 'library-name="t9"' -o intuitive.pp.ml --impl intuitive.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamldep.opt -modules -impl intuitive.pp.ml) > _build/default/.t9.objs/t9__Intuitive.impl.d
+$ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -bin-annot -I .t9.objs/byte -I /home/n7student/.opam/4.12.0/lib/base -I /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types -I /home/n7student/.opam/4.12.0/lib/base/caml -I /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib -I /home/n7student/.opam/4.12.0/lib/graphics -I /home/n7student/.opam/4.12.0/lib/jane-street-headers -I /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib -I /home/n7student/.opam/4.12.0/lib/sexplib0 -I /home/n7student/.opam/4.12.0/lib/time_now -no-alias-deps -opaque -open T9 -o .t9.objs/byte/t9__Intuitive.cmo -c -impl intuitive.pp.ml)
+> File "intuitive.ml", line 2, characters 0-12:
 > 2 | open Chaines
 >     ^^^^^^^^^^^^
 > Warning 33 [unused-open]: unused open T9.Chaines.
-> File "naif.ml", line 83, characters 9-20:
-> 83 |     let (final_liste,liste_tot) = List.fold_left f ([],[[]]) liste 
->               ^^^^^^^^^^^
-> Warning 27 [unused-var-strict]: unused variable final_liste.
+> File "intuitive.ml", line 60, characters 47-54:
+> 60 |   let rec ajouter_aux diction encodage_courant mot_tot=
+>                                                     ^^^^^^^
+> Warning 27 [unused-var-strict]: unused variable mot_tot.
+> File "intuitive.ml", line 135, characters 16-17:
+> 135 |   |Noeud([],[]),x::q->dictionnaire
+>                       ^
+> Warning 27 [unused-var-strict]: unused variable x.
+> File "intuitive.ml", line 135, characters 19-20:
+> 135 |   |Noeud([],[]),x::q->dictionnaire
+>                          ^
+> Warning 27 [unused-var-strict]: unused variable q.
+> File "intuitive.ml", line 193, characters 25-28:
+> 193 |     |Noeud(a,b)-> let g (num,liste)=(appartient type_encodage liste mot)
+>                                ^^^
+> Warning 27 [unused-var-strict]: unused variable num.
+> File "intuitive.ml", line 207, characters 25-28:
+> 207 |     |Noeud(a,b)-> let g (num,liste)=(occurence_mot type_encodage liste mot) in
+>                                ^^^
+> Warning 27 [unused-var-strict]: unused variable num.
+> File "intuitive.ml", line 280, characters 10-11:
+> 280 |   | Noeud(a, b), [] -> 
+>                 ^
+> Warning 27 [unused-var-strict]: unused variable a.
+> File "intuitive.ml", line 280, characters 13-14:
+> 280 |   | Noeud(a, b), [] -> 
+>                    ^
+> Warning 27 [unused-var-strict]: unused variable b.
+> File "intuitive.ml", line 284, characters 15-18:
+> 284 |         let g (num, sous_dico) = f1 sous_dico in
+>                      ^^^
+> Warning 27 [unused-var-strict]: unused variable num.
+> File "intuitive.ml", line 304, characters 25-28:
+> 304 |     |Noeud(a,b)-> let g (num,liste)=(max_mots_code_identique liste) in
+>                                ^^^
+> Warning 27 [unused-var-strict]: unused variable num.
+> File "intuitive.ml", line 316, characters 25-28:
+> 316 |     |Noeud(a,b)-> let g (num,liste)=(lister liste) in
+>                                ^^^
+> Warning 27 [unused-var-strict]: unused variable num.
 $ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -warn-error -A -g -a -o t9.cma .t9.objs/byte/t9.cmo .t9.objs/byte/t9__Chaines.cmo .t9.objs/byte/t9__Encodage.cmo .t9.objs/byte/t9__Naif.cmo .t9.objs/byte/t9__Intuitive.cmo)
 $ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -24 -g -bin-annot -I .utop/.utop.eobjs/byte -I /home/n7student/.opam/4.12.0/lib/base -I /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types -I /home/n7student/.opam/4.12.0/lib/base/caml -I /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib -I /home/n7student/.opam/4.12.0/lib/bytes -I /home/n7student/.opam/4.12.0/lib/findlib -I /home/n7student/.opam/4.12.0/lib/graphics -I /home/n7student/.opam/4.12.0/lib/jane-street-headers -I /home/n7student/.opam/4.12.0/lib/lambda-term -I /home/n7student/.opam/4.12.0/lib/logs -I /home/n7student/.opam/4.12.0/lib/lwt -I /home/n7student/.opam/4.12.0/lib/lwt/unix -I /home/n7student/.opam/4.12.0/lib/lwt_react -I /home/n7student/.opam/4.12.0/lib/mew -I /home/n7student/.opam/4.12.0/lib/mew_vi -I /home/n7student/.opam/4.12.0/lib/ocaml/compiler-libs -I /home/n7student/.opam/4.12.0/lib/ocaml/threads -I /home/n7student/.opam/4.12.0/lib/ocplib-endian -I /home/n7student/.opam/4.12.0/lib/ocplib-endian/bigstring -I /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config -I /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib -I /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib -I /home/n7student/.opam/4.12.0/lib/react -I /home/n7student/.opam/4.12.0/lib/result -I /home/n7student/.opam/4.12.0/lib/sexplib0 -I /home/n7student/.opam/4.12.0/lib/time_now -I /home/n7student/.opam/4.12.0/lib/trie -I /home/n7student/.opam/4.12.0/lib/uchar -I /home/n7student/.opam/4.12.0/lib/utop -I /home/n7student/.opam/4.12.0/lib/uucp -I /home/n7student/.opam/4.12.0/lib/uuseg -I /home/n7student/.opam/4.12.0/lib/uutf -I /home/n7student/.opam/4.12.0/lib/xdg -I /home/n7student/.opam/4.12.0/lib/zed -I .t9.objs/byte -no-alias-deps -o .utop/.utop.eobjs/byte/dune__exe__Utop.cmo -c -impl .utop/utop.ml-gen)
 $ (cd _build/default && /home/n7student/.opam/4.12.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -24 -g -o .utop/utop.bc /home/n7student/.opam/4.12.0/lib/ocaml/compiler-libs/ocamlcommon.cma /home/n7student/.opam/4.12.0/lib/ocaml/compiler-libs/ocamlbytecomp.cma /home/n7student/.opam/4.12.0/lib/ocaml/compiler-libs/ocamltoplevel.cma /home/n7student/.opam/4.12.0/lib/findlib/findlib.cma /home/n7student/.opam/4.12.0/lib/findlib/findlib_top.cma /home/n7student/.opam/4.12.0/lib/logs/logs.cma /home/n7student/.opam/4.12.0/lib/lwt/lwt.cma /home/n7student/.opam/4.12.0/lib/logs/logs_lwt.cma /home/n7student/.opam/4.12.0/lib/ocaml/unix.cma /home/n7student/.opam/4.12.0/lib/ocaml/bigarray.cma /home/n7student/.opam/4.12.0/lib/ocplib-endian/ocplib_endian.cma /home/n7student/.opam/4.12.0/lib/ocplib-endian/bigstring/ocplib_endian_bigstring.cma /home/n7student/.opam/4.12.0/lib/ocaml/threads/threads.cma /home/n7student/.opam/4.12.0/lib/lwt/unix/lwt_unix.cma -I /home/n7student/.opam/4.12.0/lib/lwt/../stublibs /home/n7student/.opam/4.12.0/lib/react/react.cma /home/n7student/.opam/4.12.0/lib/lwt_react/lwt_react.cma /home/n7student/.opam/4.12.0/lib/result/result.cma /home/n7student/.opam/4.12.0/lib/uutf/uutf.cma /home/n7student/.opam/4.12.0/lib/uucp/uucp.cma /home/n7student/.opam/4.12.0/lib/uuseg/uuseg.cma /home/n7student/.opam/4.12.0/lib/zed/zed.cma /home/n7student/.opam/4.12.0/lib/trie/trie.cma /home/n7student/.opam/4.12.0/lib/mew/mew.cma /home/n7student/.opam/4.12.0/lib/mew_vi/mew_vi.cma /home/n7student/.opam/4.12.0/lib/lambda-term/lambda_term.cma -I /home/n7student/.opam/4.12.0/lib/lambda-term/../stublibs /home/n7student/.opam/4.12.0/lib/xdg/xdg.cma -I /home/n7student/.opam/4.12.0/lib/xdg/../stublibs /home/n7student/.opam/4.12.0/lib/utop/uTop.cma /home/n7student/.opam/4.12.0/lib/graphics/graphics.cma -I /home/n7student/.opam/4.12.0/lib/graphics/../stublibs /home/n7student/.opam/4.12.0/lib/ppx_inline_test/config/inline_test_config.cma /home/n7student/.opam/4.12.0/lib/base/base_internalhash_types/base_internalhash_types.cma -I /home/n7student/.opam/4.12.0/lib/base/../stublibs /home/n7student/.opam/4.12.0/lib/base/caml/caml.cma /home/n7student/.opam/4.12.0/lib/sexplib0/sexplib0.cma /home/n7student/.opam/4.12.0/lib/base/shadow_stdlib/shadow_stdlib.cma /home/n7student/.opam/4.12.0/lib/base/base.cma -I /home/n7student/.opam/4.12.0/lib/base/../stublibs /home/n7student/.opam/4.12.0/lib/jane-street-headers/jane_street_headers.cma /home/n7student/.opam/4.12.0/lib/ppx_sexp_conv/runtime-lib/ppx_sexp_conv_lib.cma /home/n7student/.opam/4.12.0/lib/ppx_compare/runtime-lib/ppx_compare_lib.cma /home/n7student/.opam/4.12.0/lib/ppx_enumerate/runtime-lib/ppx_enumerate_lib.cma /home/n7student/.opam/4.12.0/lib/ppx_hash/runtime-lib/ppx_hash_lib.cma /home/n7student/.opam/4.12.0/lib/time_now/time_now.cma -I /home/n7student/.opam/4.12.0/lib/time_now/../stublibs /home/n7student/.opam/4.12.0/lib/ppx_inline_test/runtime-lib/ppx_inline_test_lib.cma t9.cma .utop/.utop.eobjs/byte/dune__exe__Utop.cmo -linkall -warn-error -31)
