@@ -1,0 +1,14 @@
+LeNet :
+efficace : dropout 1 0 1 (mieux avec 10 epochs qu'avec 20) ; dropout 1 0 1 (batch 8) ; dropout 1 0 1 (conv 1 10 25) ; dropout 1 0 1 (dropout level 0.5, batch 128)
+assez efficaces notables : dropout 0 1 0 ; dropout 1 0 1 (batch 6, lr 0.005)
+peu efficaces notables : all_dropouts ; dropout 0 0 1
+très peu efficace : dropout 1 0 1 avec lr de 0.01
+
+
+AlexNet :
+ok : 3 channels avec paramètres de base
+plutôt décevant : 1 channel avec paramètres de base
+
+
+ResNet :
+efficacité croissante avec le nombre d'epochs (on dépasse 85% d'accuracy en entraînement), mais très long à entraîner

@@ -1,0 +1,1 @@
+Contenu du répertoire selon le fichier val_filtered.txt

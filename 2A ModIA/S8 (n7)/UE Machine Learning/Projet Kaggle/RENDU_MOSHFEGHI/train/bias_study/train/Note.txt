@@ -1,0 +1,1 @@
+Contenu du répertoire selon le fichier train_filtered.txt

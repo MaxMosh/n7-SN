@@ -1,0 +1,13 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{Préambule}{2}{chapter*.4}%
+\contentsline {chapter}{Introduction}{3}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Construction et entraînement des modèles}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Données en entrée : augmentation et traitement}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}LeNet}{4}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Structure}{4}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Entraînement}{5}{subsection.1.2.2}%
+\contentsline {section}{\numberline {1.3}ResNet}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Structure}{6}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Entraînement}{7}{subsection.1.3.2}%
+\contentsline {chapter}{\numberline {2}Étude du biais des modèles}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Conclusion}{10}{section.2.1}%
