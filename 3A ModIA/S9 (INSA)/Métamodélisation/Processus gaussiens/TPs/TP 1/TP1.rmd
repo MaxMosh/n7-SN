@@ -1,0 +1,83 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Metammodeling - Lab 1
+
+## Sampling from a GP
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(MASS)
+library(plotly)
+source("scriptLabI.R")
+```
+
+
+### Question 2
+```{r}
+n = 100
+theta = 0.1
+sigma = 1
+X <- seq(0, 1, length.out = n)
+
+
+cov1 = mat5_2Kern(X, X, c(sigma, theta))
+y1 = mvrnorm(1, rep(0, n), cov1)
+plot(X, y1, type='l')
+```
+
+```{r}
+par(mfrow=c(3, 1))
+cov2 = mat5_2Kern(x/theta, x/theta, c(sigma, theta))
+y2 = mvrnorm(1, rep(0, n), cov2)
+plot(x, y2, type='l')
+```
+
+```{r}
+theta = 0.3
+cov3 = mat5_2Kern(x/theta, x/theta, c(sigma, theta))
+y3 = mvrnorm(1, rep(0, n), cov3)
+plot(x, y3, type='l')
+
+
+theta = 2
+cov4 = mat5_2Kern(x/theta, x/theta, c(sigma, theta))
+y4 = mvrnorm(1, rep(0, n), cov4)
+plot(x, y4, type='l')
+
+
+par(mfrow=c(4, 1))
+theta = 0.5
+ListKern = list(sqrd_expKern, expKern, mat3_2Kern, mat5_2Kern)
+
+for (i in 1:4){
+  cov = ListKern[[i]](x/theta, x/theta, c(sigma, theta))
+  y = mvrnorm(1, rep(0, n), cov)
+  plot(x, y, type='l')
+}
+#Partie II
+
+#Q5
+f <- function(x){
+  return(x + sin(4*pi*x))
+}
+
+X = seq(0, 1, length=15)
+Y = f(X)
+
+#Q6
+condMean <- function(x,kern,param){
+  k1 <- kern(x,X,param)
+  k2 <- kern(X,X,param)
+  k2 <-
+}
+```
+
+
