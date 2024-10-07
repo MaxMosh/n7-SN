@@ -1,0 +1,13 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{Préambule}{2}{chapter*.4}%
+\contentsline {chapter}{Introduction}{3}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Création du dataset}{4}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Élaboration et entraînement du modèle}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Modèle utilisé}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Entraînement}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Analyse des populations}{6}{section.2.3}%
+\contentsline {section}{\numberline {2.4}ResNet}{7}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Structure}{7}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Entraînement}{8}{subsection.2.4.2}%
+\contentsline {chapter}{\numberline {3}Étude du biais des modèles}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Conclusion}{11}{section.3.1}%

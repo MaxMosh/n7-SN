@@ -1,0 +1,405 @@
+---
+title: "Introduction to Poisson processes with R"
+author: "5 ModIA"
+date: "2024/2025"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 1 - Homogeneous Poisson processes observed on a fixed window
+
+First, we consider the case of a fixed observation window (and thus a random number of events). 
+
+## 1.1 - Simulation
+
+Simulation of a homogeneous Poisson process with intensity `lambda` on the window [0,`Tmax`].
+```{r simulPPh1,eval=FALSE}
+simulPPh1 <- function(lambda,Tmax)
+{
+  #"COMPLETE"
+  #return("COMPLETE")
+  NTmax = rpois(1, lambda*Tmax)
+  return(sort(runif(NTmax,min=0,max=Tmax)))
+}
+```
+
+Let us define a plot function for a counting process `PP`. 
+```{r plot.PP}
+plot.PP<- function(PP)
+{
+  # plot the counting process (with jumps of size 1 (starting at point (0,0))):
+  plot(c(0,PP),0:length(PP),type="s",xlab="time t",ylab="number of events by time t")
+  # add the arrival times on the horizontal axis: 
+  points(PP,0*PP,type="p",pch=16)
+  # link arrival times with the counts:
+  lines(PP,0:(length(PP)-1),type="h",lty=2)
+}
+```
+
+```{r,eval=FALSE}
+# Simulation and plot of a homogeneous Poisson process:
+PPh1 = simulPPh1(2,100) #
+
+plot.PP(PPh1)
+
+#"COMPLETE"
+```
+
+
+## 1.2 - Maximum Likelihood Estimator (MLE)
+
+Maximum Likelihood estimator of a homogeneous Poisson process `PPh` observed on [0,`Tmax`]:
+```{r MLE1,eval=FALSE}
+MLE1 <- function(PPh,Tmax)
+{
+  #"COMPLETE"
+  #return("COMPLETE")
+
+  return(length(PPh)/Tmax)
+}
+```
+
+```{r,eval=FALSE}
+# Application on an example:
+#MLE1("COMPLETE")
+
+MLE1(PPh1,Tmax = 100)
+```
+
+Comment:
+
+En appliquant la fonction à PPh1 et toujours pour Tmax = 100, on trouve un maximum de vraisemblance valant 2.06 (change si jamais on 
+rééxécute la simulation)
+
+
+## 1.3 - Asymptotic behavior of the MLE
+
+### 1.3.1 - LLN-type result
+
+```{r LLN Tmax,eval=FALSE}
+#lambda = "COMPLETE"
+#Tillustr = "COMPLETE"
+
+lambda = 2
+Tillustr = 1:500
+
+#"COMPLETE"
+tabMLE = c()
+
+for (Tmax in Tillustr) {
+	PPh = simulPPh1(lambda = lambda, Tmax = Tmax)
+  MLE = MLE1(PPh = PPh, Tmax = Tmax)
+  tabMLE = c(tabMLE, MLE)
+}
+
+#plot("COMPLETE","COMPLETE",xlab="Tmax",ylab="MLE")
+plot(Tillustr,tabMLE,xlab="Tmax",ylab="MLE")
+```
+
+Comment: 
+
+On constate que les MLE calculés sont de moyenne constante.
+
+
+### 1.3.2 - CLT-type result
+
+```{r CLT Tmax,eval=FALSE}
+lambda = 2
+Tillustr = c(1,10,100,500) # possible values of Tmax
+K = 1000 # number of simulations of Z for each value of Tmax
+
+#"COMPLETE"
+Z = rep(0,K)
+
+par(mfrow = c(4,2))
+for (Tmax in Tillustr)
+{
+  for (k in 1:K)
+  {
+    pph=simulPPh1(lambda,Tmax)
+    mle=MLE1(pph,Tmax)
+    Z[k]=sqrt(Tmax)*(mle-lambda)
+  }
+  hist(Z,freq=FALSE,main=paste("Tmax",Tmax,sep="="))
+  curve(dnorm(x,mean=0,sd=sqrt(lambda)),
+                  col="red",add=TRUE)
+
+  plot(ecdf(Z),main=paste("Tmax",Tmax,sep="="))
+  curve(pnorm(x,mean=0,sd=sqrt(lambda)),
+                  col="red",lwd=2,add=TRUE)
+}
+```
+
+Comment: 
+
+
+## 1.4 - Statistical inference: hyptothesis testing
+
+The `test1` function returns the $p$-value of the test of $\mathcal{H}_0 : \lambda=$ `lambda0` againts $\mathcal{H}_1 : \lambda\neq$ `lambda0` given the observation of a homogeneous Poisson process `PPh` on [0,`Tmax`].
+```{r test1,eval=FALSE}
+test1 <- function(PPh,Tmax,lambda0)
+{
+  #"COMPLETE"
+  #return("COMPLETE")
+  Zobs = sqrt(Tmax/lambda0)*(MLE1(PPh,Tmax = Tmax) - lambda0)
+  return(2*(1 - pnorm(abs(Zobs))))
+}
+
+
+```
+
+```{r plot.level.power1}
+# Plot confidence intervals for the proportion of times alpha-level tests rejects the 
+# null hypothesis "lambda=lambda0" under each true distribution lambda in TrueLambda
+plot.level.power1 <- function(Tmax,lambda0,TrueLambda,alpha,nsimu)
+{
+  plot(range(TrueLambda),c(alpha,alpha),ylim=c(0,1),xlab="True lambda",ylab="Level/Power",
+       type="l",col="red",main=paste("lambda0 = ",lambda0,",  Tmax = ",Tmax,sep=""))
+  abline(1,0,lty=2,col="blue")
+  
+  for(lambda in TrueLambda)
+  {
+    # estimating the proportion under lambda in TrueLambda
+    propReject=0
+    for(sim in 1:nsimu){
+      propReject=propReject+(test1(simulPPh1(lambda,Tmax),Tmax,lambda0) <= alpha)/nsimu
+    }
+  # plot the confidence intervals
+  points(lambda,propReject)
+  points(lambda,propReject+sqrt(abs(propReject*(1-propReject))/nsimu)*qnorm(0.975),pch=2)
+  points(lambda,propReject-sqrt(abs(propReject*(1-propReject))/nsimu)*qnorm(0.975),pch=6)  
+  }
+}
+```
+
+```{r,eval=FALSE}
+# Application on an example:
+#alpha="COMPLETE"
+alpha=0.05
+#nsimu="COMPLETE"
+nsimu=1000
+#lambda0="COMPLETE"
+lambda0=2
+#TrueLambda=c("COMPLETE")
+TrueLambda=c(1,1.5,1.8,1.9,2,2.1,2.2,2.5,3)
+
+par(mfrow=c(2,2))
+for(Tmax in c(1,10,100,500))
+{
+  #plot.level.power1("COMPLETE")
+  plot.level.power1(Tmax,lambda0,TrueLambda,alpha,nsimu)
+}
+```
+
+Comments:
+
+# 2 - Inhomogeneous Poisson processes
+
+Simulation of an inhomogeneous Poisson processes with given intensity function `lambda_fct` on a fixed window [0,`Tmax`]. 
+```{r simulPPi,eval=FALSE}
+simulPPi = function(lambda_fct,Tmax,M)
+{
+  #"COMPLETE"
+  #return("COMPLETE")
+  N = rpois(1,M*Tmax)
+  U = runif(N,min=0,max=Tmax)
+  X = sort(U[runif(N,min=0,max=M) < lambda_fct(U)])
+}
+```
+
+Application to $\lambda_1: x \mapsto 2x.$
+```{r lambda1,eval=FALSE}
+#Tmax="COMPLETE"
+Tmax=10
+#lambda_fct1 <- function(x){return("COMPLETE")}
+lambda_fct1 <- function(x){return(2*x)}
+#M1="COMPLETE"
+M1=20
+#PPi1 = simulPPi("COMPLETE")
+PPi1 = simulPPi(lambda_fct1,Tmax,M1)
+
+# plot:
+par(mfrow=c(1,2))
+curve(lambda_fct1,from=0,to=Tmax,n=1000)
+plot.PP(PPi1)
+```
+
+Application to $\lambda_2: x \mapsto \frac{3}{10}x^2.$ 
+```{r lambda2,eval=FALSE}
+#Tmax="COMPLETE"
+Tmax=10
+#lambda_fct2 <- function(x){return("COMPLETE")}
+lambda_fct2 <- function(x){return((3/10)*x^2)}
+#M2="COMPLETE"
+M2=lambda_fct2(Tmax)
+#PPi2 = simulPPi("COMPLETE")
+PPi2 = simulPPi(lambda_fct2,Tmax,M2)
+
+# plot:
+par(mfrow=c(1,2))
+curve(lambda_fct2,from=0,to=Tmax,n=1000)
+plot.PP(PPi2)
+```
+
+Application to $\lambda_3: x \mapsto 100xe^{-x}.$
+```{r lambda3,eval=FALSE}
+#Tmax="COMPLETE"
+Tmax=10
+#lambda_fct3 <- function(x){return("COMPLETE")}
+lambda_fct3 <- function(x){return(100*x*exp(-x))}
+#M3="COMPLETE"
+M3=lambda_fct3(1)
+#PPi3 = simulPPi("COMPLETE")
+PPi3 = simulPPi(lambda_fct3,Tmax,M3)
+
+
+# plot:
+par(mfrow=c(1,2))
+curve(lambda_fct3,from=0,to=Tmax,n=1000);abline(v=1,lty=2)
+plot.PP(PPi3)
+```
+
+Application to $\lambda_4: x \mapsto 10\times 1_{[0,7]}(x) + 15\times 1_{]8,10]}(x).$
+```{r lambda4,eval=FALSE}
+#Tmax="COMPLETE"
+Tmax=10
+#lambda_fct4 <- function(x){return("COMPLETE")}
+lambda_fct4 <- function(x)
+{
+  return(ifelse(x<=7,10,ifelse(x>8,15,0)))
+  }
+#M4="COMPLETE"
+M4=15
+#PPi4 = simulPPi("COMPLETE")
+PPi4 = simulPPi(lambda_fct4,Tmax,M4)
+
+# plot:
+par(mfrow=c(1,2))
+curve(lambda_fct4,from=0,to=Tmax,n=1000)
+plot.PP(PPi4)
+```
+
+
+
+# 3 - Homogeneous Poisson processes with fixed number of points
+
+Now, we consider the case of a fixed number of points (and thus a random observation window). 
+
+## 3.1 - Simulation
+
+Simulation of the `n` first arrival times of a homogeneous Poisson process with intensity `lambda`.
+```{r simulPPh2,eval=FALSE}
+simulPPh2 <- function(lambda,n)
+{
+  #return("COMPLETE")
+  return(cumsum(rexp(n,lambda)))
+}
+```
+
+```{r,eval=FALSE}
+# Simulation and plot of a homogeneous Poisson process:
+#PPh2 = "COMPLETE"
+PPh2 = simulPPh2(lambda=2,n=20)
+#"COMPLETE" 
+```
+
+## 3.2 - Maximum likelihood estimator
+
+Maximum Likelihood estimator of a homogeneous Poisson process `PPh` with fixed number of points:
+```{r MLE2,eval=FALSE}
+MLE2 <- function(PPh)
+{
+  #return("COMPLETE")
+  return(length(PPh)/max(PPh))
+}
+```
+
+```{r,eval=FALSE}
+# Application on an example:
+#MLE2("COMPLETE")
+MLE2(PPh2)
+```
+
+Comment:
+
+## 3.3 Asymptotic behavior of the MLE
+
+### 3.3.1 - LLN-type result
+
+```{r LLN n,eval=FALSE}
+#"COMPLETE"
+Nillustr = 10:10:1500
+tabMLE = c()
+for(n in Nillustr)
+{
+  PPh = simulPPh2(lambda=2,n=n)
+  MLE2(PPh)
+  tabMLE = c(tabMLE, MLE2(PPh))
+}
+plot(Nillustr,tabMLE)
+```
+
+Comment: 
+
+### 3.3.2 - CLT-type result
+
+```{r CLT n,eval=FALSE}
+"COMPLETE"
+```
+
+Comment:
+
+## 3.4 - Statistical inference : confidence intervals
+
+Confidence interval for the unkown intensity of a homogeneous Poisson process `PPh` with confidence level 1-`alpha` that is `asymptotic` (by default) of not. 
+```{r IC2,eval=FALSE}
+IC2 <- function(PPh,alpha=0.05,asymptotic=TRUE)
+{
+  if(asymptotic)
+  {
+    #"COMPLETE"
+    #return("COMPLETE")
+    q = qnorm(1-alpha/2)
+    n = length(PPh)
+    Tn = PPh[n]
+    x1 = n/(Tn*(1+q/sqrt(n)))
+    x2 = n/(Tn*(1-q/sqrt(n)))
+    return(c(x1,x2))
+  }
+  else
+  {
+    #"COMPLETE"
+    #return("COMPLETE")
+    n = length(PPh)
+    q1 = qchisq(alpha/2, 2*n)
+    q2 = qchisq(1 - alpha/2, 2*n)
+    x1 = q1/(2*PPh[length(PPh)])
+    x2 = q2/(2*PPh[length(PPh)])
+    return(c(x1,x2))
+  }
+}
+```
+
+```{r,eval=FALSE}
+# Application on an example:
+PPh2 <- simulPPh2(lambda=10,n=100)
+IC2(PPh2,alpha=0.05,asymptotic=TRUE)
+IC2(PPh2,alpha=0.05,asymptotic=FALSE)
+```
+
+Comment:
+
+```{r,eval=FALSE}
+# Validation on simulated data
+lambda=2 ; nsimu=1000 ; n=10 # or n=100
+"COMPLETE"
+```
+
+Comment:
+
+
+
