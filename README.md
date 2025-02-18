@@ -1,45 +1,16 @@
-**Là-dedans tu peux te fier selon moi :**
-============================
-# Pour la 1A
-## Pour le S5
-### à 100% :
-- traitement du signal
-- automatique (quand ça y sera lol)
-- projet PIM (celui que j'ai fait avec Samy parce qu'il gère de fou)
-  	 	  (bon d'ailleurs tous les trucs que je mets sûrs à 100% c'est des trucs que j'ai fait avec lui lol)
-  	 	  
-### à 90% :
-- statistiques (normalement les rendus sont ok++ j'avais eu une bonne note)
-  	 	  	
-### à 70% :
-- mini-projet 1 PIM (pour moi le raffinage est bon mais j'ai fait une erreur de compréhension pour le truc de la moyenne, genre j'ai mis la valeur exacte qui était écrite dans l'énoncé alors qu'il fallait l'estimer avec son programme, ce qui n'est en soit pas très compliqué)
-  	 	  
-  	 	  
-## Pour le S6
-### à 100% :
-- télécommunications
-- calcul scientifique
-- analyse de données (par contre TPs incomplets et dernière question du projet non traitée)
-- projet court TOB (allumettes)
-  	 	
-### à 85% :
-- mini-projet TOB (cercles)
-  	 	  
-### à 75% :
-- internet (je parle du projet, honnêtement à part avoir mis trop de lignes dans le filtrage ce qui n'est même pas gênant en soi tout fonctionne mais bon parfois les encadrants qui évaluent sont vaches)
-  	 	
-### à 50% :
-- SEC (pour moi ce que j'ai fait est clean mais j'ai pas fait énormément ; et y a deux/trois problèmes qui persistent tout est écrit dans le rapport normalement)
-  
-  
-## Pour le S5 et S6
-### à 100% :
-- langage C (tête de oim le C c'est le seul truc sur lequel je me sens chaud avec Télécom et TS vite fait)
-	 	  
+# 📚 My Engineering Courses (Since 2022)  
 
+Welcome to my GitHub! Here, you'll find all my course materials from 2022 onwards, covering topics in **applied mathematics, artificial intelligence, programming, and engineering sciences**.  
 
-# Pour la 2A (ModIA)
-## Pour le S7
-### Bien parti :
-- EMS (on en est au prérequis)
-- méthodes factorielles (on a fait les deux TP sur le même notebook jupyter)
+## 📂 Content  
+This repository includes:  
+- **Mathematics**: Optimization, differential equations, data analysis  
+- **Artificial Intelligence**: Machine learning, deep learning, modeling  
+- **Programming**: Python, C, system programming, object-oriented programming  
+- **Engineering Topics**: Signal processing, networks, infrastructure  
+
+## 🚀 About Me  
+I'm currently in my final year of engineering school, pursuing a **double degree in Modeling and AI** at **ENSEEIHT & INSA Toulouse**. Passionate about data science, applied mathematics, and AI, I use this repository to organize my work and share my learning journey.  
+
+## 📬 Contact  
+Feel free to reach out or explore my work! 
