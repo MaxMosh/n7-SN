@@ -1,0 +1,29 @@
+real t1 = 0, t2 = 1, t3 = 0.49, t4 = 0.02, t5 = 0.77, t6 = 0.23, t7 = 0.51;
+int np = 300;
+
+border B1(t = t1, t2){x = t; y = 0; label = 1;};
+border B2(t = t1, t3){x = 1; y = t; label = 2;};
+border B3(t = t3, t7){x = 1; y = t; label = 3;};
+border B4(t = t7, t2){x = 1; y = t; label = 4;};
+border B5(t = t1, t2){x = 1 - t; y = 1; label = 5;};
+border B6(t = t1, t5){x = 0; y = 1 - t; label = 6;};
+border B7(t = t5, t2){x = 0; y = 1 - t; label = 7;};
+
+mesh Th = buildmesh(B1(np) + B2(floor(np*t3)) + B3(floor(np*t4)) + B4(floor(np*t3)) + B5(np) + B6(floor(np*t5)) + B7(floor(np*t6)));
+
+fespace V1(Th, P1);
+fespace V0(Th, P0);
+
+V1 u, v;
+//V0 f = 0;
+real valg = 1.5;
+V0 g = valg;
+
+problem Poisson(u, v) = int2d(Th)(dx(u)*dx(v) + dy(u)*dy(v)) - int1d(Th,7)(g*v) + on(3, u=0);
+
+Poisson;
+
+//plot(u,fill=1,dim=3,wait=1);
+
+real [int] HSV = [0, 0, 1, 0, 0, 0];
+plot(u,ps="fumee.eps",wait=1,fill=1,value=1,hsv=HSV,nbiso=40);

@@ -1,0 +1,53 @@
+real t1 = 0, t2 = 1;
+int np = 10;
+
+border B1(t = t1, t2){x = t; y = 0; label = 1;};
+border B2(t = t1, t2){x = 1; y = t; label = 2;};
+border B3(t = t1, t2){x = 1 - t; y = 1; label = 3;};
+border B4(t = t1, t2){x = 0; y = 1 - t; label = 4;};
+
+mesh Th1 = buildmesh(B1(np) + B2(np) + B3(np) + B4(np));
+
+//plot(Th1, wait = 1);
+
+
+border C1(t = 0, 2*pi){x = cos(t); y = sin(t); label = 5;};
+
+
+real cx = 0.5, cy = 0.5, r = 0.15;
+border C2(t = 0, 2*pi){x = cx + r*cos(t); y = cy + r*sin(t); label = 5;};
+
+
+// Création du maillage à partir de ce cercle
+mesh Th2 = buildmesh(C1(np));
+
+// Affichage du maillage du cercle
+//plot(Th2, wait = 1);
+
+
+mesh Th3 = buildmesh(C2(np));
+
+//plot(Th3, wait = 1);
+
+int circlenp = floor(np*2*pi*r);
+
+
+mesh Th4 = buildmesh(B1(np) + B2(np) + B3(np) + B4(np) + C2(-circlenp));
+//mesh Th4 = buildmesh(B1(np) + B2(np) + B3(np) + B4(np) + C2(-np));
+//mesh Th4 = buildmesh(B1(np) + B2(np) + B3(np) + B4(np) + C2(-np));
+
+//plot(Th4, wait = 1);
+
+fespace V1(Th4, P1);
+fespace V0(Th4, P0);
+
+V1 u, v;
+V0 f = 1;
+
+problem Poisson(u, v) = int2d(Th4)(dx(u)*dx(v) + dy(u)*dy(v)) 
+                        - int2d(Th4)(f*v) + on(1, u=0) + on(2, u=0) + on(3, u=0) + on(4, u=0) + on(5, u=0);
+
+Poisson;
+
+//plot(u, fill=1, value=1, dim=3, wait=1);
+

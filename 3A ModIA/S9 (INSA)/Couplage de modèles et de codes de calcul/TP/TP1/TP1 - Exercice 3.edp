@@ -1,0 +1,48 @@
+real t1 = 0, t2 = 1, t3 = 0.5;
+int np = 2^5;
+int npfin = 2^10;
+
+border B1(t = t1, t2){x = t; y = 0; label = 1;};
+border B2(t = t1, t2){x = 1; y = t; label = 2;};
+border B3(t = t1, t3){x = 1 - t; y = 1; label = 3;};
+border B4(t = t1, t3){x = 0.5; y = 1 - t; label = 4;};
+border B5(t = t1, t3){x = 0.5 - t; y = 0.5; label = 5;};
+border B6(t = t1, t3){x = 0; y = 0.5 - t; label = 6;};
+
+mesh Thgrossier = buildmesh(B1(np) + B2(np) + B3(np*0.5) + B4(np*0.5) + B5(np*0.5) + B6(np*0.5));
+
+//plot(Thgrossier, wait = 1);
+
+mesh Thfin = buildmesh(B1(npfin) + B2(npfin) + B3(npfin*0.5) + B4(npfin*0.5) + B5(npfin*0.5) + B6(npfin*0.5));
+
+fespace V1fin(Thfin, P1);
+fespace V0fin(Thfin, P0);
+
+V1fin ufin, vfin;
+V0fin ffin = 1;
+
+problem Poisson(ufin, vfin) = int2d(Thfin)(dx(ufin)*dx(vfin) + dy(ufin)*dy(vfin)) - int2d(Thfin)(ffin*vfin) + on(1, ufin=0) + on(2, ufin=0) + on(3, ufin=0) + on(4, ufin=0) + on(5, ufin=0) + on(6, ufin=0);
+
+Poisson;
+
+//plot(ufin, fill=1, value=1, dim=3, wait=1);
+
+
+
+int n0 = 5;
+int n1 = 8;
+ofstream file("Erreurs - exo 3.txt");
+for (int k=n0 ; k < n1 + 1 ; k++){
+    int npk = 2^k;
+    mesh Thk = buildmesh(B1(npk) + B2(npk) + B3(npk*0.5) + B4(npk*0.5) + B5(npk*0.5) + B6(npk*0.5));
+    fespace V1k(Thk, P1);
+    fespace V0k(Thk, P0);
+    V1k u, v;
+    V0k fk = 1;
+    problem Poisson(u, v) = int2d(Thk)(dx(u)*dx(v) + dy(u)*dy(v)) - int2d(Thk)(fk*v) + on(1, u=0) + on(2, u=0) + on(3, u=0) + on(4, u=0) + on(5, u=0) + on(6, u=0);
+    Poisson;
+    real errL2 = sqrt(int2d(Thfin)((u - ufin)^2));
+    real errH1 = sqrt(int2d(Thfin)((u - ufin)^2) + int2d(Thfin)(((dx(u) - dx(ufin))^2 + (dy(u) - dy(ufin))^2)));
+    //listeerr[k - n0] = err;
+    file << "Indice " << k << " : L2 - " << errL2 << " ; H1 - " << errH1 << endl;
+}

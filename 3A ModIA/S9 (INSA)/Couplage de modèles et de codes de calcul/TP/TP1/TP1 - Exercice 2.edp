@@ -1,0 +1,46 @@
+real t1 = 0, t2 = 1;
+int np = 2^9;
+
+border B1(t = t1, t2){x = t; y = 0; label = 1;};
+border B2(t = t1, t2){x = 1; y = t; label = 2;};
+border B3(t = t1, t2){x = 1 - t; y = 1; label = 3;};
+border B4(t = t1, t2){x = 0; y = 1 - t; label = 4;};
+
+mesh Th1 = buildmesh(B1(np) + B2(np) + B3(np) + B4(np));
+
+//plot(Th1, wait = 1);
+
+fespace V1(Th1, P1);
+fespace V0(Th1, P0);
+
+int p = 3, q = 4;
+
+V1 u, v;
+//V0 f = ((p*pi)^2 + (q*pi)^2)*sin(p*pi*x)*sin(q*pi*y);
+
+//problem Poisson(u, v) = int2d(Th1)(dx(u)*dx(v) + dy(u)*dy(v)) - int2d(Th1)(f*v) + on(1, u=0) + on(2, u=0) + on(3, u=0) + on(4, u=0);
+
+//Poisson;
+
+//plot(u, fill=1, value=1, dim=3, wait=1);
+
+V1 uref = sin(p*pi*x)*sin(q*pi*y);
+
+int n0 = 5;
+int n1 = 8;
+//real listeerr[5];
+ofstream file("Erreurs.txt");
+for (int k=n0 ; k < n1 + 1 ; k++){
+    int npk = 2^k;
+    mesh Thk = buildmesh(B1(npk) + B2(npk) + B3(npk) + B4(npk));
+    fespace V1k(Thk, P1);
+    fespace V0k(Thk, P0);
+    V1k u, v;
+    V0k f = ((p*pi)^2 + (q*pi)^2)*sin(p*pi*x)*sin(q*pi*y);
+    problem Poisson(u, v) = int2d(Thk)(dx(u)*dx(v) + dy(u)*dy(v)) - int2d(Thk)(f*v) + on(1, u=0) + on(2, u=0) + on(3, u=0) + on(4, u=0);
+    Poisson;
+    real errL2 = sqrt(int2d(Th1)((u - uref)^2));
+    real errH1 = sqrt(int2d(Th1)((u - uref)^2) + int2d(Th1)(((dx(u) - dx(uref))^2 + (dy(u) - dy(uref))^2)));
+    //listeerr[k - n0] = err;
+    file << "Indice " << k << " : L2 - " << errL2 << " ; H1 - " << errH1 << endl;
+}

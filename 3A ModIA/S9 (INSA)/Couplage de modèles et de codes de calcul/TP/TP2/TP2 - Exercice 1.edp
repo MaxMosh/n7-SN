@@ -1,0 +1,43 @@
+real a = 1, b = 2;
+int np = 2^4;
+
+border B1(t = -a, a){x = t; y = -b; label = 1;};
+border B2(t = -b, b){x = a; y = t; label = 2;};
+border B3(t = -a, a){x = -t; y = b; label = 3;};
+border B4(t = -b, b){x = -a; y = -t; label = 4;};
+
+mesh Thexp = buildmesh(B1(np*a*2) + B2(np*b*2) + B3(np*a*2) + B4(np*b*2));
+
+//plot(Thtest, wait = 1);
+
+
+/*real cx = 0.5, cy = 0.5, r = 0.35;
+border C(t = 0, 2*pi){x = cx + r*cos(t); y = cy + r*sin(t); label = 5;};
+
+int circlenp = floor(np*2*pi*r);
+
+mesh Thexp = buildmesh(B1(np*a*2) + B2(np*b*2) + B3(np*a*2) + B4(np*b*2) + C(-circlenp));
+
+plot(Thexp, wait = 1);*/
+
+fespace V1(Thexp, P1);
+fespace V0(Thexp, P0);
+
+V1 T, v;
+
+//V0 f = 0;
+
+real cx = 0.5, cy = 0.5, r = 0.35;
+real Tvois = 25, Text = 0, Tf = 50;
+V0 Tfproj = Tf; // Projection de Tf dans V0
+
+V0 fcar = sqrt((x-cx)^2 + (y-cy)^2) < r ? 1 : 0;
+real eps = 1e-5;
+
+problem Poisson(T, v) = int2d(Thexp)((dx(T)*dx(v) + dy(T)*dy(v))*(1 - fcar)) + int2d(Thexp)((1/eps)*T*v*fcar) 
+- int2d(Thexp)((1/eps)*Tfproj*v*fcar) 
++ on(1, T=Text) + on(2, T=Tvois) + on(3, T=Tvois) + on(4, T=Tvois);
+
+Poisson;
+
+plot(T, fill=1, value=1, dim=3, wait=1);
