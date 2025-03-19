@@ -1,0 +1,5 @@
+Ordre de la résolution des TDs faite en cours :
+
+- Session2-edo-exercises_with_solutions.pdf
+- Session4+5-steadyPDE-exercises_corrections.pdf
+- Session4-adjoint-operator-exercises_corrections.pdf
