@@ -290,7 +290,7 @@ class Gaussian(nn.Module):
         self.covariance_matrix = torch.bmm(self.Lambda, self.Lambda.transpose(1,2))                     # VERSION OPTIMISEE
         self.cov_inv_ = torch.triangular_solve(torch.eye(x_dim).expand(bs, x_dim, x_dim), self.Lambda, upper=False).solution
         self.cov_log_det_ = torch.sum(logcst + diaga, dim=1).unsqueeze(1)                               # FIN VERSION OPTIMISEE
-
+        
         t2 = time.time()                                                                                # AJOUT
         print('Time to compute covariance matrix, inverse and log det:', t2-t1)                         # AJOUT
         
@@ -302,7 +302,7 @@ class Gaussian(nn.Module):
         # shape: (batch size, 1)
         bs = x.shape[0]
         logprob = torch.zeros(bs,1)
-        t1b = time.time()                                                                               # AJOUT
+        #t1b = time.time()                                                                               # AJOUT
 
         for i in range(bs):                                                                             # VERSION ORIGINALE
             mean_diff = x[i,:] - self.mu[i,:]
@@ -318,7 +318,7 @@ class Gaussian(nn.Module):
         logprob = term_1 + term_2                                                                       # FIN VERSION OPTIMISEE
         """
 
-        t2b = time.time()                                                                               # AJOUT
+        #t2b = time.time()                                                                               # AJOUT
         print('Time to compute log prob:', t2b-t1b)                                                     # AJOUT
         return logprob
 
