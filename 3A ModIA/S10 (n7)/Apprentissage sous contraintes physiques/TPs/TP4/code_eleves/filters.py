@@ -277,22 +277,22 @@ class Gaussian(nn.Module):
         self.cov_inv_ = torch.zeros(bs, x_dim, x_dim) 
         self.cov_log_det_ = torch.zeros(bs, 1)
         logcst = np.log(2*np.pi)/2
-        t1 = time.time()                                                        # AJOUT
+        t1 = time.time()                                                                                # AJOUT
         """
-        for i in range(bs):                                                     # VERSION ORIGINALE
+        for i in range(bs):                                                                             # VERSION ORIGINALE
             cov = torch.mm(self.Lambda[i,:,:],self.Lambda[i,:,:].T)
             cov_inv = torch.cholesky_inverse(self.Lambda[i,:,:])
             cov_log_det = torch.sum( logcst + diaga[i,:] )
             self.covariance_matrix[i,:,:] = cov
             self.cov_inv_[i,:,:] = cov_inv
-            self.cov_log_det_[i,0] = cov_log_det
-        """                                                                     # FIN VERSION ORIGINALE
-        self.covariance_matrix = torch.bmm(self.Lambda, self.Lambda.transpose(1,2)) # VERSION OPTIMISEE
+            self.cov_log_det_[i,0] = cov_log_det                                                        # FIN VERSION ORIGINALE
+        """
+        self.covariance_matrix = torch.bmm(self.Lambda, self.Lambda.transpose(1,2))                     # VERSION OPTIMISEE
         self.cov_inv_ = torch.triangular_solve(torch.eye(x_dim).expand(bs, x_dim, x_dim), self.Lambda, upper=False).solution
-        self.cov_log_det_ = torch.sum(logcst + diaga, dim=1).unsqueeze(1) # FIN VERSION OPTIMISEE
+        self.cov_log_det_ = torch.sum(logcst + diaga, dim=1).unsqueeze(1)                               # FIN VERSION OPTIMISEE
 
-        t2 = time.time()                                                        # AJOUT
-        print('Time to compute covariance matrix, inverse and log det:', t2-t1) # AJOUT
+        t2 = time.time()                                                                                # AJOUT
+        print('Time to compute covariance matrix, inverse and log det:', t2-t1)                         # AJOUT
         
     def log_prob(self, x):
         # TODO 1.2 compute logprob using self.mu and self.Lambda
@@ -302,22 +302,24 @@ class Gaussian(nn.Module):
         # shape: (batch size, 1)
         bs = x.shape[0]
         logprob = torch.zeros(bs,1)
-        t1b = time.time()                                                       # AJOUT
-        """
-        for i in range(bs):
+        t1b = time.time()                                                                               # AJOUT
+
+        for i in range(bs):                                                                             # VERSION ORIGINALE
             mean_diff = x[i,:] - self.mu[i,:]
             cov_inv = self.cov_inv_[i,:,:]
             term_1 = -0.5*torch.mm(torch.mm(mean_diff.unsqueeze(0), cov_inv), mean_diff.unsqueeze(1))
             term_2 = -self.cov_log_det_[i,0]
-            logprob[i,0] = term_1 + term_2
-        """
-        mean_diff = x - self.mu
+            logprob[i,0] = term_1 + term_2                                                              # FIN VERSION ORIGINALE
+        
+        """                                 # NOTE : LA VERSION OPTIMISEE NE SERT VISIBLEMENT A RIEN ICI
+        mean_diff = x - self.mu                                                                         # VERSION OPTIMISEE
         term_1 = -0.5*torch.bmm(torch.bmm(mean_diff.unsqueeze(1), self.cov_inv_), mean_diff.unsqueeze(2)).squeeze()
         term_2 = -self.cov_log_det_
-        logprob = term_1 + term_2
-        
-        t2b = time.time()                                                      # AJOUT
-        print('Time to compute log prob:', t2b-t1b)                            # AJOUT
+        logprob = term_1 + term_2                                                                       # FIN VERSION OPTIMISEE
+        """
+
+        t2b = time.time()                                                                               # AJOUT
+        print('Time to compute log prob:', t2b-t1b)                                                     # AJOUT
         return logprob
 
 class ConstructorA(nn.Module):
