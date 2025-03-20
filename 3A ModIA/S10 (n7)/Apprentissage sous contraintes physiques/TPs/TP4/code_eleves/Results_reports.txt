@@ -1,0 +1,43 @@
+Question 1.4
+
+(env_pytorch) n7student@n7student:~/Documents/Études/ENSEEIHT-INSA/Général/n7-SN/3A ModIA/S10 (n7)/Apprentissage sous contraintes physiques/TPs/TP4/code
+_eleves$ python main.py -save lin2d_exp.py -run
+saved: ./,lin2d_exp
+use gpu True
+use tensor_type double
+/home/n7student/miniforge3/envs/env_pytorch/lib/python3.13/site-packages/torch/__init__.py:1236: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /pytorch/torch/csrc/tensor/python_tensor.cpp:434.)
+  _C._set_default_tensor_type(t)
+Pre-train c at t=0
+empirical mean of x0 is tensor([3.0003, 3.0000])
+## INIT a0 mean tensor([ 0.3891, -0.4630], grad_fn=<SliceBackward0>)
+## INIT a0 var tensor([1.0185, 0.4887], grad_fn=<SliceBackward0>)
+## INIT a0 covar tensor([[1.0185, 0.1516],
+        [0.1516, 0.5113]], grad_fn=<SliceBackward0>)
+Train over full time 0..T with BPTT
+## Train Ite 1 ##
+## Test Cycle 1 ##
+## Test Cycle 2 ##
+## Test Cycle 3 ##
+
+(env_pytorch) n7student@n7student:~/Documents/Études/ENSEEIHT-INSA/Général/n7-SN/3A ModIA/S10 (n7)/Apprentissage sous contraintes physiques/TPs/TP4/code
+_eleves$ python main.py -save lin2d_exp.py -run
+saved: ./,lin2d_exp
+use gpu True
+use tensor_type double
+/home/n7student/miniforge3/envs/env_pytorch/lib/python3.13/site-packages/torch/__init__.py:1236: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /pytorch/torch/csrc/tensor/python_tensor.cpp:434.)
+  _C._set_default_tensor_type(t)
+Pre-train c at t=0
+empirical mean of x0 is tensor([3.0009, 2.9998])
+## INIT a0 mean tensor([ 0.2143, -0.1361], grad_fn=<SliceBackward0>)
+## INIT a0 var tensor([2.1415, 0.4928], grad_fn=<SliceBackward0>)
+## INIT a0 covar tensor([[2.1415, 0.1647],
+        [0.1647, 0.5054]], grad_fn=<SliceBackward0>)
+Train over full time 0..T with BPTT
+## Train Ite 1 ##
+## Test Cycle 1 ##
+## Test Cycle 2 ##
+## Test Cycle 3 ##
+
+
+
+Question X
